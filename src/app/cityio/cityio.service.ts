@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
-import { catchError, tap } from "rxjs/operators";
+import { catchError, tap, retry } from "rxjs/operators";
 
 const CITYIO_TABLE_URL = "https://cityio.media.mit.edu/api/table/";
 const DEFAULT_TABLE_NAME = "grasbrook";
@@ -20,17 +20,22 @@ export class CityioService {
   getTableURL(): string {
     // return 'http://localhost:4200/assets/mock-grid-data.json';
     console.log("using cityIO table: ", DEFAULT_TABLE_NAME);
-    return CITYIO_TABLE_URL + DEFAULT_TABLE_NAME;
+    return "./assets/cityIO_demo.json";
+
+    // CITYIO_TABLE_URL + DEFAULT_TABLE_NAME;
   }
 
+  /**
+   * Gets cityIO data from server or fallback local file
+   */
   getCityIOdata(): Observable<any> {
     return this.http.get(this.cityIOTableURL).pipe(
+      // can do retry here
+      // retry(3),
       tap(cityIOData => {
-        console.log("c");
-
         this.cityIOData = cityIOData;
       }),
-      catchError(this.handleError("getMetadata", [])) // Still returns result (empty)
+      catchError(this.handleError("getMetadata"))
     );
   }
 
@@ -42,10 +47,9 @@ export class CityioService {
    */
   private handleError<T>(operation = "operation", result?: T) {
     return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(`${operation} failed: ${error.message}`, error); // log to console instead
+      console.error(`${operation} failed: ${error.message}`, error);
+      // Let the app keep running by returning:
 
-      // Let the app keep running by returning an empty result.
       return of(result as T);
     };
   }
