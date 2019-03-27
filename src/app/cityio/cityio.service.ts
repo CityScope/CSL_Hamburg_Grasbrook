@@ -26,6 +26,8 @@ export class CityioService {
   getCityIOdata(): Observable<any> {
     return this.http.get(this.cityIOTableURL).pipe(
       tap(cityIOData => {
+        console.log("c");
+
         this.cityIOData = cityIOData;
       }),
       catchError(this.handleError("getMetadata", [])) // Still returns result (empty)
