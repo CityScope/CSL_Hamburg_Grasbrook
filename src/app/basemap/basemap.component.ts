@@ -14,6 +14,7 @@ export class BasemapComponent implements OnInit {
 
   center: number[];
   constructor(private cityioService: CityioService) {
+    // get the acess token
     mapboxgl.accessToken = environment.mapbox.accessToken;
   }
 

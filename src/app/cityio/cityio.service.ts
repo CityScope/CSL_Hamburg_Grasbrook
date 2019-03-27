@@ -20,8 +20,8 @@ export class CityioService {
   getTableURL(): string {
     // return 'http://localhost:4200/assets/mock-grid-data.json';
     console.log("using cityIO table: ", DEFAULT_TABLE_NAME);
+    // demo table for now
     return "./assets/cityIO_demo.json";
-
     // CITYIO_TABLE_URL + DEFAULT_TABLE_NAME;
   }
 

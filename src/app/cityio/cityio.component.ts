@@ -19,7 +19,6 @@ export class CityioComponent implements OnInit {
   getCityIOatInterval() {
     setInterval(() => {
       this.cityIOservice.getCityIOdata().subscribe(cityiodata => {
-        console.log(cityiodata);
         this.title = "cityIO timestamp " + cityiodata.meta.timestamp;
       });
     }, 1000);
