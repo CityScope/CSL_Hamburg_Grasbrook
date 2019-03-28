@@ -29,7 +29,7 @@ export class BasemapComponent implements OnInit {
       cityIOdata.header.spatial.latitude,
       cityIOdata.header.spatial.longitude
     ];
-
+    // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
       style: this.style,
