@@ -44,8 +44,12 @@ export class BasemapComponent implements OnInit {
       center: this.center
     });
 
-    const layers: [object] = this.moduleHandler.getLayers();
-    layers.map(l => this.map.addLayer(l));
+    this.map.on('load', event => {
+      console.log(event);
+      const layers: [object] = this.moduleHandler.getLayers();
+      layers.map(l => this.map.addLayer(l));
+    });
+
   }
 }
 
