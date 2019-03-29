@@ -40,6 +40,30 @@ export class CityioService {
   }
 
   /**
+   * provides cityIO layer used for mapbox rendering
+   * (copied from Alex's prototype)
+   */
+  getLayer(): object {
+    return ({
+      id: 'gridDataCells',
+      source: 'gridDataCells',
+      type: 'fill-extrusion',
+      paint: {
+        // See the Mapbox Style Specification for details on data expressions.
+        // https://docs.mapbox.com/mapbox-gl-js/style-spec/#expressions
+        // Get the fill-extrusion-color from the source 'color' property.
+        'fill-extrusion-color': ['get', 'color'],
+        // Get fill-extrusion-height from the source 'height' property.
+        'fill-extrusion-height': ['get', 'height'],
+        // Get fill-extrusion-base from the source 'baseHeight' property.
+        'fill-extrusion-base': ['get', 'baseHeight'],
+        // Make extrusions slightly opaque for see through indoor walls.
+        'fill-extrusion-opacity': 0.8
+      }
+    });
+  }
+
+  /**
    * Handle Http operation that failed.
    * Let the app continue.
    * @param operation - name of the operation that failed
