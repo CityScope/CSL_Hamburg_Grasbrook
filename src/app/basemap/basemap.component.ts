@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
 import { CityioService } from "./cityio/cityio.service";
-import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-map-handler.service"
+import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-map-handler.service";
 
 @Component({
   selector: "basemap",
@@ -16,7 +16,7 @@ export class BasemapComponent implements OnInit {
   center: number[];
   constructor(
     private cityioService: CityioService,
-    private moduleHandler: ModuleDataToMapHandler,
+    private moduleHandler: ModuleDataToMapHandler
   ) {
     // get the acess token
     mapboxgl.accessToken = environment.mapbox.accessToken;
@@ -44,19 +44,10 @@ export class BasemapComponent implements OnInit {
       center: this.center
     });
 
-    this.map.on('load', event => {
+    this.map.on("load", event => {
       console.log(event);
       const layers: [object] = this.moduleHandler.getLayers();
       layers.map(l => this.map.addLayer(l));
     });
-
   }
 }
-
-
-
-
-
-
-
-
