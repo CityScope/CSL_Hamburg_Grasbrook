@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 @Injectable({
   providedIn: "root"
 })
-export class CityioGridMakerService {
+export class CityioGridMapboxService {
   constructor() {}
 
   makeGridFromCityIO(cityiodata: any): GeoJsonPolygon[] {
@@ -93,3 +93,38 @@ export const defaultGeoJsonProperties = {
   baseHeight: 0,
   height: 0
 };
+
+export function demoMapboxLayer(cityIOData) {
+  return {
+    id: "route",
+    type: "line",
+    source: {
+      type: "geojson",
+      data: {
+        type: "Feature",
+        properties: {},
+        geometry: {
+          type: "LineString",
+          coordinates: [
+            [
+              cityIOData.header.spatial.latitude,
+              cityIOData.header.spatial.longitude
+            ],
+            [
+              cityIOData.header.spatial.latitude + 0.01,
+              cityIOData.header.spatial.longitude + 0.01
+            ]
+          ]
+        }
+      }
+    },
+    layout: {
+      "line-join": "round",
+      "line-cap": "round"
+    },
+    paint: {
+      "line-color": "red",
+      "line-width": 20
+    }
+  };
+}

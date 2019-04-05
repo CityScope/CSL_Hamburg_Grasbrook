@@ -2,14 +2,17 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import { CityioGridMakerService } from "./cityio-grid-maker/cityio-grid-maker.service";
+import {
+  CityioGridMapboxService,
+  demoMapboxLayer
+} from "./cityio-grid-mapbox/cityio-grid-mapbox.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class CityioService {
   initGrid: number = 0;
-  cityIOgridMaker: any = new CityioGridMakerService();
+  cityIOgridMaker: any = new CityioGridMapboxService();
   cityiodata: JSON;
   cityIOTableURL: string;
   cityIOData: any;
@@ -70,37 +73,8 @@ export class CityioService {
   }
 
   getLayer() {
-    return {
-      id: "route",
-      type: "line",
-      source: {
-        type: "geojson",
-        data: {
-          type: "Feature",
-          properties: {},
-          geometry: {
-            type: "LineString",
-            coordinates: [
-              [
-                this.cityIOData.header.spatial.latitude,
-                this.cityIOData.header.spatial.longitude
-              ],
-              [
-                this.cityIOData.header.spatial.latitude + 0.01,
-                this.cityIOData.header.spatial.longitude + 0.01
-              ]
-            ]
-          }
-        }
-      },
-      layout: {
-        "line-join": "round",
-        "line-cap": "round"
-      },
-      paint: {
-        "line-color": "red",
-        "line-width": 20
-      }
-    };
+    console.log(this.cityIOData);
+
+    return demoMapboxLayer(this.cityIOData);
   }
 }
