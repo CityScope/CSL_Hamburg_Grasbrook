@@ -2,17 +2,20 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { catchError, tap } from "rxjs/operators";
-import {
-  CityioGridMapboxService,
-  demoMapboxLayer
-} from "./cityio-grid-mapbox/cityio-grid-mapbox.service";
+
+// import {
+//   CityioGridMapboxService,
+//   demoMapboxLayer
+// } from "./cityio-grid-mapbox/cityio-grid-mapbox.service";
+
+import { CityGridThreeService } from "./cityio-grid-three/city-grid-three.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class CityioService {
-  initGrid: number = 0;
-  cityIOgridMaker: any = new CityioGridMapboxService();
+  // cityIOgridMaker: any = new CityioGridMapboxService();
+  CityGridThreeService: any = new CityGridThreeService();
   cityiodata: JSON;
   cityIOTableURL: string;
   cityIOData: any;
@@ -36,8 +39,6 @@ export class CityioService {
    */
   getCityIOdata(): Observable<any> {
     return this.http.get(this.cityIOTableURL).pipe(
-      // can do retry here
-      // retry(3),
       tap(cityIOData => {
         this.cityIOData = cityIOData;
       }),
@@ -63,18 +64,17 @@ export class CityioService {
   getCityIOatInterval() {
     setInterval(() => {
       // check if this is the first run for grid init
-      if (this.cityIOData !== null && this.initGrid == 0) {
+      if (this.cityIOData !== null) {
         console.log("making baseline grid...");
         // pass cityio data to the init grid maker function at service
-        this.cityIOgridMaker.makeGridFromCityIO(this.cityiodata);
-        this.initGrid = 1;
+        // this.cityIOgridMaker.makeGridFromCityIO(this.cityiodata);
+        // this.CityGridThreeService.makeGridFromCityIO(this.cityiodata);
+        // this.initGrid = 1;
       }
     }, 1000);
   }
 
   getLayer() {
-    console.log(this.cityIOData);
-
-    return demoMapboxLayer(this.cityIOData);
+    return this.CityGridThreeService.makeGridFromCityIO(this.cityIOData);
   }
 }
