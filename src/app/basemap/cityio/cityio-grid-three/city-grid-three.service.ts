@@ -44,7 +44,14 @@ export class CityGridThreeService {
       scale: modelScale
     };
     let cityIOgrid = this.makeThreeScene(cityiodata);
+    let mapboxCityIOGridLayer = this.makeMapboxLayerOfThreeScene(
+      cityIOgrid,
+      modelTransform
+    );
+    return mapboxCityIOGridLayer;
+  }
 
+  makeMapboxLayerOfThreeScene(cityIOgrid: any, modelTransform: any): any {
     return {
       id: "3d-model",
       type: "custom",
@@ -128,22 +135,24 @@ export class CityGridThreeService {
     //loop through grid rows and cols and create the grid
     for (var this_row = 0; this_row < grid_rows; this_row++) {
       for (var this_column = 0; this_column < grid_columns; this_column++) {
-        let randomZ = Math.random() * 10;
         geometry = new THREE.BoxBufferGeometry(
           cell_size_in_meters * cell_rescale_precentage,
           cell_size_in_meters * cell_rescale_precentage,
-          randomZ
+          this_column * this_row
         );
         //make material for each cell
+
         material = new THREE.MeshPhongMaterial({
-          color: "white"
+          color: "hsl(" + this_row + "," + 100 + "%,50%)"
+          // "white"
         });
         //make mesh for cell
         this_mesh = new THREE.Mesh(geometry, material);
         this_mesh.position.set(
-          this_row * cell_size_in_meters,
           this_column * cell_size_in_meters,
-          randomZ / 2
+          // !note negative
+          -this_row * cell_size_in_meters,
+          0.5 * (this_column * this_row)
         );
         three_grid_group.add(this_mesh);
       }
