@@ -91,6 +91,7 @@ export class CityGridThreeService {
           .scale(
             new THREE.Vector3(
               modelTransform.scale,
+              // ! note negative
               -modelTransform.scale,
               modelTransform.scale
             )
@@ -135,13 +136,13 @@ export class CityGridThreeService {
         );
         //make material for each cell
         material = new THREE.MeshPhongMaterial({
-          color: "red"
+          color: "white"
         });
         //make mesh for cell
         this_mesh = new THREE.Mesh(geometry, material);
         this_mesh.position.set(
-          this_column * -cell_size_in_meters,
           this_row * cell_size_in_meters,
+          this_column * cell_size_in_meters,
           randomZ / 2
         );
         three_grid_group.add(this_mesh);
