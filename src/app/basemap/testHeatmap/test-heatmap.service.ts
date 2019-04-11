@@ -10,6 +10,7 @@ export class TestHeatmapService {
   MODULE_API_URL: string =
     "https://cityio.media.mit.edu/api/table/interaction_Heatmap_Module";
   moduleData: any;
+  responseData: JSON;
 
   constructor(private http: HttpClient) {
     this.MODULE_API_URL = this.getModuleURL();
@@ -21,9 +22,8 @@ export class TestHeatmapService {
   }
 
   getModuleData() {
-    this.http.get(this.MODULE_API_URL).subscribe(d => {
-      console.log(d);
-      this.moduleData = d;
+    this.http.get(this.MODULE_API_URL).subscribe(responseData => {
+      this.moduleData = responseData;
     }, catchError(this.handleError("getMetadata")));
   }
 
@@ -43,11 +43,33 @@ export class TestHeatmapService {
 
   getModuleatInterval() {
     setInterval(() => {
-      this.getModuleData();
+      console.log(this.moduleData);
+      return this.getModuleData();
     }, 1000);
   }
 
   getLayer() {
     this.getModuleatInterval();
+    // return {
+    //   id: "MultiPoint",
+    //   source: {
+    //     type: "geojson",
+    //     data: {
+    //       type: "MultiPoint",
+    //       coordinates: (function() {
+    //         let coordinates_list = [];
+    //         this.moduleData.objects.cityscopy.forEach(function(t: number) {
+    //           coordinates_list.push([t, t]);
+    //         });
+    //         console.log(coordinates_list);
+    //         return coordinates_list;
+    //       })()
+    //     }
+    //   },
+    //   type: "heatmap",
+    //   paint: {
+    //     "heatmap-radius": 100000
+    //   }
+    // };
   }
 }

@@ -126,7 +126,7 @@ export class CityGridThreeService {
     var grid_rows = cityiodata.header.spatial.nrows;
     //get table dims
     var cell_size_in_meters = cityiodata.header.spatial.cellSize;
-    var cell_rescale_precentage = 0.95;
+    var cell_rescale_precentage = 0.75;
     var this_mesh = null;
     var three_grid_group = new THREE.Object3D();
     var geometry = null;
