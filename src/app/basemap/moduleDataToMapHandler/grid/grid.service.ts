@@ -8,7 +8,7 @@ import { catchError, tap } from "rxjs/operators";
 //   demoMapboxLayer
 // } from "./cityio-grid-mapbox/cityio-grid-mapbox.service";
 
-import { CityGridThreeService } from "./cityio-grid-three/city-grid-three.service";
+import { CityGridThreeService } from "./grid-three/grid-three.service";
 
 @Injectable({
   providedIn: "root"

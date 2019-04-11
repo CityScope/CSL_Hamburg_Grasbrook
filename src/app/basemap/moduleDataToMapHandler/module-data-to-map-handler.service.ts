@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
-import { CityioService } from "../cityio/cityio.service";
-import { TestHeatmapService } from "../testHeatmap/test-heatmap.service";
+import { CityioService } from "./grid/grid.service";
+import { TestHeatmapService } from "./testHeatmap/test-heatmap.service";
 @Injectable({
   providedIn: "root"
 })

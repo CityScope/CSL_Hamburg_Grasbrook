@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
-import { CityioService } from "./cityio/cityio.service";
+import { CityioService } from "./moduleDataToMapHandler/grid/grid.service";
 import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-map-handler.service";
 
 @Component({
