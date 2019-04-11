@@ -16,7 +16,6 @@ import { CityGridThreeService } from "./cityio-grid-three/city-grid-three.servic
 export class CityioService {
   // cityIOgridMaker: any = new CityioGridMapboxService();
   CityGridThreeService: any = new CityGridThreeService();
-  cityiodata: JSON;
   cityIOTableURL: string;
   cityIOData: any;
   CITYIO_TABLE_URL: string = "https://cityio.media.mit.edu/api/table/";
@@ -39,8 +38,8 @@ export class CityioService {
    */
   getCityIOdata(): Observable<any> {
     return this.http.get(this.cityIOTableURL).pipe(
-      tap(cityIOData => {
-        this.cityIOData = cityIOData;
+      tap(d => {
+        this.cityIOData = d;
       }),
       catchError(this.handleError("getMetadata"))
     );
@@ -66,6 +65,7 @@ export class CityioService {
       // check if this is the first run for grid init
       if (this.cityIOData !== null) {
         console.log("making baseline grid...");
+        this.getCityIOdata();
         // pass cityio data to the init grid maker function at service
         // this.cityIOgridMaker.makeGridFromCityIO(this.cityiodata);
         // this.CityGridThreeService.makeGridFromCityIO(this.cityiodata);
