@@ -7,9 +7,11 @@ import { BasemapComponent } from "./basemap/basemap.component";
 
 import { CityioService } from "./basemap/cityio/cityio.service";
 import { ModuleDataToMapHandler } from "./basemap/moduleDataToMapHandler/module-data-to-map-handler.service";
+import { HomeComponent } from './home/home.component';
+import { RadarChartComponent } from './radar-chart/radar-chart.component';
 
 @NgModule({
-  declarations: [AppComponent, BasemapComponent],
+  declarations: [AppComponent, BasemapComponent, HomeComponent, RadarChartComponent],
   imports: [BrowserModule, HttpClientModule, AppRoutingModule],
   providers: [HttpClientModule, CityioService, ModuleDataToMapHandler],
   bootstrap: [AppComponent]
