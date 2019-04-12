@@ -1,5 +1,18 @@
 @import "../node_modules/mapbox-gl/dist/mapbox-gl.css";
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P|Roboto+Condensed");
+
 body {
   margin: 0px;
   padding: 0px;
+  font-family:Roboto Condensed;
+}
+
+.map-control-element {
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  font-size: 12px;
+  line-height: 1vw;
+  cursor: pointer;
+  padding: 5px 5px 1px 5px;
 }
