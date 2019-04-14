@@ -6,6 +6,7 @@ import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import {ConfigurationService} from "./service/configuration.service";
 import {CsLayer} from "../../typings";
+import {Layer} from "mapbox-gl";
 
 @Component({
   selector: "app-basemap",
@@ -134,9 +135,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   updateMapLayers(event) {
     console.log(event);
     const layers: [object] = this.moduleHandler.getLayers();
-    layers.map(l => function () {
-      this.map.addLayer(l)
-    });
+    layers.map(l => this.map.addLayer(l as Layer));
   }
 
   toggleLayer() {
@@ -145,6 +144,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           this.map.addLayer(layer);
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
         this.map.removeLayer(layer.id);
+        this.map.removeSource(layer.id);
       }
     }
   }
