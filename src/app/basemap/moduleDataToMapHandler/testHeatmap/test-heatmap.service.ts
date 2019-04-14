@@ -43,7 +43,7 @@ export class TestHeatmapService {
 
   getModuleatInterval() {
     setInterval(() => {
-      console.log(this.moduleData);
+      //console.log(this.moduleData);
       return this.getModuleData();
     }, 1000);
   }

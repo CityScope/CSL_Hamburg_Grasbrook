@@ -1,0 +1,60 @@
+{
+  "mapCenter": [
+    10.014390953386766,
+    53.53128461384861
+  ],
+  "mapZoom": 16,
+  "bearing": 34.8,
+  "pitch": 60,
+  "style": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
+  "layers": [
+    {
+      "id": "noisehh",
+      "displayName": "Noise",
+      "metadata": "",
+      "type": "raster",
+      "source": {
+        "type": "raster",
+        "tiles": [
+          "https://geodienste.hamburg.de/HH_WMS_Strassenverkehr?format=image/png&service=WMS&version=1.3.0&STYLES=&bbox={bbox-epsg-3857}&request=GetMap&crs=EPSG:3857&transparent=true&width=512&height=512&layers=strassenverkehr_tag_abend_nacht_2017"
+        ],
+        "tileSize": 512
+      },
+      "paint": {}
+    },
+    {
+      "id": "testgeojson",
+      "displayName": "ex. geojson - only works at csl =)",
+      "type": "fill",
+      "source": {
+        "type": "geojson",
+        "data": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6&outputFormat=application/json&srsname=EPSG:4326"
+      },
+      "paint": {
+        "fill-color": {
+          "property": "1bis6",
+          "stops": [
+            [
+              10,
+              "#FF7F7F"
+            ],
+            [
+              50,
+              "#E23D28"
+            ],
+            [
+              100,
+              "#FF0000"
+            ],
+            [
+              300,
+              "#960018"
+            ]
+          ]
+        },
+        "fill-opacity": 0.5
+      }
+    }
+  ]
+}
+
