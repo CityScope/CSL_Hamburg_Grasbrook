@@ -10,7 +10,7 @@ export class CityGridThreeService {
 
   constructor() {}
 
-  makeGridFromCityIO(cityiodata: any): any {
+  makeGridFromCityIO(cityiodata: any): mapboxgl.Layer {
     // parameters to ensure the model is georeferenced correctly on the map
     var modelOrigin = [
       cityiodata.header.spatial.latitude,
@@ -26,25 +26,25 @@ export class CityGridThreeService {
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     // mapboxgl.MercatorCoordinate doesnt work for me
-    var modelTransform = {};
-    // var modelTransform = {
-    //   translateX: mapboxgl.MercatorCoordinate.fromLngLat(
-    //     modelOrigin,
-    //     modelAltitude
-    //   ).x,
-    //   translateY: mapboxgl.MercatorCoordinate.fromLngLat(
-    //     modelOrigin,
-    //     modelAltitude
-    //   ).y,
-    //   translateZ: mapboxgl.MercatorCoordinate.fromLngLat(
-    //     modelOrigin,
-    //     modelAltitude
-    //   ).z,
-    //   rotateX: modelRotate[0],
-    //   rotateY: modelRotate[1],
-    //   rotateZ: modelRotate[2],
-    //   scale: modelScale
-    // };
+
+    var modelTransform = {
+      translateX: mapboxgl.MercatorCoordinate.fromLngLat(
+        modelOrigin,
+        modelAltitude
+      ).x,
+      translateY: mapboxgl.MercatorCoordinate.fromLngLat(
+        modelOrigin,
+        modelAltitude
+      ).y,
+      translateZ: mapboxgl.MercatorCoordinate.fromLngLat(
+        modelOrigin,
+        modelAltitude
+      ).z,
+      rotateX: modelRotate[0],
+      rotateY: modelRotate[1],
+      rotateZ: modelRotate[2],
+      scale: modelScale
+    };
 
     let cityIOgrid = this.makeThreeScene(cityiodata);
     let mapboxCityIOGridLayer = this.makeMapboxLayerOfThreeScene(
