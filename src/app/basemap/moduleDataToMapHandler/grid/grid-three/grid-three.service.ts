@@ -10,7 +10,7 @@ export class CityGridThreeService {
 
   constructor() {}
 
-  makeGridFromCityIO(cityiodata: any): mapboxgl.Layer {
+  makeGridFromCityIO(cityiodata: any): any {
     // parameters to ensure the model is georeferenced correctly on the map
     var modelOrigin = [
       cityiodata.header.spatial.latitude,
