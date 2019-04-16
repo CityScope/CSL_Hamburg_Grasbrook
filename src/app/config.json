@@ -11,6 +11,8 @@
     {
       "id": "noisehh",
       "displayName": "Noise",
+      "hasReloadInterval" : true,
+      "showInLayerList" : true,
       "metadata": "",
       "type": "raster",
       "source": {
@@ -25,6 +27,7 @@
     {
       "id": "testgeojson",
       "displayName": "ex. geojson - only works at csl =)",
+      "showInLayerList" : true,
       "type": "fill",
       "source": {
         "type": "geojson",

@@ -26,25 +26,25 @@ export class CityGridThreeService {
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     // mapboxgl.MercatorCoordinate doesnt work for me
-
-    var modelTransform = {
-      translateX: mapboxgl.MercatorCoordinate.fromLngLat(
-        modelOrigin,
-        modelAltitude
-      ).x,
-      translateY: mapboxgl.MercatorCoordinate.fromLngLat(
-        modelOrigin,
-        modelAltitude
-      ).y,
-      translateZ: mapboxgl.MercatorCoordinate.fromLngLat(
-        modelOrigin,
-        modelAltitude
-      ).z,
-      rotateX: modelRotate[0],
-      rotateY: modelRotate[1],
-      rotateZ: modelRotate[2],
-      scale: modelScale
-    };
+    var modelTransform = {};
+    // var modelTransform = {
+    //   translateX: mapboxgl.MercatorCoordinate.fromLngLat(
+    //     modelOrigin,
+    //     modelAltitude
+    //   ).x,
+    //   translateY: mapboxgl.MercatorCoordinate.fromLngLat(
+    //     modelOrigin,
+    //     modelAltitude
+    //   ).y,
+    //   translateZ: mapboxgl.MercatorCoordinate.fromLngLat(
+    //     modelOrigin,
+    //     modelAltitude
+    //   ).z,
+    //   rotateX: modelRotate[0],
+    //   rotateY: modelRotate[1],
+    //   rotateZ: modelRotate[2],
+    //   scale: modelScale
+    // };
 
     let cityIOgrid = this.makeThreeScene(cityiodata);
     let mapboxCityIOGridLayer = this.makeMapboxLayerOfThreeScene(

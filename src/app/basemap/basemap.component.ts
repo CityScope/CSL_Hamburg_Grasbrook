@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, OnInit} from "@angular/core";
+import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
 import { CityioService } from "./moduleDataToMapHandler/grid/grid.service";
@@ -18,7 +18,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   style = "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd";
   mapKeyLayer: CsLayer;
   mapKeyVisible: boolean;
-  layers: CsLayer[];
+  layers: CsLayer[] = [];
 
   // Map config
   center: any;
@@ -31,7 +31,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   constructor(
     private cityioService: CityioService,
     private moduleHandler: ModuleDataToMapHandler,
-    private config: ConfigurationService) {
+    private config: ConfigurationService,
+    private zone: NgZone) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -41,7 +42,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.cityioService.getCityIOdata().subscribe(cityIOdata => {
       this.initializeMap(cityIOdata);
     });
-    this.layers = this.config.layers;
   }
 
   ngAfterViewInit() {
@@ -134,8 +134,22 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   updateMapLayers(event) {
     console.log(event);
-    const layers: [object] = this.moduleHandler.getLayers();
-    layers.map(l => this.map.addLayer(l as Layer));
+    const layers: CsLayer[] = this.moduleHandler.getLayers();
+    layers.map(l => this.deployLayers(l));
+  }
+
+  deployLayers(csLayer: CsLayer) {
+    if (csLayer.addOnMapInitialisation) {
+      this.map.addLayer(csLayer);
+    }
+    if (csLayer.hasReloadInterval) {
+      this.performLayerIntervalReload(csLayer);
+    }
+    if (csLayer.showInLayerList) {
+      this.zone.run(() => {
+        this.layers.push(csLayer);
+      });
+    }
   }
 
   toggleLayer() {
@@ -147,6 +161,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.map.removeSource(layer.id);
       }
     }
+  }
+
+  performLayerIntervalReload(csLayer: CsLayer) {
+    // Not tested - I would suggest to do something like this ...
+    window.setInterval(function() {
+      console.log("Reloading layer:" + csLayer.id)
+      //this.map.getSource(csLayer.id).setData(csLayer.reloadUrl);
+    }, 2000);
   }
 
   showMapLegend(layer: CsLayer) {

@@ -9,6 +9,10 @@ import * as mapboxgl from "mapbox-gl";
 declare interface CsLayer extends mapboxgl.Layer {
   visible: boolean;
   displayName: string;
+  addOnMapInitialisation: boolean;
+  showInLayerList: boolean;
+  hasReloadInterval: boolean;
+  reloadUrl: string;
 }
 
 declare interface Config {
