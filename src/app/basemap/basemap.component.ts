@@ -1,12 +1,12 @@
-import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
 import { CityioService } from "./moduleDataToMapHandler/grid/grid.service";
 import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-map-handler.service";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {ConfigurationService} from "./service/configuration.service";
-import {CsLayer} from "../../typings";
-import {Layer} from "mapbox-gl";
+import { ConfigurationService } from "./service/configuration.service";
+import { CsLayer } from "../../typings";
+import { Layer } from "mapbox-gl";
 
 @Component({
   selector: "app-basemap",
@@ -32,7 +32,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private cityioService: CityioService,
     private moduleHandler: ModuleDataToMapHandler,
     private config: ConfigurationService,
-    private zone: NgZone) {
+    private zone: NgZone
+  ) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -44,11 +45,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private initializeMap(cityIOdata) {
-
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
     // this.zoom = cityIOdata.header.###;
     this.zoom = 16;
@@ -63,9 +62,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ];
 
     // Just what I would suggest to center GB - more or less
-    this.center = [
-      10.014390953386766, 53.53128461384861
-    ];
+    this.center = [10.014390953386766, 53.53128461384861];
 
     // add the base map and config
     this.map = new mapboxgl.Map({
@@ -78,37 +75,44 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("load", event => {
-      this.updateMapLayers(event)
+      this.updateMapLayers(event);
     });
 
     this.map.on("error", event => {
       console.log("Map error: " + event);
     });
 
-    this.map.on('drag',  event => {
+    this.map.on("drag", event => {
       console.log("Map move: " + this.map.getBearing());
     });
   }
 
   public mapSettingsListener(menuOutput: Object[]) {
     switch (menuOutput[0]) {
-      case 'resetMap': {
+      case "resetMap": {
         this.resetMapPosition();
         break;
       }
-      case 'csMode': {
+      case "csMode": {
         this.map.setPitch(0);
         if (this.initialExtrusionHeight) {
-          this.map.setPaintProperty('building', 'fill-extrusion-height', this.initialExtrusionHeight);
+          this.map.setPaintProperty(
+            "building",
+            "fill-extrusion-height",
+            this.initialExtrusionHeight
+          );
           this.initialExtrusionHeight = null;
           this.resetMapPosition();
         } else {
-          this.initialExtrusionHeight = this.map.getPaintProperty('building', 'fill-extrusion-height');
-          this.map.setPaintProperty('building', 'fill-extrusion-height', 0);
+          this.initialExtrusionHeight = this.map.getPaintProperty(
+            "building",
+            "fill-extrusion-height"
+          );
+          this.map.setPaintProperty("building", "fill-extrusion-height", 0);
         }
         break;
       }
-      case 'maptasticMode': {
+      case "maptasticMode": {
         this.toggleMaptasticMode();
         break;
       }
@@ -129,8 +133,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
- * Set layer visibility e.g. after interaction with side panels or layer switcher
- */
+   * Set layer visibility e.g. after interaction with side panels or layer switcher
+   */
 
   updateMapLayers(event) {
     console.log(event);
@@ -155,7 +159,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   toggleLayer() {
     for (let layer of this.layers) {
       if (layer.visible && this.map.getLayer(layer.id) == null) {
-          this.map.addLayer(layer);
+        this.map.addLayer(layer);
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
         this.map.removeLayer(layer.id);
         this.map.removeSource(layer.id);
@@ -166,8 +170,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   performLayerIntervalReload(csLayer: CsLayer) {
     // Not tested - I would suggest to do something like this ...
     window.setInterval(function() {
-      console.log("Reloading layer:" + csLayer.id)
-      //this.map.getSource(csLayer.id).setData(csLayer.reloadUrl);
+      console.log("Reloading layer:" + csLayer.id);
+      this.map.getSource(csLayer.id).setData(csLayer.reloadUrl);
     }, 2000);
   }
 

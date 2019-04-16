@@ -28,15 +28,15 @@ export class CityGridThreeService {
     // mapboxgl.MercatorCoordinate doesnt work for me
 
     var modelTransform = {
-      translateX: mapboxgl.MercatorCoordinate.fromLngLat(
+      translateX: (<any>mapboxgl).MercatorCoordinate.fromLngLat(
         modelOrigin,
         modelAltitude
       ).x,
-      translateY: mapboxgl.MercatorCoordinate.fromLngLat(
+      translateY: (<any>mapboxgl).MercatorCoordinate.fromLngLat(
         modelOrigin,
         modelAltitude
       ).y,
-      translateZ: mapboxgl.MercatorCoordinate.fromLngLat(
+      translateZ: (<any>mapboxgl).MercatorCoordinate.fromLngLat(
         modelOrigin,
         modelAltitude
       ).z,
