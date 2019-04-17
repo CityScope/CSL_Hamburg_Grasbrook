@@ -1,10 +1,10 @@
 import { Injectable } from "@angular/core";
-import { CityioService } from "./grid/grid.service";
+import { CityioService } from "./cityio/cityio.service";
 import { TestHeatmapService } from "./testHeatmap/test-heatmap.service";
 @Injectable({
   providedIn: "root"
 })
-export class ModuleDataToMapHandler {
+export class CSModuleHandler {
   constructor(
     private cityio: CityioService,
     private TestHeatmapService: TestHeatmapService

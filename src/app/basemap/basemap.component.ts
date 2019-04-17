@@ -1,8 +1,8 @@
 import {AfterViewInit, Component, OnInit} from "@angular/core";
 import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
-import { CityioService } from "./moduleDataToMapHandler/grid/grid.service";
-import { ModuleDataToMapHandler } from "./moduleDataToMapHandler/module-data-to-map-handler.service";
+import { CityioService } from "./csModuleHandler/cityio/cityio.service";
+import { CSModuleHandler } from "./csModuleHandler/cs-module-handler.service";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import {ConfigurationService} from "./service/configuration.service";
 import {CsLayer} from "../../typings";
@@ -30,7 +30,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   constructor(
     private cityioService: CityioService,
-    private moduleHandler: ModuleDataToMapHandler,
+    private moduleHandler: CSModuleHandler,
     private config: ConfigurationService) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
