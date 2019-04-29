@@ -6,12 +6,27 @@
   "mapZoom": 16,
   "bearing": 34.8,
   "pitch": 60,
-  "style": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
+
+  "gridZoom": 16.3,
+  "gridBearing": 34.8,
+  "gridPitch": 0,
+
+  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
   "layers": [
+    {
+      "id": "drone",
+      "type": "symbol",
+      "source": "drone",
+      "sourceType": "geojson",
+      "hasReloadInterval" : true,
+      "reloadUrl": "https://wanderdrone.appspot.com/",
+      "layout": {
+        "icon-image": "rocket-15"
+      }
+    },
     {
       "id": "noisehh",
       "displayName": "Noise",
-      "hasReloadInterval" : true,
       "showInLayerList" : true,
       "metadata": "",
       "type": "raster",

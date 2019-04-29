@@ -29,4 +29,8 @@ export class MapSettingComponent implements OnInit {
     this.mapSettings.emit(['maptasticMode' , true]);
   }
 
+  fitToGrid() {
+    this.mapSettings.emit(['fitToGrid' , true]);
+  }
+
 }

@@ -11,6 +11,8 @@ declare interface CsLayer extends mapboxgl.Layer {
   displayName: string;
   addOnMapInitialisation: boolean;
   showInLayerList: boolean;
+
+  sourceType: string;
   hasReloadInterval: boolean;
   reloadUrl: string;
 }
@@ -20,6 +22,9 @@ declare interface Config {
   mapZoom: number;
   bearing: number;
   pitch: number;
+  gridZoom: number;
+  gridBearing: number;
+  gridPitch: number;
   style: string,
   layers: CsLayer[];
 }

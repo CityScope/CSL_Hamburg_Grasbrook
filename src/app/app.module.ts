@@ -8,14 +8,13 @@ import { BasemapComponent } from "./basemap/basemap.component";
 
 import { MatIconModule, MatTooltipModule} from '@angular/material';
 
-import { CityioService } from "./basemap/moduleDataToMapHandler/grid/grid.service";
-import { ModuleDataToMapHandler } from "./basemap/moduleDataToMapHandler/module-data-to-map-handler.service";
 import { HomeComponent } from "./home/home.component";
 import { RadarChartComponent } from "./radar-chart/radar-chart.component";
 import { MapSettingComponent } from './basemap/map-controls/map-setting/map-setting.component';
 import { LegendComponent} from "./basemap/map-controls/legend/legend.component";
 import { LayerControlComponent} from "./basemap/map-controls/layer-control/layer-control.component";
-import { ConfigurationService} from "./basemap/service/configuration.service";
+import {ConfigurationService} from "./service/configuration.service";
+import {GridLayerService} from "./service/grid-layer.service";
 
 @NgModule({
   declarations: [
@@ -37,9 +36,8 @@ import { ConfigurationService} from "./basemap/service/configuration.service";
   ],
   providers: [
     HttpClientModule,
-    CityioService,
-    ConfigurationService,
-    ModuleDataToMapHandler
+    GridLayerService,
+    ConfigurationService
   ],
   bootstrap: [
     AppComponent
