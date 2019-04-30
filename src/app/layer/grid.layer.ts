@@ -18,14 +18,18 @@ export class GridLayer {
     ];
 
     let modelAltitude = 0;
-    let modelRotate = [0, 0, (cityiodata.header.spatial.rotation * Math.PI) / 180];
+    let modelRotate = [
+      0,
+      0,
+      (cityiodata.header.spatial.rotation * Math.PI) / 180
+    ];
     let modelScale = 5.41843220338983e-8;
-    console.log(modelRotate)
+    console.log(modelRotate);
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     // mapboxgl.MercatorCoordinate doesnt work for me
 
-    let modelTransform = {
+    var modelTransform = {
       translateX: (<any>mapboxgl).MercatorCoordinate.fromLngLat(
         modelOrigin,
         modelAltitude
@@ -122,7 +126,7 @@ export class GridLayer {
      * makes the initial 3js grid of meshes and texts
      * @param sizeX, sizeY of grid
      */
-      //  build threejs initial grid on load
+    //  build threejs initial grid on load
     let grid_columns = cityiodata.header.spatial.ncols;
     let grid_rows = cityiodata.header.spatial.nrows;
     //get table dims
