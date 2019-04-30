@@ -9,6 +9,12 @@ import * as mapboxgl from "mapbox-gl";
 declare interface CsLayer extends mapboxgl.Layer {
   visible: boolean;
   displayName: string;
+  addOnMapInitialisation: boolean;
+  showInLayerList: boolean;
+
+  sourceType: string;
+  hasReloadInterval: boolean;
+  reloadUrl: string;
 }
 
 declare interface Config {
@@ -16,6 +22,9 @@ declare interface Config {
   mapZoom: number;
   bearing: number;
   pitch: number;
+  gridZoom: number;
+  gridBearing: number;
+  gridPitch: number;
   style: string,
   layers: CsLayer[];
 }

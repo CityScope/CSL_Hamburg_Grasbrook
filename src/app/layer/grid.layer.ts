@@ -5,24 +5,26 @@ import * as mapboxgl from "mapbox-gl";
 @Injectable({
   providedIn: "root"
 })
-export class CityGridThreeService {
+export class GridLayer {
   cityIOData: any;
 
   constructor() {}
 
   makeGridFromCityIO(cityiodata: any): any {
     // parameters to ensure the model is georeferenced correctly on the map
-    var modelOrigin = [
+    let modelOrigin = [
       cityiodata.header.spatial.latitude,
       cityiodata.header.spatial.longitude
     ];
-    var modelAltitude = 0;
-    var modelRotate = [
+
+    let modelAltitude = 0;
+    let modelRotate = [
       0,
       0,
       (cityiodata.header.spatial.rotation * Math.PI) / 180
     ];
-    var modelScale = 5.41843220338983e-8;
+    let modelScale = 5.41843220338983e-8;
+    console.log(modelRotate);
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     // mapboxgl.MercatorCoordinate doesnt work for me
@@ -63,10 +65,10 @@ export class CityGridThreeService {
         this.camera = new THREE.Camera();
         this.scene = new THREE.Scene();
         // create two three.js lights to illuminate the model
-        var directionalLight = new THREE.DirectionalLight(0xffffff);
+        let directionalLight = new THREE.DirectionalLight(0xffffff);
         directionalLight.position.set(0, -70, 100).normalize();
         this.scene.add(directionalLight);
-        var directionalLight2 = new THREE.DirectionalLight(0xffffff);
+        let directionalLight2 = new THREE.DirectionalLight(0xffffff);
         directionalLight2.position.set(0, 70, 100).normalize();
         this.scene.add(directionalLight2);
         this.scene.add(cityIOgrid);
@@ -79,20 +81,20 @@ export class CityGridThreeService {
         this.renderer.autoClear = false;
       },
       render: function(gl, matrix) {
-        var rotationX = new THREE.Matrix4().makeRotationAxis(
+        let rotationX = new THREE.Matrix4().makeRotationAxis(
           new THREE.Vector3(1, 0, 0),
           modelTransform.rotateX
         );
-        var rotationY = new THREE.Matrix4().makeRotationAxis(
+        let rotationY = new THREE.Matrix4().makeRotationAxis(
           new THREE.Vector3(0, 1, 0),
           modelTransform.rotateY
         );
-        var rotationZ = new THREE.Matrix4().makeRotationAxis(
+        let rotationZ = new THREE.Matrix4().makeRotationAxis(
           new THREE.Vector3(0, 0, 1),
           modelTransform.rotateZ
         );
-        var m = new THREE.Matrix4().fromArray(matrix);
-        var l = new THREE.Matrix4()
+        let m = new THREE.Matrix4().fromArray(matrix);
+        let l = new THREE.Matrix4()
           .makeTranslation(
             modelTransform.translateX,
             modelTransform.translateY,
@@ -125,19 +127,19 @@ export class CityGridThreeService {
      * @param sizeX, sizeY of grid
      */
     //  build threejs initial grid on load
-    var grid_columns = cityiodata.header.spatial.ncols;
-    var grid_rows = cityiodata.header.spatial.nrows;
+    let grid_columns = cityiodata.header.spatial.ncols;
+    let grid_rows = cityiodata.header.spatial.nrows;
     //get table dims
-    var cell_size_in_meters = cityiodata.header.spatial.cellSize;
-    var cell_rescale_precentage = 0.75;
-    var this_mesh = null;
-    var three_grid_group = new THREE.Object3D();
-    var geometry = null;
-    var material = null;
+    let cell_size_in_meters = cityiodata.header.spatial.cellSize;
+    let cell_rescale_precentage = 0.75;
+    let this_mesh = null;
+    let three_grid_group = new THREE.Object3D();
+    let geometry = null;
+    let material = null;
 
     //loop through grid rows and cols and create the grid
-    for (var this_row = 0; this_row < grid_rows; this_row++) {
-      for (var this_column = 0; this_column < grid_columns; this_column++) {
+    for (let this_row = 0; this_row < grid_rows; this_row++) {
+      for (let this_column = 0; this_column < grid_columns; this_column++) {
         geometry = new THREE.BoxBufferGeometry(
           cell_size_in_meters * cell_rescale_precentage,
           cell_size_in_meters * cell_rescale_precentage,

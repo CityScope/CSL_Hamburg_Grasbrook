@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import config from '../../config.json';
-import {CsLayer} from "../../../typings";
+import config from '../config.json';
+import {CsLayer} from "../../typings";
 
 @Injectable()
 export class ConfigurationService {
@@ -9,7 +9,12 @@ export class ConfigurationService {
   mapZoom: number;
   bearing: number;
   pitch: number;
-  style: string;
+
+  gridZoom: number;
+  gridBearing: number;
+  gridPitch: number;
+
+  mapStyle: string;
 
   layers: CsLayer[];
 
