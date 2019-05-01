@@ -1,14 +1,21 @@
-import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
-import {environment} from "../../environments/environment";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
+import { environment } from "../../environments/environment";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {CsLayer} from "../../typings";
-import {AnySourceData, Layer, LngLat, LngLatBounds, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
-import {interval} from 'rxjs';
-import {GeoJSONSource} from "mapbox-gl";
-import {ConfigurationService} from "../service/configuration.service";
-import {GridLayerService} from "../service/grid-layer.service";
-import {LayerLoaderService} from "../service/layer-loader.service";
+import { CsLayer } from "../../typings";
+import {
+  AnySourceData,
+  Layer,
+  LngLat,
+  LngLatBounds,
+  LngLatBoundsLike,
+  LngLatLike
+} from "mapbox-gl";
+import { interval } from "rxjs";
+import { GeoJSONSource } from "mapbox-gl";
+import { ConfigurationService } from "../service/configuration.service";
+import { GridLayerService } from "../service/grid-layer.service";
+import { LayerLoaderService } from "../service/layer-loader.service";
 
 @Component({
   selector: "app-basemap",
@@ -22,6 +29,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
 
+  // export mouse pos for THREE
+  mousePosition: any;
+
   // Map config
   center: any;
   zoom: number;
@@ -30,10 +40,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   initialExtrusionHeight: any = null;
 
-  constructor(private gridLayerService: GridLayerService,
-              private layerLoader: LayerLoaderService,
-              private config: ConfigurationService,
-              private zone: NgZone) {
+  constructor(
+    private gridLayerService: GridLayerService,
+    private layerLoader: LayerLoaderService,
+    private config: ConfigurationService,
+    private zone: NgZone
+  ) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -45,8 +57,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private initializeMap(cityIOdata) {
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
@@ -81,7 +92,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("mousedown", event => {
-      console.log(event)
+      this.mousePosition = event.point;
+      console.log(this.mousePosition);
     });
 
     this.map.on("error", event => {
@@ -149,7 +161,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     console.log('data reload')
     this.map.getSource('drone').setData(csLayer.reloadUrl );
      **/
-  }
+  };
 
   showMapLegend(layer: CsLayer) {
     // Activate the potential legend for the layer
@@ -160,26 +172,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   zoomToBounds() {
     const coordinates: LngLatBoundsLike = [
       [10.007443106532065, 53.536988036579146],
-      [10.017010433937628, 53.527408296213764],
+      [10.017010433937628, 53.527408296213764]
     ];
     const topLeft: LngLatLike = coordinates[0];
     const bottomRight: LngLatLike = coordinates[1];
 
-    const bounds = coordinates.reduce(
-      function (bounds, coord) {
-        return bounds.extend(LngLat.convert(coord));
-      },
-      new mapboxgl.LngLatBounds(topLeft, bottomRight));
+    const bounds = coordinates.reduce(function(bounds, coord) {
+      return bounds.extend(LngLat.convert(coord));
+    }, new mapboxgl.LngLatBounds(topLeft, bottomRight));
 
     this.map.fitBounds(bounds, {
-      padding: 0, bearing: this.config.gridBearing, zoom: this.config.gridZoom, pitch: this.config.gridPitch
+      padding: 0,
+      bearing: this.config.gridBearing,
+      zoom: this.config.gridZoom,
+      pitch: this.config.gridPitch
     });
   }
 
-
   /*
-  *   Listen to the map menu
-  */
+   *   Listen to the map menu
+   */
 
   public mapSettingsListener(menuOutput: Object[]) {
     switch (menuOutput[0]) {

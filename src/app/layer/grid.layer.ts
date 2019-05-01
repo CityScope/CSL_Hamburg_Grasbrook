@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable, HostListener } from "@angular/core";
 import * as THREE from "THREE";
 import * as mapboxgl from "mapbox-gl";
 
@@ -24,7 +24,6 @@ export class GridLayer {
       (cityiodata.header.spatial.rotation * Math.PI) / 180
     ];
     let modelScale = 5.41843220338983e-8;
-    console.log(modelRotate);
 
     // transformation parameters to position, rotate and scale the 3D model onto the map
     // mapboxgl.MercatorCoordinate doesnt work for me
@@ -57,12 +56,17 @@ export class GridLayer {
   }
 
   makeMapboxLayerOfThreeScene(cityIOgrid: any, modelTransform: any): any {
+    // Mouse on THREE
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+
     return {
       id: "3d-model",
       type: "custom",
       renderingMode: "3d",
       onAdd: function(map, gl) {
-        this.camera = new THREE.Camera();
+        // THREE.PerspectiveCamera fixes to allow interaction
+        this.camera = new THREE.PerspectiveCamera();
         this.scene = new THREE.Scene();
         // create two three.js lights to illuminate the model
         let directionalLight = new THREE.DirectionalLight(0xffffff);
@@ -81,6 +85,17 @@ export class GridLayer {
         this.renderer.autoClear = false;
       },
       render: function(gl, matrix) {
+        //
+
+        raycaster.setFromCamera(mouse, this.camera);
+
+        // calculate objects intersecting the picking ray
+        var intersects = raycaster.intersectObjects(this.scene.children);
+        if (intersects.length > 0) {
+          //@ts-ignore
+          intersects[0].object.material.color.set(0xff0000);
+        }
+
         let rotationX = new THREE.Matrix4().makeRotationAxis(
           new THREE.Vector3(1, 0, 0),
           modelTransform.rotateX

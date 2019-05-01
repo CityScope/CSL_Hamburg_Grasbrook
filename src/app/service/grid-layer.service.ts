@@ -1,35 +1,31 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 import { Observable, of } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { catchError, tap } from "rxjs/operators";
-import {GridLayer} from "../layer/grid.layer";
+import { GridLayer } from "../layer/grid.layer";
 
 @Injectable({
   providedIn: "root"
 })
 export class GridLayerService {
-
   cityIOData: any;
   //TODO: should this come from cityio?
+  CITYIO_TABLE_URL: string = "https://cityio.media.mit.edu/api/table/";
   DEFAULT_TABLE_NAME: string = "grasbrook";
 
-
-  constructor(private http: HttpClient,
-              private gridLayer: GridLayer) {
-  }
+  constructor(private http: HttpClient, private gridLayer: GridLayer) {}
 
   getGridLayer() {
     return this.gridLayer.makeGridFromCityIO(this.cityIOData);
   }
 
   getTableURL(): string {
-    // return 'http://localhost:4200/assets/mock-grid-data.json';
     console.log("using cityIO table: ", this.DEFAULT_TABLE_NAME);
     // demo table for now
-    return "./assets/cityIO_demo.json";
-    // this.CITYIO_TABLE_URL + this.DEFAULT_TABLE_NAME;
-  }
+    return this.CITYIO_TABLE_URL + this.DEFAULT_TABLE_NAME;
 
+    // "./assets/cityIO_demo.json";
+  }
 
   /**
    * Gets cityIO data from server or fallback local file
@@ -42,7 +38,6 @@ export class GridLayerService {
       catchError(this.handleError("getMetadata"))
     );
   }
-
 
   /**
    * Handle Http operation that failed.
@@ -57,5 +52,4 @@ export class GridLayerService {
       return of(result as T);
     };
   }
-
 }
