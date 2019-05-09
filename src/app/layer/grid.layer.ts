@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "THREE";
 import * as mapboxgl from "mapbox-gl";
+import {CityioService} from "../service/cityio.service";
 
 @Injectable({
   providedIn: "root"
@@ -8,7 +9,15 @@ import * as mapboxgl from "mapbox-gl";
 export class GridLayer {
   cityIOData: any;
 
-  constructor() {}
+  constructor(private cityIOService: CityioService) {
+    this.subscribeToMapClick();
+  }
+
+  subscribeToMapClick() {
+    this.cityIOService.mapPosition.subscribe((data) => {
+      console.log('Now trigger your THREE ray trace event that triggers cell editing: ', data);
+    });
+  }
 
   makeGridFromCityIO(cityiodata: any): any {
     // parameters to ensure the model is georeferenced correctly on the map
