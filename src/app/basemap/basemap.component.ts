@@ -9,6 +9,7 @@ import {GeoJSONSource} from "mapbox-gl";
 import {ConfigurationService} from "../service/configuration.service";
 import {GridLayerService} from "../service/grid-layer.service";
 import {LayerLoaderService} from "../service/layer-loader.service";
+import {CityioService} from "../service/cityio.service";
 
 @Component({
   selector: "app-basemap",
@@ -31,6 +32,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   initialExtrusionHeight: any = null;
 
   constructor(private gridLayerService: GridLayerService,
+              private cityIOService: CityioService,
               private layerLoader: LayerLoaderService,
               private config: ConfigurationService,
               private zone: NgZone) {
@@ -81,7 +83,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("mousedown", event => {
-      console.log(event)
+      this.cityIOService.mapPosition.next(event.point);
     });
 
     this.map.on("error", event => {
@@ -113,7 +115,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   deployLayers(csLayer: CsLayer) {
-    if (csLayer.addOnMapInitialisation) {
+    if (csLayer.addOnMapInitialisation || csLayer.hasReloadInterval) {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
     }
