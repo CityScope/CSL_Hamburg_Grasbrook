@@ -14,15 +14,19 @@
   "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
   "layers": [
     {
-      "id": "drone",
-      "type": "symbol",
-      "source": "drone",
-      "sourceType": "geojson",
+      "id": "abmhh",
+      "type": "circle",
+      "displayName": "ABM Hamburg",
       "hasReloadInterval" : true,
-      "reloadUrl": "https://wanderdrone.appspot.com/",
-      "layout": {
-        "icon-image": "rocket-15"
-      }
+      "source": {
+        "type": "geojson",
+        "data" : "https://cityio.media.mit.edu/api/table/abm_service_Hamburg"
+      },
+      "paint": {
+        "circle-color": "#D4AF37"
+      },
+      "showInLayerList" : true,
+      "addOnMapInitialisation" : true
     },
     {
       "id": "noisehh",
@@ -38,40 +42,6 @@
         "tileSize": 512
       },
       "paint": {}
-    },
-    {
-      "id": "testgeojson",
-      "displayName": "ex. geojson - only works at csl =)",
-      "showInLayerList" : true,
-      "type": "fill",
-      "source": {
-        "type": "geojson",
-        "data": "http://csl.local.hcuhh.de:8080/geoserver/csl/wms?service=WFS&version=1.1.0&request=GetFeature&typeName=csl:einwohner_0bis6&outputFormat=application/json&srsname=EPSG:4326"
-      },
-      "paint": {
-        "fill-color": {
-          "property": "1bis6",
-          "stops": [
-            [
-              10,
-              "#FF7F7F"
-            ],
-            [
-              50,
-              "#E23D28"
-            ],
-            [
-              100,
-              "#FF0000"
-            ],
-            [
-              300,
-              "#960018"
-            ]
-          ]
-        },
-        "fill-opacity": 0.5
-      }
     }
   ]
 }

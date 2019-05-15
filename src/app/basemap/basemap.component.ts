@@ -22,6 +22,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyLayer: CsLayer;
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
+  intervalMap = {};
 
   // Map config
   center: any;
@@ -91,19 +92,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
   }
 
-  resetMapPosition() {
-    this.map.setZoom(this.zoom);
-    this.map.setCenter(this.center);
-    this.map.setBearing(this.bearing);
-    if (!this.initialExtrusionHeight) {
-      this.map.setPitch(this.pitch);
-    }
-  }
-
-  toggleMaptasticMode() {
-    Maptastic("basemap");
-  }
-
   /*
    * Set layer visibility e.g. after interaction with side panels or layer switcher
    */
@@ -115,18 +103,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   deployLayers(csLayer: CsLayer) {
-    if (csLayer.addOnMapInitialisation || csLayer.hasReloadInterval) {
+    if (csLayer.hasReloadInterval) {
+      this.toggleIntervalLayer(csLayer, csLayer.addOnMapInitialisation);
+    } else if (csLayer.addOnMapInitialisation) {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
-    }
-    if (csLayer.hasReloadInterval) {
-      /**
-      this.map.addSource(csLayer.id, { type: 'geojson', data: csLayer.reloadUrl });
-      this.map.addLayer(csLayer);
-      interval(2000).subscribe(n =>
-        this.resetDataUrl(csLayer)
-      );
-       **/
     }
     if (csLayer.showInLayerList) {
       this.zone.run(() => {
@@ -138,7 +119,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   toggleLayer() {
     for (let layer of this.layers) {
       if (layer.visible && this.map.getLayer(layer.id) == null) {
-        this.map.addLayer(layer);
+        if (layer.hasReloadInterval) {
+          this.toggleIntervalLayer(layer, true);
+        } else {
+          this.map.addLayer(layer);
+        }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
         this.map.removeLayer(layer.id);
         this.map.removeSource(layer.id);
@@ -146,11 +131,24 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
   }
 
+  private toggleIntervalLayer(csLayer: CsLayer, isShowLayer: boolean) {
+    if (isShowLayer) {
+      this.map.addLayer(csLayer);
+      const layerInterval = interval(2000).subscribe(n =>
+        this.resetDataUrl(csLayer)
+      );
+      this.intervalMap[csLayer.id] = layerInterval;
+      csLayer.visible = true;
+    } else {
+      if (this.intervalMap.hasOwnProperty(csLayer.id)) {
+        clearInterval(this.intervalMap[csLayer.id]);
+      }
+    }
+  }
+
   resetDataUrl = (csLayer: CsLayer) => {
-    /**
-    console.log('data reload')
-    this.map.getSource('drone').setData(csLayer.reloadUrl );
-     **/
+    console.log('data reload');
+    (this.map.getSource(csLayer.id) as GeoJSONSource).setData(csLayer['source']['data']);
   }
 
   showMapLegend(layer: CsLayer) {
@@ -159,28 +157,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // this.mapKeyVisible = true;
   }
 
-  zoomToBounds() {
-    const coordinates: LngLatBoundsLike = [
-      [10.007443106532065, 53.536988036579146],
-      [10.017010433937628, 53.527408296213764],
-    ];
-    const topLeft: LngLatLike = coordinates[0];
-    const bottomRight: LngLatLike = coordinates[1];
-
-    const bounds = coordinates.reduce(
-      function (bounds, coord) {
-        return bounds.extend(LngLat.convert(coord));
-      },
-      new mapboxgl.LngLatBounds(topLeft, bottomRight));
-
-    this.map.fitBounds(bounds, {
-      padding: 0, bearing: this.config.gridBearing, zoom: this.config.gridZoom, pitch: this.config.gridPitch
-    });
-  }
-
-
   /*
-  *   Listen to the map menu
+  *   Map menu logic
   */
 
   public mapSettingsListener(menuOutput: Object[]) {
@@ -218,4 +196,37 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       }
     }
   }
+
+  zoomToBounds() {
+    const coordinates: LngLatBoundsLike = [
+      [10.007443106532065, 53.536988036579146],
+      [10.017010433937628, 53.527408296213764],
+    ];
+    const topLeft: LngLatLike = coordinates[0];
+    const bottomRight: LngLatLike = coordinates[1];
+
+    const bounds = coordinates.reduce(
+      function (bounds, coord) {
+        return bounds.extend(LngLat.convert(coord));
+      },
+      new mapboxgl.LngLatBounds(topLeft, bottomRight));
+
+    this.map.fitBounds(bounds, {
+      padding: 0, bearing: this.config.gridBearing, zoom: this.config.gridZoom, pitch: this.config.gridPitch
+    });
+  }
+
+  resetMapPosition() {
+    this.map.setZoom(this.zoom);
+    this.map.setCenter(this.center);
+    this.map.setBearing(this.bearing);
+    if (!this.initialExtrusionHeight) {
+      this.map.setPitch(this.pitch);
+    }
+  }
+
+  toggleMaptasticMode() {
+    Maptastic("basemap");
+  }
+
 }
