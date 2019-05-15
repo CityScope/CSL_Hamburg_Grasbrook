@@ -4,12 +4,10 @@ import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import {CsLayer} from "../../typings";
 import {AnySourceData, Layer, LngLat, LngLatBounds, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
-import {interval} from 'rxjs';
 import {GeoJSONSource} from "mapbox-gl";
 import {ConfigurationService} from "../service/configuration.service";
-import {GridLayerService} from "../service/grid-layer.service";
 import {LayerLoaderService} from "../service/layer-loader.service";
-import {CityioService} from "../service/cityio.service";
+import {CityIOService} from "../service/cityio.service";
 
 @Component({
   selector: "app-basemap",
@@ -31,8 +29,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   initialExtrusionHeight: any = null;
 
-  constructor(private gridLayerService: GridLayerService,
-              private cityIOService: CityioService,
+  constructor(private cityio: CityIOService,
               private layerLoader: LayerLoaderService,
               private config: ConfigurationService,
               private zone: NgZone) {
@@ -42,9 +39,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.gridLayerService.getCityIOdata().subscribe(cityIOdata => {
-      this.initializeMap(cityIOdata);
-    });
+      if(this.cityio.table_data == null) {
+          this.cityio.fetchCityIOdata().subscribe(data => {
+              this.initializeMap(data);
+          });
+      } else {
+          this.initializeMap(this.cityio.table_data);
+      }
   }
 
   ngAfterViewInit() {
@@ -83,7 +84,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("mousedown", event => {
-      this.cityIOService.mapPosition.next(event.point);
+      this.cityio.mapPosition.next(event.point);
     });
 
     this.map.on("error", event => {
@@ -182,7 +183,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   /*
   *   Listen to the map menu
   */
-
   public mapSettingsListener(menuOutput: Object[]) {
     switch (menuOutput[0]) {
       case "resetMap": {

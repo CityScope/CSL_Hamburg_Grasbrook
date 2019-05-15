@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import * as THREE from "THREE";
 import * as mapboxgl from "mapbox-gl";
-import {CityioService} from "../service/cityio.service";
+import {CityIOService} from "../service/cityio.service";
 
 @Injectable({
   providedIn: "root"
@@ -9,28 +9,30 @@ import {CityioService} from "../service/cityio.service";
 export class GridLayer {
   cityIOData: any;
 
-  constructor(private cityIOService: CityioService) {
+  constructor(private cityio: CityIOService) {
+      if(this.cityio.table_data == null) {
+          this.cityio.fetchCityIOdata().subscribe(data => {this.cityIOData = data});
+      } else {
+          this.cityIOData = this.cityio.table_data;
+      }
     this.subscribeToMapClick();
   }
 
   subscribeToMapClick() {
-    this.cityIOService.mapPosition.subscribe((data) => {
+    this.cityio.mapPosition.subscribe((data) => {
       console.log('Now trigger your THREE ray trace event that triggers cell editing: ', data);
     });
   }
 
-  makeGridFromCityIO(cityiodata: any): any {
+  makeGridFromCityIO(): any {
     // parameters to ensure the model is georeferenced correctly on the map
-    let modelOrigin = [
-      cityiodata.header.spatial.latitude,
-      cityiodata.header.spatial.longitude
-    ];
-
+    let {latitude, longitude, rotation} = this.cityIOData.header.spatial;
+    let modelOrigin = [latitude, longitude];
     let modelAltitude = 0;
     let modelRotate = [
       0,
       0,
-      (cityiodata.header.spatial.rotation * Math.PI) / 180
+      (rotation * Math.PI) / 180
     ];
     let modelScale = 5.41843220338983e-8;
     console.log(modelRotate);
@@ -57,7 +59,7 @@ export class GridLayer {
       scale: modelScale
     };
 
-    let cityIOgrid = this.makeThreeScene(cityiodata);
+    let cityIOgrid = this.makeThreeScene();
     let mapboxCityIOGridLayer = this.makeMapboxLayerOfThreeScene(
       cityIOgrid,
       modelTransform
@@ -65,7 +67,7 @@ export class GridLayer {
     return mapboxCityIOGridLayer;
   }
 
-  makeMapboxLayerOfThreeScene(cityIOgrid: any, modelTransform: any): any {
+  makeMapboxLayerOfThreeScene(cityIOgrid: [any], modelTransform: any): any {
     return {
       id: "3d-model",
       type: "custom",
@@ -126,20 +128,22 @@ export class GridLayer {
         this.renderer.state.reset();
         this.renderer.render(this.scene, this.camera);
         this.map.triggerRepaint();
-      }
+      },
+      addOnMapInitialisation: true
     };
   }
 
-  makeThreeScene(cityiodata: any): any {
+  makeThreeScene(): any {
     /**
      * makes the initial 3js grid of meshes and texts
      * @param sizeX, sizeY of grid
      */
     //  build threejs initial grid on load
-    let grid_columns = cityiodata.header.spatial.ncols;
-    let grid_rows = cityiodata.header.spatial.nrows;
+    let { ncols, nrows, cellSize} = this.cityIOData.header.spatial;
+    let grid_columns = ncols;
+    let grid_rows = nrows;
     //get table dims
-    let cell_size_in_meters = cityiodata.header.spatial.cellSize;
+    let cell_size_in_meters = cellSize;
     let cell_rescale_precentage = 0.75;
     let this_mesh = null;
     let three_grid_group = new THREE.Object3D();

@@ -1,7 +1,7 @@
-import {Injectable} from "@angular/core";
-import {CsLayer} from "../../typings";
-import {GridLayerService} from "./grid-layer.service";
-import {ConfigurationService} from "./configuration.service";
+import { Injectable } from "@angular/core";
+import { CsLayer } from "../../typings";
+import { GridLayer } from '../layer/grid.layer';
+import { ConfigurationService } from "./configuration.service";
 
 @Injectable({
   providedIn: "root"
@@ -9,21 +9,15 @@ import {ConfigurationService} from "./configuration.service";
 export class LayerLoaderService  {
 
   constructor(
-    private cityio: GridLayerService,
+    private gridMaker: GridLayer,
     private config: ConfigurationService) {}
 
   getLayers(): CsLayer[] {
     const layers: CsLayer[] = [];
-
-    const cityioLayer = this.cityio.getGridLayer();
-
-    // TODO: This should maybe come from cityIo or be configured by default
-    cityioLayer.addOnMapInitialisation = true;
-
+    const cityioLayer = this.gridMaker.makeGridFromCityIO();
     layers.push(cityioLayer);
     Array.prototype.push.apply(layers, this.config.layers);
 
     return layers;
   }
-
 }

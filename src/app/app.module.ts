@@ -5,16 +5,14 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { BasemapComponent } from "./basemap/basemap.component";
-
 import { MatIconModule, MatTooltipModule } from '@angular/material';
-
 import { HomeComponent } from "./home/home.component";
 import { RadarChartComponent } from "./radar-chart/radar-chart.component";
 import { MapSettingComponent } from './basemap/map-controls/map-setting/map-setting.component';
 import { LegendComponent } from "./basemap/map-controls/legend/legend.component";
 import { LayerControlComponent } from "./basemap/map-controls/layer-control/layer-control.component";
 import { ConfigurationService } from "./service/configuration.service";
-import { GridLayerService } from "./service/grid-layer.service";
+import { CityIOService } from "./service/cityio.service";
 
 @NgModule({
   declarations: [
@@ -36,13 +34,14 @@ import { GridLayerService } from "./service/grid-layer.service";
   ],
   providers: [
     HttpClientModule,
-    GridLayerService,
+    CityIOService,
     ConfigurationService
   ],
   bootstrap: [
     AppComponent
   ]
 })
+
 export class AppModule implements OnInit {
   ngOnInit() {}
 }
