@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CityioService } from '../service/cityio.service';
+import { CityIOService } from '../service/cityio.service';
 import { interval } from 'rxjs';
 
 @Component({
@@ -12,7 +12,7 @@ export class RadarChartComponent implements OnInit {
   // a component can have its own clock
   update = interval(1000);
 
-  constructor(private cityio: CityioService) { }
+  constructor(private cityio: CityIOService) { }
 
   ngOnInit() {
     this.update.subscribe((n)=>{
