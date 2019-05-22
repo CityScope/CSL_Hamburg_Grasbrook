@@ -1,13 +1,23 @@
-import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
-import {environment} from "../../environments/environment";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
+import { environment } from "../../environments/environment";
+
+import { interval } from "rxjs";
+
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {CsLayer} from "../../typings";
-import {AnySourceData, Layer, LngLat, LngLatBounds, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
-import {GeoJSONSource} from "mapbox-gl";
-import {ConfigurationService} from "../service/configuration.service";
-import {LayerLoaderService} from "../service/layer-loader.service";
-import {CityIOService} from "../service/cityio.service";
+import { CsLayer } from "../../typings";
+import {
+  AnySourceData,
+  Layer,
+  LngLat,
+  LngLatBounds,
+  LngLatBoundsLike,
+  LngLatLike
+} from "mapbox-gl";
+import { GeoJSONSource } from "mapbox-gl";
+import { ConfigurationService } from "../service/configuration.service";
+import { LayerLoaderService } from "../service/layer-loader.service";
+import { CityIOService } from "../service/cityio.service";
 
 @Component({
   selector: "app-basemap",
@@ -30,27 +40,28 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   initialExtrusionHeight: any = null;
 
-  constructor(private cityio: CityIOService,
-              private layerLoader: LayerLoaderService,
-              private config: ConfigurationService,
-              private zone: NgZone) {
+  constructor(
+    private cityio: CityIOService,
+    private layerLoader: LayerLoaderService,
+    private config: ConfigurationService,
+    private zone: NgZone
+  ) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
   }
 
   ngOnInit() {
-      if(this.cityio.table_data == null) {
-          this.cityio.fetchCityIOdata().subscribe(data => {
-              this.initializeMap(data);
-          });
-      } else {
-          this.initializeMap(this.cityio.table_data);
-      }
+    if (this.cityio.table_data == null) {
+      this.cityio.fetchCityIOdata().subscribe(data => {
+        this.initializeMap(data);
+      });
+    } else {
+      this.initializeMap(this.cityio.table_data);
+    }
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private initializeMap(cityIOdata) {
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
@@ -148,9 +159,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   resetDataUrl = (csLayer: CsLayer) => {
-    console.log('data reload');
-    (this.map.getSource(csLayer.id) as GeoJSONSource).setData(csLayer['source']['data']);
-  }
+    console.log("data reload");
+    (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
+      csLayer["source"]["data"]
+    );
+  };
 
   showMapLegend(layer: CsLayer) {
     // Activate the potential legend for the layer
@@ -159,8 +172,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-  *   Map menu logic
-  */
+   *   Map menu logic
+   */
   public mapSettingsListener(menuOutput: Object[]) {
     switch (menuOutput[0]) {
       case "resetMap": {
@@ -200,19 +213,20 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   zoomToBounds() {
     const coordinates: LngLatBoundsLike = [
       [10.007443106532065, 53.536988036579146],
-      [10.017010433937628, 53.527408296213764],
+      [10.017010433937628, 53.527408296213764]
     ];
     const topLeft: LngLatLike = coordinates[0];
     const bottomRight: LngLatLike = coordinates[1];
 
-    const bounds = coordinates.reduce(
-      function (bounds, coord) {
-        return bounds.extend(LngLat.convert(coord));
-      },
-      new mapboxgl.LngLatBounds(topLeft, bottomRight));
+    const bounds = coordinates.reduce(function(bounds, coord) {
+      return bounds.extend(LngLat.convert(coord));
+    }, new mapboxgl.LngLatBounds(topLeft, bottomRight));
 
     this.map.fitBounds(bounds, {
-      padding: 0, bearing: this.config.gridBearing, zoom: this.config.gridZoom, pitch: this.config.gridPitch
+      padding: 0,
+      bearing: this.config.gridBearing,
+      zoom: this.config.gridZoom,
+      pitch: this.config.gridPitch
     });
   }
 
@@ -228,5 +242,4 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   toggleMaptasticMode() {
     Maptastic("basemap");
   }
-
 }
