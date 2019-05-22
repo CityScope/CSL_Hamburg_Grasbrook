@@ -1,8 +1,5 @@
 {
-  "mapCenter": [
-    10.014390953386766,
-    53.53128461384861
-  ],
+  "mapCenter": [10.014390953386766, 53.53128461384861],
   "mapZoom": 16,
   "bearing": 34.8,
   "pitch": 60,
@@ -17,21 +14,22 @@
       "id": "abmhh",
       "type": "circle",
       "displayName": "ABM Hamburg",
-      "hasReloadInterval" : true,
+      "hasReloadInterval": true,
       "source": {
         "type": "geojson",
-        "data" : "https://cityio.media.mit.edu/api/table/abm_service_Hamburg"
+        "data": "https://cityio.media.mit.edu/api/table/abm_service_Hamburg"
       },
       "paint": {
         "circle-color": "#D4AF37"
       },
-      "showInLayerList" : true,
-      "addOnMapInitialisation" : true
+      "showInLayerList": true,
+      "addOnMapInitialisation": true
     },
+
     {
       "id": "noisehh",
       "displayName": "Noise",
-      "showInLayerList" : true,
+      "showInLayerList": true,
       "metadata": "",
       "type": "raster",
       "source": {
@@ -42,7 +40,51 @@
         "tileSize": 512
       },
       "paint": {}
+    },
+    {
+      "id": "test",
+      "displayName": "test",
+      "showInLayerList": true,
+      "metadata": "",
+      "type": "geojson",
+      "data": {
+        "features": [
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [10.011248588562012, 53.535869680557994],
+                  [10.006914138793945, 53.53668584621217],
+                  [10.007944107055664, 53.53163556873303],
+                  [10.014681816101074, 53.53217123277784],
+                  [10.015325546264648, 53.53553810876703],
+                  [10.011248588562012, 53.535869680557994]
+                ]
+              ]
+            }
+          },
+          {
+            "type": "Feature",
+            "properties": {},
+            "geometry": {
+              "type": "Polygon",
+              "coordinates": [
+                [
+                  [10.01901626586914, 53.533115005323005],
+                  [10.011119842529297, 53.51969615469332],
+                  [10.035839080810547, 53.52163526278576],
+                  [10.03326416015625, 53.533115005323005],
+                  [10.01901626586914, 53.533115005323005]
+                ]
+              ]
+            }
+          }
+        ],
+        "type": "FeatureCollection"
+      }
     }
   ]
 }
-
