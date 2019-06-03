@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
 import { environment } from "../../environments/environment";
-
 import { interval } from "rxjs";
-
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
@@ -101,6 +99,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     this.map.on("error", event => {
       console.log("Map error: " + event);
+    });
+
+    this.map.on("click", "test", e => {
+      let selectedFeature = this.map.queryRenderedFeatures(e.point);
+      if (selectedFeature.length > 0) {
+        new mapboxgl.Popup()
+          .setLngLat(e.lngLat)
+          .setHTML(
+            "type: " +
+              selectedFeature[0].properties.type +
+              " id: " +
+              selectedFeature[0].properties.id
+          )
+          .addTo(this.map);
+      }
+    });
+
+    this.map.on("mousemove", "test", e => {
+      var features = this.map.queryRenderedFeatures(e.point);
+      console.log(features[0]);
     });
   }
 

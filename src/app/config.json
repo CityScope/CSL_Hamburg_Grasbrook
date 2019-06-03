@@ -45,6 +45,7 @@
     {
       "id": "test",
       "displayName": "test",
+      "addOnMapInitialisation": true,
       "showInLayerList": true,
       "metadata": "",
       "type": "fill",
