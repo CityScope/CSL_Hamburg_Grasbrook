@@ -1,8 +1,6 @@
 import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
 import { environment } from "../../environments/environment";
-
 import { interval } from "rxjs";
-
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
@@ -10,6 +8,7 @@ import {
   AnySourceData,
   Layer,
   LngLat,
+  MapboxGeoJSONFeature,
   LngLatBounds,
   LngLatBoundsLike,
   LngLatLike
@@ -120,6 +119,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     } else if (csLayer.addOnMapInitialisation) {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
+      // Too static - has to go somewhere
+      if (csLayer.id === 'grid-test') {
+        this.addGridInteraction();
+      }
     }
     if (csLayer.showInLayerList) {
       this.zone.run(() => {
@@ -135,6 +138,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           this.toggleIntervalLayer(layer, true);
         } else {
           this.map.addLayer(layer);
+          // Too static - has to go somewhere
+          if (layer.id === 'grid-test') {
+            this.addGridInteraction();
+          }
         }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
         this.map.removeLayer(layer.id);
@@ -169,6 +176,45 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // Activate the potential legend for the layer
     // this.mapKeyLayer = layer;
     // this.mapKeyVisible = true;
+  }
+
+  /*
+  *   Initiate grid interaction
+  */
+
+  private addGridInteraction() {
+    this.map.on('click', 'grid-test', this.clickOnGrid);
+    this.map.on("mousemove", "grid-test", e => {
+      const features = this.map.queryRenderedFeatures(e.point);
+      console.log(features[0]);
+    });
+  }
+
+  clickOnGrid = (e) => {
+    //Manipulate the clicked feature
+    let clickedFeature = e.features[0];
+    let clickedLayer: GeoJSONSource =  this.map.getSource('grid-test') as GeoJSONSource;
+    let currentSource = clickedLayer['_data'];
+    for (let feature of currentSource["features"]) {
+      if (feature.properties["id"] === clickedFeature.properties["id"]) {
+        if (feature.properties["color"] === "#ff00ff") {
+          feature.properties["color"] = "#008dd5";
+        } else {
+          feature.properties["color"] = "#ff00ff";
+        }
+      }
+    }
+    clickedLayer.setData(currentSource);
+
+    new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(
+        "type: " +
+        clickedFeature.properties.type +
+        " id: " +
+        clickedFeature.properties.id
+      )
+      .addTo(this.map);
   }
 
   /*
