@@ -120,7 +120,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
       // Too static - has to go somewhere
-      if (csLayer.id === 'grid-test') {
+      if (csLayer.id === "grid-test") {
         this.addGridInteraction();
       }
     }
@@ -139,7 +139,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         } else {
           this.map.addLayer(layer);
           // Too static - has to go somewhere
-          if (layer.id === 'grid-test') {
+          if (layer.id === "grid-test") {
             this.addGridInteraction();
           }
         }
@@ -179,22 +179,27 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-  *   Initiate grid interaction
-  */
+   *   Initiate grid interaction
+   */
 
   private addGridInteraction() {
-    this.map.on('click', 'grid-test', this.clickOnGrid);
+    this.map.on("click", "grid-test", this.clickOnGrid);
     this.map.on("mousemove", "grid-test", e => {
       const features = this.map.queryRenderedFeatures(e.point);
       console.log(features[0]);
     });
   }
 
-  clickOnGrid = (e) => {
+  clickOnGrid = e => {
     //Manipulate the clicked feature
+
     let clickedFeature = e.features[0];
-    let clickedLayer: GeoJSONSource =  this.map.getSource('grid-test') as GeoJSONSource;
-    let currentSource = clickedLayer['_data'];
+    console.log(clickedFeature);
+
+    let clickedLayer: GeoJSONSource = this.map.getSource(
+      "grid-test"
+    ) as GeoJSONSource;
+    let currentSource = clickedLayer["_data"];
     for (let feature of currentSource["features"]) {
       if (feature.properties["id"] === clickedFeature.properties["id"]) {
         if (feature.properties["color"] === "#ff00ff") {
@@ -209,13 +214,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     new mapboxgl.Popup()
       .setLngLat(e.lngLat)
       .setHTML(
-        "type: " +
-        clickedFeature.properties.type +
-        " id: " +
-        clickedFeature.properties.id
+        "<h3> Cell details </h3>" +
+          "type: " +
+          clickedFeature.properties.type +
+          " id: " +
+          clickedFeature.properties.id
       )
       .addTo(this.map);
-  }
+  };
 
   /*
    *   Map menu logic
