@@ -14,9 +14,9 @@ import {
   LngLatLike
 } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
-import { ConfigurationService } from "../service/configuration.service";
-import { LayerLoaderService } from "../service/layer-loader.service";
-import { CityIOService } from "../service/cityio.service";
+import { ConfigurationService } from "../services/configuration.service";
+import { LayerLoaderService } from "../services/layer-loader.service";
+import { CityIOService } from "../services/cityio.service";
 
 @Component({
   selector: "app-basemap",

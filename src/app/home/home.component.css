@@ -9,3 +9,10 @@ h1 {
 .menu a {
   color: black;
 }
+
+.loginout {
+  font-size: 2vw;
+}
+.logout {
+  cursor: pointer;
+}

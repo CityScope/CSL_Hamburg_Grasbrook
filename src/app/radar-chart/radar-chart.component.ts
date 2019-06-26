@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { CityIOService } from "../service/cityio.service";
+import { CityIOService } from "../services/cityio.service";
 import { interval } from "rxjs";
 
 @Component({
