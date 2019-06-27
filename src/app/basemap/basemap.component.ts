@@ -21,7 +21,7 @@ import { CityIOService } from "../services/cityio.service";
 @Component({
   selector: "app-basemap",
   templateUrl: "./basemap.component.html",
-  styleUrls: ["./basemap.component.css"]
+  styleUrls: ["./basemap.component.scss"]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
   map: mapboxgl.Map;

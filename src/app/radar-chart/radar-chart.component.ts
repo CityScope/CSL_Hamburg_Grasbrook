@@ -5,7 +5,7 @@ import { interval } from "rxjs";
 @Component({
   selector: "app-radar-chart",
   templateUrl: "./radar-chart.component.html",
-  styleUrls: ["./radar-chart.component.css"]
+  styleUrls: ["./radar-chart.component.scss"]
 })
 export class RadarChartComponent implements OnInit {
   // a component can have its own clock

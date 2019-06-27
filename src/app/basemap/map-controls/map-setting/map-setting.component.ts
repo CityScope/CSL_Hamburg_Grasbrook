@@ -3,7 +3,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 @Component({
   selector: 'app-map-setting',
   templateUrl: './map-setting.component.html',
-  styleUrls: ['./map-setting.component.css']
+  styleUrls: ['./map-setting.component.scss']
 })
 export class MapSettingComponent implements OnInit {
 
