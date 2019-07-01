@@ -1,18 +1,82 @@
-h1 {
-  font-weight: bolder;
-}
-.menu {
-  font-size: 5vw;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+#splash-image {
+  background-image: url(/assets/images/gb-splash.jpg);
+
+  position: absolute;
+  height: 100%;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  top: 0;
+  width: 100%;
+  background-position: center center;
+  background-repeat: no-repeat;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  z-index: 0;
+
+  .gradient {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: -webkit-gradient(linear, left top, left bottom, from(rgba(226, 226, 226, 0)), color-stop(8%, rgba(50, 50, 50, 0)), to(rgba(0, 0, 0, 0.95)));
+    background: linear-gradient(to bottom, rgba(226, 226, 226, 0) 0%, rgba(50, 50, 50, 0) 8%, rgba(0, 0, 0, 0.95) 100%);
+    bottom: 0;
+    z-index: -10;
+  }
+
+  .content {
+    position: absolute;
+    color: white !important;
+    z-index: 100;
+    width: 100%;
+    height: 100%;
+    padding-top: 220px;
+    padding-left: 50px;
+  }
+
+  .first-header {
+    margin-left: 55px;
+    font-size: 35px;
+    font-weight: bold;
+  }
+
+  .second-header {
+    font-size: 155px;
+    color: white;
+    font-weight: bolder;
+    margin-left: 35px;
+    max-width: 490px;
+    line-height: 1;
+  }
+  .second-bottom {
+    border-bottom: 13px solid white;
+  }
+
+  h1 {
+    font-weight: bolder;
+  }
+
+  .menu {
+    font-size: 4vw;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    margin-left: 25px;
+    margin-top: 105px;
+  }
+
+  .menu a {
+    color: white;
+    padding-left: 25px;
+  }
+
+  .loginout {
+    font-size: 1vw;
+  }
+  .logout {
+    cursor: pointer;
+  }
 }
 
-.menu a {
-  color: black;
-}
 
-.loginout {
-  font-size: 2vw;
-}
-.logout {
-  cursor: pointer;
-}

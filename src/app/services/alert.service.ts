@@ -13,7 +13,7 @@ export class AlertService {
 
   success(message: string, action: string) {
     this._snackBar.open(message, action, {
-      duration: 50000,
+      duration: 5000,
       panelClass: ['success-snackbar']
     });
   }
