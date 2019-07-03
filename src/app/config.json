@@ -9,6 +9,42 @@
   "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true",
   "layers": [
     {
+      "id": "3d-buildings",
+      "displayName": "3d Buildings",
+
+      "source": "composite",
+      "source-layer": "building",
+      "filter": ["==", "extrude", "true"],
+      "type": "fill-extrusion",
+      "minzoom": 15,
+      "paint": {
+        "fill-extrusion-color": "#fff",
+
+        "fill-extrusion-height": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          10,
+          0,
+          15.05,
+          ["get", "height"]
+        ],
+        "fill-extrusion-base": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "min_height"]
+        ],
+        "fill-extrusion-opacity": 0.8
+      },
+      "showInLayerList": true,
+      "addOnMapInitialisation": true
+    },
+
+    {
       "id": "abmhh",
       "type": "circle",
       "displayName": "ABM Hamburg",
@@ -18,7 +54,7 @@
         "data": "https://cityio.media.mit.edu/api/table/abm_service_Hamburg"
       },
       "paint": {
-        "circle-color": "#D4AF37"
+        "circle-color": "red"
       },
       "showInLayerList": true,
       "addOnMapInitialisation": true
