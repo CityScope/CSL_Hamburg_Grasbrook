@@ -1,12 +1,12 @@
 {
-  "mapCenter": [10.014390953386766, 53.53128461384861],
+  "mapCenter": [10.0143909533867, 53.53128461384861],
   "mapZoom": 16,
   "bearing": 34.8,
-  "pitch": 60,
+  "pitch": 30,
   "gridZoom": 16.3,
   "gridBearing": 34.8,
   "gridPitch": 0,
-  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
+  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true",
   "layers": [
     {
       "id": "abmhh",
