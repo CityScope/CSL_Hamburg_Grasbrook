@@ -157,6 +157,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           }
         }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
+        if (layer.id === "grid-test") {
+          this.removeGridInteraction();
+        }
         this.map.removeLayer(layer.id);
         this.map.removeSource(layer.id);
       }
@@ -192,7 +195,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-   *   Initiate grid interaction
+   *   Handle grid interactions
    */
 
   private addGridInteraction() {
@@ -204,6 +207,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.removePopUp()
     });
     this.map.on("zoomstart", e => {
+      this.removePopUp()
+    });
+  }
+
+  private removeGridInteraction() {
+    this.map.off("click", "grid-test", this.clickOnGrid);
+    // keyboard event
+    this.map.getCanvas().removeEventListener("keydown", this.keyStrokeOnMap);
+
+    this.map.off("dragstart", e => {
+      this.removePopUp()
+    });
+    this.map.off("zoomstart", e => {
       this.removePopUp()
     });
   }
@@ -250,6 +266,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     if (this.authenticationService.currentUserValue) {
+      let layers = this.map.getStyle().layers;
       let clickedLayer: GeoJSONSource = this.map.getSource(
         "grid-test"
       ) as GeoJSONSource;
