@@ -182,7 +182,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   resetDataUrl = (csLayer: CsLayer) => {
-    console.log("data reload");
     (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
       csLayer["source"]["data"]
     );
