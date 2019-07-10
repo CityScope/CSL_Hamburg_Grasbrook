@@ -50,7 +50,7 @@
 
   .first-header {
     margin-left: 1vw;
-    font-size: 5vw;
+    font-size: 3vw;
     font-weight: bold;
   }
 
@@ -58,7 +58,7 @@
     font-size: 10vw;
     color: white;
     font-weight: bolder;
-    margin-left: 35px;
+    margin-left: 1vw;
     max-width: 490px;
     line-height: 1;
   }
@@ -80,12 +80,17 @@
   }
 
   .menu a {
+    margin: 1vw;
+    padding: 0.5vw;
     color: white;
-    padding-left: 25px;
+    border-radius: 0.5vw;
+    -moz-border-radius: 0.5vw;
+    -webkit-border-radius: 0.5vw;
+    border: 0.5px solid #ffffff;
   }
 
   .loginout {
-    // font-size: 5vw;
+    font-size: 5vw;
   }
   .logout {
     cursor: pointer;

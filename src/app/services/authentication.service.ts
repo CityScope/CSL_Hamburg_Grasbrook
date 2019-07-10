@@ -1,21 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import {User} from "../models/user";
-import {MatSnackBar} from "@angular/material";
-import {AlertService} from "./alert.service";
+import { Injectable } from "@angular/core";
+import { HttpClient } from "@angular/common/http";
+import { BehaviorSubject, Observable } from "rxjs";
+import { map } from "rxjs/operators";
+import { User } from "../models/user";
+import { MatSnackBar } from "@angular/material";
+import { AlertService } from "./alert.service";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root"
 })
 export class AuthenticationService {
   private currentUserSubject: BehaviorSubject<User>;
   public currentUser: Observable<User>;
 
-  constructor(private http: HttpClient,
-              private alertService: AlertService) {
-    this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
+  constructor(private http: HttpClient, private alertService: AlertService) {
+    this.currentUserSubject = new BehaviorSubject<User>(
+      JSON.parse(localStorage.getItem("currentUser"))
+    );
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
@@ -24,20 +25,26 @@ export class AuthenticationService {
   }
 
   login(username, password) {
-    return this.http.post<any>(`http://localhost:4200/users/authenticate`, { username, password })
-      .pipe(map(user => {
-        // store user details and jwt token in local storage to keep user logged in between page refreshes
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        this.currentUserSubject.next(user);
-        this.alertService.success('Login successful', '');
-        return user;
-      }));
+    return this.http
+      .post<any>(`http://localhost:4200/users/authenticate`, {
+        username,
+        password
+      })
+      .pipe(
+        map(user => {
+          // store user details and jwt token in local storage to keep user logged in between page refreshes
+          localStorage.setItem("currentUser", JSON.stringify(user));
+          this.currentUserSubject.next(user);
+          this.alertService.success("Designer Login successful", "");
+          return user;
+        })
+      );
   }
 
   logout() {
     // remove user from local storage and set current user to null
-    localStorage.removeItem('currentUser');
+    localStorage.removeItem("currentUser");
     this.currentUserSubject.next(null);
-    this.alertService.success('Logout successful', '');
+    this.alertService.success("Logout successful", "");
   }
 }
