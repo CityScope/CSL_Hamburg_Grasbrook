@@ -9,9 +9,8 @@
   "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true",
   "layers": [
     {
-      "id": "3d-buildings",
+      "id": "3d Buildings",
       "displayName": "3d Buildings",
-
       "source": "composite",
       "source-layer": "building",
       "filter": ["==", "extrude", "true"],
@@ -19,7 +18,6 @@
       "minzoom": 15,
       "paint": {
         "fill-extrusion-color": "#fff",
-
         "fill-extrusion-height": [
           "interpolate",
           ["linear"],
@@ -41,9 +39,8 @@
         "fill-extrusion-opacity": 0.8
       },
       "showInLayerList": true,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": false
     },
-
     {
       "id": "abmhh",
       "type": "circle",
@@ -57,7 +54,7 @@
         "circle-color": "red"
       },
       "showInLayerList": true,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": false
     },
     {
       "id": "noisehh",
@@ -2525,7 +2522,7 @@
       },
 
       "showInLayerList": true,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": false
     },
     {
       "id": "Food Access",
