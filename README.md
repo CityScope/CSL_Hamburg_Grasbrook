@@ -1,5 +1,17 @@
 # Cityscope Grasbrook
 
+## CityScope Tangible Table Extents Polygon
+
+```
+tableExtents = [
+    [10.00677491086256, 53.53789434597681],
+    [10.02223991398489, 53.531586825893925],
+    [10.016245501014993, 53.52640987365575],
+    [10.000748807171703, 53.53278372885845],
+    [10.00677491086256, 53.53789434597681]
+  ];
+```
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 7.3.3.
 
 ## Development server
