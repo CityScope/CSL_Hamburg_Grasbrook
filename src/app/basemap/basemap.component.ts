@@ -92,7 +92,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ];
 
     // Just what I would suggest to center GB - more or less
-    this.center = [10.014390953386766, 53.53128461384861];
+    // this.center = [10.014390953386766, 53.53128461384861];
 
     // add the base map and config
     this.map = new mapboxgl.Map({
