@@ -5,11 +5,11 @@ import {
   NgZone,
   HostListener
 } from "@angular/core";
-import {environment} from "../../environments/environment";
-import {interval} from "rxjs";
+import { environment } from "../../environments/environment";
+import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {CsLayer} from "../../typings";
+import { CsLayer } from "../../typings";
 import {
   AnySourceData,
   Layer,
@@ -19,11 +19,11 @@ import {
   LngLatBoundsLike,
   LngLatLike
 } from "mapbox-gl";
-import {GeoJSONSource} from "mapbox-gl";
-import {ConfigurationService} from "../services/configuration.service";
-import {LayerLoaderService} from "../services/layer-loader.service";
-import {CityIOService} from "../services/cityio.service";
-import {AuthenticationService} from "../services/authentication.service";
+import { GeoJSONSource } from "mapbox-gl";
+import { ConfigurationService } from "../services/configuration.service";
+import { LayerLoaderService } from "../services/layer-loader.service";
+import { CityIOService } from "../services/cityio.service";
+import { AuthenticationService } from "../services/authentication.service";
 
 @Component({
   selector: "app-basemap",
@@ -52,11 +52,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   initialExtrusionHeight: any = null;
 
-  constructor(private cityio: CityIOService,
-              private layerLoader: LayerLoaderService,
-              private config: ConfigurationService,
-              private authenticationService: AuthenticationService,
-              private zone: NgZone) {
+  constructor(
+    private cityio: CityIOService,
+    private layerLoader: LayerLoaderService,
+    private config: ConfigurationService,
+    private authenticationService: AuthenticationService,
+    private zone: NgZone
+  ) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -72,8 +74,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private initializeMap(cityIOdata) {
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
@@ -121,7 +122,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   updateMapLayers(event) {
-    console.log(event);
     const layers: CsLayer[] = this.layerLoader.getLayers();
     layers.map(l => this.deployLayers(l));
   }
@@ -157,6 +157,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           }
         }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
+        if (layer.id === "grid-test") {
+          this.removeGridInteraction();
+        }
         this.map.removeLayer(layer.id);
         this.map.removeSource(layer.id);
       }
@@ -179,7 +182,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   resetDataUrl = (csLayer: CsLayer) => {
-    console.log("data reload");
     (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
       csLayer["source"]["data"]
     );
@@ -192,7 +194,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-   *   Initiate grid interaction
+   *   Handle grid interactions
    */
 
   private addGridInteraction() {
@@ -201,10 +203,23 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.map.getCanvas().addEventListener("keydown", this.keyStrokeOnMap);
 
     this.map.on("dragstart", e => {
-      this.removePopUp()
+      this.removePopUp();
     });
     this.map.on("zoomstart", e => {
-      this.removePopUp()
+      this.removePopUp();
+    });
+  }
+
+  private removeGridInteraction() {
+    this.map.off("click", "grid-test", this.clickOnGrid);
+    // keyboard event
+    this.map.getCanvas().removeEventListener("keydown", this.keyStrokeOnMap);
+
+    this.map.off("dragstart", e => {
+      this.removePopUp();
+    });
+    this.map.off("zoomstart", e => {
+      this.removePopUp();
     });
   }
 
@@ -250,6 +265,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     if (this.authenticationService.currentUserValue) {
+      let layers = this.map.getStyle().layers;
       let clickedLayer: GeoJSONSource = this.map.getSource(
         "grid-test"
       ) as GeoJSONSource;
@@ -278,9 +294,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       .setLngLat(e.lngLat)
       .setHTML(
         "type: " +
-        clickedFeature.properties.type +
-        " id: " +
-        clickedFeature.properties.id
+          clickedFeature.properties.type +
+          " id: " +
+          clickedFeature.properties.id
       )
       .addTo(this.map);
   };
@@ -332,7 +348,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     const topLeft: LngLatLike = coordinates[0];
     const bottomRight: LngLatLike = coordinates[1];
 
-    const bounds = coordinates.reduce(function (bounds, coord) {
+    const bounds = coordinates.reduce(function(bounds, coord) {
       return bounds.extend(LngLat.convert(coord));
     }, new mapboxgl.LngLatBounds(topLeft, bottomRight));
 

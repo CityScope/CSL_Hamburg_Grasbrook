@@ -1,18 +1,36 @@
 <div class="layer-control map-control-element">
   <span class=" nowrap">
-    <span class="heading">Show/hide layers</span>&nbsp;
-    <a class="collapse-button" (click)="collapsed = !collapsed" href="javascript:void(0)">
-      <i *ngIf="collapsed" class="icon-info material-icons menu-icons white">expand_less</i>
-      <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white">expand_more</i>
+    <span class="heading">Layers</span>&nbsp;
+    <a
+      class="collapse-button"
+      (click)="collapsed = !collapsed"
+      href="javascript:void(0)"
+    >
+      <i *ngIf="collapsed" class="icon-info material-icons menu-icons white"
+        >expand_less</i
+      >
+      <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white"
+        >expand_more</i
+      >
     </a>
   </span>
   <ul *ngIf="!collapsed">
     <li *ngFor="let layer of layers">
       <label>
-        <input type="checkbox" [checked]="layer.visible" (change)="onToggleLayer(layer)"/> {{ layer.displayName }}
-      </label>&nbsp;
-      <i class="icon-info material-icons menu-icons white" (click)="onShowInfo(layer)"
-         matTooltipPosition="right" matTooltip="Legend could be displayed on click">info</i>
+        <i
+          class="icon-info material-icons menu-icons white"
+          (click)="onShowInfo(layer)"
+          matTooltipPosition="right"
+          matTooltip="Legend could be displayed on click"
+          >info</i
+        >&nbsp;
+        <input
+          type="checkbox"
+          [checked]="layer.visible"
+          (change)="onToggleLayer(layer)"
+        />
+        {{ layer.displayName }} </label
+      >&nbsp;
     </li>
   </ul>
 </div>

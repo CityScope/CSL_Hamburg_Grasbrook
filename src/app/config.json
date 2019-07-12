@@ -1,13 +1,46 @@
 {
-  "mapCenter": [10.014390953386766, 53.53128461384861],
+  "mapCenter": [10.0143909533867, 53.53128461384861],
   "mapZoom": 16,
   "bearing": 34.8,
-  "pitch": 60,
+  "pitch": 30,
   "gridZoom": 16.3,
   "gridBearing": 34.8,
   "gridPitch": 0,
-  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd",
+  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true",
   "layers": [
+    {
+      "id": "3d Buildings",
+      "displayName": "3d Buildings",
+      "source": "composite",
+      "source-layer": "building",
+      "filter": ["==", "extrude", "true"],
+      "type": "fill-extrusion",
+      "minzoom": 15,
+      "paint": {
+        "fill-extrusion-color": "#fff",
+        "fill-extrusion-height": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          10,
+          0,
+          15.05,
+          ["get", "height"]
+        ],
+        "fill-extrusion-base": [
+          "interpolate",
+          ["linear"],
+          ["zoom"],
+          15,
+          0,
+          15.05,
+          ["get", "min_height"]
+        ],
+        "fill-extrusion-opacity": 0.8
+      },
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
+    },
     {
       "id": "abmhh",
       "type": "circle",
@@ -18,10 +51,10 @@
         "data": "https://cityio.media.mit.edu/api/table/abm_service_Hamburg"
       },
       "paint": {
-        "circle-color": "#D4AF37"
+        "circle-color": "red"
       },
       "showInLayerList": true,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": false
     },
     {
       "id": "noisehh",
@@ -2459,6 +2492,130 @@
           ]
         }
       }
+    },
+    {
+      "id": "Education Access",
+      "type": "circle",
+      "displayName": "Education Access",
+      "hasReloadInterval": true,
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
+      },
+      "paint": {
+        "circle-translate": [0, 0],
+        "circle-radius": {
+          "property": "education",
+          "stops": [
+            [{ "zoom": 8, "value": 0 }, 0.1],
+            [{ "zoom": 8, "value": 1 }, 1],
+            [{ "zoom": 11, "value": 0 }, 0.5],
+            [{ "zoom": 11, "value": 1 }, 2],
+            [{ "zoom": 16, "value": 0 }, 3],
+            [{ "zoom": 16, "value": 1 }, 9]
+          ]
+        },
+        "circle-color": {
+          "property": "education",
+          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
+        }
+      },
+
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
+    },
+    {
+      "id": "Food Access",
+      "type": "circle",
+      "displayName": "Food Access",
+      "hasReloadInterval": true,
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
+      },
+      "paint": {
+        "circle-translate": [0, 5],
+        "circle-radius": {
+          "property": "food",
+          "stops": [
+            [{ "zoom": 8, "value": 0 }, 0.1],
+            [{ "zoom": 8, "value": 1 }, 1],
+            [{ "zoom": 11, "value": 0 }, 0.5],
+            [{ "zoom": 11, "value": 1 }, 2],
+            [{ "zoom": 16, "value": 0 }, 3],
+            [{ "zoom": 16, "value": 1 }, 9]
+          ]
+        },
+        "circle-color": {
+          "property": "food",
+          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
+        }
+      },
+
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
+    },
+    {
+      "id": "Groceries Access",
+      "type": "circle",
+      "displayName": "Groceries Access",
+      "hasReloadInterval": true,
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
+      },
+      "paint": {
+        "circle-translate": [5, 0],
+        "circle-radius": {
+          "property": "groceries",
+          "stops": [
+            [{ "zoom": 8, "value": 0 }, 0.1],
+            [{ "zoom": 8, "value": 1 }, 1],
+            [{ "zoom": 11, "value": 0 }, 0.5],
+            [{ "zoom": 11, "value": 1 }, 2],
+            [{ "zoom": 16, "value": 0 }, 3],
+            [{ "zoom": 16, "value": 1 }, 9]
+          ]
+        },
+        "circle-color": {
+          "property": "groceries",
+          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
+        }
+      },
+
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
+    },
+    {
+      "id": "Nightlife Access",
+      "type": "circle",
+      "displayName": "Nightlife Access",
+      "hasReloadInterval": true,
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
+      },
+      "paint": {
+        "circle-translate": [5, 5],
+        "circle-radius": {
+          "property": "nightlife",
+          "stops": [
+            [{ "zoom": 8, "value": 0 }, 0.1],
+            [{ "zoom": 8, "value": 1 }, 1],
+            [{ "zoom": 11, "value": 0 }, 0.5],
+            [{ "zoom": 11, "value": 1 }, 2],
+            [{ "zoom": 16, "value": 0 }, 3],
+            [{ "zoom": 16, "value": 1 }, 9]
+          ]
+        },
+        "circle-color": {
+          "property": "nightlife",
+          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
+        }
+      },
+
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
     }
   ]
 }
