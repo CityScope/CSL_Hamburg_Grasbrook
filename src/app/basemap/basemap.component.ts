@@ -508,7 +508,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private closeAndLogout() {
-    this.openDialog();
+    if (this.authenticationService.currentUserValue) {
+      this.openDialog();
+    } else {
+      this.router.navigate(['']);
+    }
   }
 
   /*
