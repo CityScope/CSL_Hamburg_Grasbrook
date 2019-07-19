@@ -5,11 +5,11 @@ import {
   NgZone,
   HostListener
 } from "@angular/core";
-import { environment } from "../../environments/environment";
-import { interval } from "rxjs";
+import {environment} from "../../environments/environment";
+import {interval} from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import { CsLayer } from "../../typings";
+import {CsLayer} from "../../typings";
 import {
   AnySourceData,
   Layer,
@@ -19,11 +19,14 @@ import {
   LngLatBoundsLike,
   LngLatLike
 } from "mapbox-gl";
-import { GeoJSONSource } from "mapbox-gl";
-import { ConfigurationService } from "../services/configuration.service";
-import { LayerLoaderService } from "../services/layer-loader.service";
-import { CityIOService } from "../services/cityio.service";
-import { AuthenticationService } from "../services/authentication.service";
+import {GeoJSONSource} from "mapbox-gl";
+import {ConfigurationService} from "../services/configuration.service";
+import {LayerLoaderService} from "../services/layer-loader.service";
+import {CityIOService} from "../services/cityio.service";
+import {AuthenticationService} from "../services/authentication.service";
+import {MatDialog} from "@angular/material";
+import {ExitEditorDialog} from "../dialogues/exit-editor-dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: "app-basemap",
@@ -31,7 +34,9 @@ import { AuthenticationService } from "../services/authentication.service";
   styleUrls: ["./basemap.component.scss"]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
+
   map: mapboxgl.Map;
+  mapCanvas;
   style;
   mapKeyLayer: CsLayer;
   mapKeyVisible: boolean;
@@ -44,21 +49,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   pitch: number;
   bearing: number;
   //
-  keyStroke: any;
-  //
   featureArray = [];
 
   popUp: mapboxgl.Popup;
 
   initialExtrusionHeight: any = null;
+  isShowMenu = true;
 
-  constructor(
-    private cityio: CityIOService,
-    private layerLoader: LayerLoaderService,
-    private config: ConfigurationService,
-    private authenticationService: AuthenticationService,
-    private zone: NgZone
-  ) {
+  // Multiple element selection
+  start;
+  current;
+  box;
+
+
+  constructor(private cityio: CityIOService,
+              private layerLoader: LayerLoaderService,
+              private config: ConfigurationService,
+              private authenticationService: AuthenticationService,
+              public dialog: MatDialog,
+              private router: Router,
+              private zone: NgZone) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -74,7 +84,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {}
+  ngAfterViewInit() {
+  }
 
   private initializeMap(cityIOdata) {
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
@@ -104,7 +115,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       center: this.center
     });
 
+    this.map.boxZoom.disable();
+
     this.map.on("load", event => {
+      this.mapCanvas = this.map.getCanvasContainer();
       this.updateMapLayers(event);
     });
 
@@ -200,7 +214,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   private addGridInteraction() {
     this.map.on("click", "grid-test", this.clickOnGrid);
     // keyboard event
-    this.map.getCanvas().addEventListener("keydown", this.keyStrokeOnMap);
+    this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
+
+    // map multi select for logged in users
+    if (this.authenticationService.currentUserValue) {
+      this.mapCanvas.addEventListener('mousedown', this.mouseDown, true);
+    }
 
     this.map.on("dragstart", e => {
       this.removePopUp();
@@ -213,7 +232,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   private removeGridInteraction() {
     this.map.off("click", "grid-test", this.clickOnGrid);
     // keyboard event
-    this.map.getCanvas().removeEventListener("keydown", this.keyStrokeOnMap);
+    this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
 
     this.map.off("dragstart", e => {
       this.removePopUp();
@@ -224,10 +243,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   //
-  //
+  // Handle all map keystroke interactions
 
   keyStrokeOnMap = e => {
-    this.keyStroke = e;
     if (this.authenticationService.currentUserValue) {
       let clickedLayer: GeoJSONSource = this.map.getSource(
         "grid-test"
@@ -252,6 +270,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         }
       }
     }
+
+    //Keystroke for menu toggle
+    if (e.code === "Space") {
+      // TODO: we could make this option only available for superusers
+      this.toggleMenu();
+    }
   };
 
   private removePopUp() {
@@ -265,7 +289,23 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     if (this.authenticationService.currentUserValue) {
-      let layers = this.map.getStyle().layers;
+      this.showFeaturesSelected([clickedFeature]);
+    }
+
+    // add a popup data window
+    this.popUp = new mapboxgl.Popup()
+      .setLngLat(e.lngLat)
+      .setHTML(
+        "type: " +
+        clickedFeature.properties.type +
+        " id: " +
+        clickedFeature.properties.id
+      )
+      .addTo(this.map);
+  };
+
+  private showFeaturesSelected(selectedFeature: any[]) {
+    for (let clickedFeature of selectedFeature) {
       let clickedLayer: GeoJSONSource = this.map.getSource(
         "grid-test"
       ) as GeoJSONSource;
@@ -289,21 +329,111 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       clickedLayer.setData(currentSource);
     }
 
-    // add a popup data window
-    this.popUp = new mapboxgl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(
-        "type: " +
-          clickedFeature.properties.type +
-          " id: " +
-          clickedFeature.properties.id
-      )
-      .addTo(this.map);
-  };
+  }
+
+
+  /*
+   *   Handle multiple element selection
+   */
+
+  mousePos = e => {
+    let rect = this.mapCanvas.getBoundingClientRect();
+    return new mapboxgl.Point(
+      e.clientX - rect.left - this.mapCanvas.clientLeft,
+      e.clientY - rect.top - this.mapCanvas.clientTop
+    );
+  }
+
+  mouseDown = e => {
+    // Continue the rest of the function if the shiftkey is pressed.
+    if (!(e.shiftKey && e.button === 0)) return;
+
+    // Disable default drag zooming when the shift key is held down.
+    this.map.dragPan.disable();
+    // this.map.boxZoom.disable();
+
+    // Call functions for the following events
+    document.addEventListener('mousemove', this.onMouseMove);
+    document.addEventListener('mouseup', this.onMouseUp);
+    document.addEventListener('keydown', this.onKeyDown);
+
+    // Capture the first xy coordinates
+    this.start = this.mousePos(e);
+  }
+
+  onMouseMove = e => {
+    // Capture the ongoing xy coordinates
+    this.current = this.mousePos(e);
+
+    // Append the box element if it doesnt exist
+    if (!this.box) {
+      this.box = document.createElement('div');
+      this.box.style.cssText = "background: rgba(56,135,190,0.1); border: 2px solid #3887be;";
+      this.mapCanvas.appendChild(this.box);
+    }
+
+    let minX = Math.min(this.start.x, this.current.x),
+      maxX = Math.max(this.start.x, this.current.x),
+      minY = Math.min(this.start.y, this.current.y),
+      maxY = Math.max(this.start.y, this.current.y);
+
+    // Adjust width and xy position of the box element ongoing
+    let pos = 'translate(' + minX + 'px,' + minY + 'px)';
+    this.box.style.transform = pos;
+    this.box.style.WebkitTransform = pos;
+    this.box.style.width = maxX - minX + 'px';
+    this.box.style.height = maxY - minY + 'px';
+  }
+
+  onMouseUp = e => {
+    // Capture xy coordinates
+    this.finish([this.start, this.mousePos(e)]);
+  }
+
+  onKeyDown = e => {
+    // If the ESC key is pressed
+    if (e.keyCode === 27) this.finish(null);
+  }
+
+  finish(bbox) {
+    // Remove these events now that finish has been called.
+    document.removeEventListener('mousemove', this.onMouseMove);
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('mouseup', this.onMouseUp);
+
+    if (this.box) {
+      this.box.parentNode.removeChild(this.box);
+      this.box = null;
+    }
+
+    // If bbox exists. use this value as the argument for `queryRenderedFeatures`
+    if (bbox) {
+      let features = this.map.queryRenderedFeatures(bbox, {layers: ['grid-test']});
+
+      if (features.length >= 1000) {
+        return window.alert('Select a smaller number of features');
+      }
+
+      // Run through the selected features and set a filter
+      // to match features with unique FIPS codes to activate
+      // the `counties-highlighted` layer.
+/*      let filter = features.reduce(function (memo, feature) {
+        memo.push(feature.properties.FIPS);
+        return memo;
+      }, ['in', 'FIPS']);
+
+      this.map.setFilter("counties-highlighted", filter);*/
+      this.showFeaturesSelected(features);
+    }
+
+    this.map.dragPan.enable();
+  }
+
 
   /*
    *   Map menu logic
    */
+
   public mapSettingsListener(menuOutput: Object[]) {
     switch (menuOutput[0]) {
       case "resetMap": {
@@ -348,7 +478,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     const topLeft: LngLatLike = coordinates[0];
     const bottomRight: LngLatLike = coordinates[1];
 
-    const bounds = coordinates.reduce(function(bounds, coord) {
+    const bounds = coordinates.reduce(function (bounds, coord) {
       return bounds.extend(LngLat.convert(coord));
     }, new mapboxgl.LngLatBounds(topLeft, bottomRight));
 
@@ -371,5 +501,36 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   toggleMaptasticMode() {
     Maptastic("basemap");
+  }
+
+  private toggleMenu() {
+    this.isShowMenu = !this.isShowMenu;
+  }
+
+  private closeAndLogout() {
+    if (this.authenticationService.currentUserValue) {
+      this.openDialog();
+    } else {
+      this.router.navigate(['']);
+    }
+  }
+
+  /*
+  *   On exit actions
+  */
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ExitEditorDialog, {
+      width: '250px',
+      autoFocus: false
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if(result) {
+        // TODO: send data to cityIO
+      }
+      this.router.navigate(['']);
+      this.authenticationService.logout();
+    });
   }
 }
