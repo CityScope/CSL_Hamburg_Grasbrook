@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { interval, of, Observable } from "rxjs";
 import * as rxjs from "rxjs/index";
 import { catchError, tap } from "rxjs/operators";
-import cityIO_demo from "../../assets/cityIO_demo.json";
 
 @Injectable({
   providedIn: "root"
