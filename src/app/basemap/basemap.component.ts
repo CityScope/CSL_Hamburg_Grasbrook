@@ -556,44 +556,46 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   // **************************************
+  // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/mapbox-layer.md
+  // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/overview.md?source=post_page---------------------------#using-with-pure-js
+
   private deckgl() {
-    // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/mapbox-layer.md
     const DATA_URL = {
       TRIPS:
         "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
     };
-    const deck = new Deck({
-      controller: true,
-      layers: []
-    });
-    // animation loop
-    setInterval(() => {
-      renderLayers();
-    });
-    this.map.addLayer(new MapboxLayer({ id: "deckgl", deck }));
+
     function renderLayers() {
       let loopLength = 1800;
       let animationSpeed = 50;
       const timestamp = Date.now() / 1000;
       const loopTime = loopLength / animationSpeed;
       let time = ((timestamp % loopTime) / loopTime) * loopLength;
-      let trailLength = 500;
-      const tripLayer = new TripsLayer({
-        id: "trips",
-        data: DATA_URL.TRIPS,
-        getPath: d => d.segments,
-        getColor: d => (d.vendor === 0 ? [255, 50, 255] : [60, 150, 255]),
-        opacity: 0.5,
-        widthMinPixels: 2,
-        rounded: true,
-        trailLength,
+      // then put this updated layer into deck
+      tripLayer.setProps({
         currentTime: time
       });
-      // then put this updated layer into deck
-      deck.setProps({
-        layers: [tripLayer]
-      });
     }
+    const tripLayer = new MapboxLayer({
+      type: TripsLayer,
+      id: "trips",
+      data: DATA_URL.TRIPS,
+      getPath: d => d.segments,
+      getColor: d => (d.vendor === 0 ? [255, 50, 255] : [60, 150, 255]),
+      opacity: 0.5,
+      widthMinPixels: 2,
+      rounded: true,
+      trailLength: 500,
+      currentTime: 0
+    });
+
+    this.map.addLayer(tripLayer);
+
+    // start animation loop
+    setInterval(() => {
+      renderLayers();
+    });
+
     // **************************************
   }
 }
