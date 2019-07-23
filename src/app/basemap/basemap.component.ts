@@ -27,6 +27,9 @@ import {AuthenticationService} from "../services/authentication.service";
 import {MatDialog} from "@angular/material";
 import {ExitEditorDialog} from "../dialogues/exit-editor-dialog";
 import {Router} from "@angular/router";
+import {LocalStorageService} from "../services/local-storage.service";
+import {MatBottomSheet} from "@angular/material";
+import {RestoreMessage} from "../dial/restore-message";
 
 @Component({
   selector: "app-basemap",
@@ -68,6 +71,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
               private authenticationService: AuthenticationService,
               public dialog: MatDialog,
               private router: Router,
+              private _bottomSheet: MatBottomSheet,
+              private localStorageService: LocalStorageService,
               private zone: NgZone) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
@@ -98,8 +103,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     this.style = this.config.mapStyle;
     this.center = [
-      cityIOdata.header.spatial.latitude,
-      cityIOdata.header.spatial.longitude
+      cityIOdata.header.spatial.longitude,
+      cityIOdata.header.spatial.latitude
     ];
 
     // Just what I would suggest to center GB - more or less
@@ -212,6 +217,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   private addGridInteraction() {
+    let localStorageGrid = this.localStorageService.getGrid();
+    if (localStorageGrid) {
+      this._bottomSheet.open(RestoreMessage);
+
+      this._bottomSheet._openedBottomSheetRef.afterDismissed().subscribe((data) => {
+        if (data) {
+          this.restoreLocalStorageGrid(localStorageGrid);
+        } else {
+          this.localStorageService.removeGrid();
+        }
+      })
+    }
     this.map.on("click", "grid-test", this.clickOnGrid);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
@@ -269,6 +286,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           clickedLayer.setData(currentSource);
         }
       }
+      this.localStorageService.saveGrid(currentSource);
     }
 
     //Keystroke for menu toggle
@@ -277,6 +295,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.toggleMenu();
     }
   };
+
+  private restoreLocalStorageGrid(localStorageGrid) {
+    let gridLayer: GeoJSONSource = this.map.getSource(
+      "grid-test"
+    ) as GeoJSONSource;
+    gridLayer.setData(localStorageGrid);
+  }
 
   private removePopUp() {
     if (this.popUp) {
@@ -531,6 +556,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       }
       this.router.navigate(['']);
       this.authenticationService.logout();
+      this.localStorageService.removeGrid();
     });
   }
 }
