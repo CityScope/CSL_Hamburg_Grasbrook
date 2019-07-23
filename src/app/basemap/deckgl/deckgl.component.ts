@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component } from "@angular/core";
 import {
   AfterViewInit,
   Input,
@@ -7,7 +7,7 @@ import {
   EventEmitter
 } from "@angular/core";
 
-import { Deck } from "@deck.gl/core";
+import { Deck, MapController } from "@deck.gl/core";
 import { TripsLayer } from "@deck.gl/geo-layers";
 
 const DATA_URL = {
@@ -22,8 +22,13 @@ const DATA_URL = {
 })
 export class DeckglComponent implements AfterViewInit {
   @Input() glId: string;
+  @Input() width: number;
+  @Input() height: number;
   @Output() viewPortChange = new EventEmitter();
   private deckgl;
+
+  private controller;
+
   private viewport = {
     latitude: 40.75,
     longitude: -74,
@@ -38,17 +43,35 @@ export class DeckglComponent implements AfterViewInit {
     this.ngZone.runOutsideAngular(() => {
       this.deckgl = new Deck({
         ...this.viewport,
-        debug: true,
         layers: [],
         canvas: document.getElementById(this.glId),
-        initialViewState: this.viewport,
-        controller: true
+        initialViewState: this.viewport
+        // controller: true
       });
+
+      this.controller = new MapController({
+        canvas: this.deckgl.canvas,
+        ...this.viewport,
+        onViewStateChange: this.onViewportChange,
+        width: this.width || 500,
+        height: this.height || 500
+      });
+
       setInterval(() => {
         this.renderLayers();
       });
     });
   }
+
+  onViewportChange = (viewport): void => {
+    this.viewport = viewport;
+    this.deckgl.setProps(viewport);
+    this.controller.setProps(viewport);
+    this.renderLayers();
+    this.ngZone.runOutsideAngular(() => {
+      this.viewPortChange.emit(viewport);
+    });
+  };
 
   renderLayers() {
     let loopLength = 1800;
