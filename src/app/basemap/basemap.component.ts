@@ -571,7 +571,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       const timestamp = Date.now() / 1000;
       const loopTime = loopLength / animationSpeed;
       let time = ((timestamp % loopTime) / loopTime) * loopLength;
-      // then put this updated layer into deck
+      // update the layer prop
       tripLayer.setProps({
         currentTime: time
       });
