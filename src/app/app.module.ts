@@ -24,6 +24,7 @@ import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import {ReactiveFormsModule} from "@angular/forms";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
+import { DeckglComponent } from './basemap/deckgl/deckgl.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
     LegendComponent,
     LayerControlComponent,
     LoginComponent,
-    ExitEditorDialog
+    ExitEditorDialog,
+    DeckglComponent
   ],
   imports: [
     BrowserModule,
