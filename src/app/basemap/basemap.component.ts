@@ -31,11 +31,18 @@ import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "../app.component";
-import { DeckglComponent } from "./deckgl/deckgl.component";
+
+// **************************************
+//! DeckGL imports
+import { MapboxLayer } from "@deck.gl/mapbox";
+import { Deck } from "@deck.gl/core";
+import { ScatterplotLayer } from "@deck.gl/layers";
+import { TripsLayer } from "@deck.gl/geo-layers";
+// **************************************
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
-  declarations: [AppComponent, DeckglComponent],
+  declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
@@ -116,6 +123,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // Just what I would suggest to center GB - more or less
     // this.center = [10.014390953386766, 53.53128461384861];
 
+    this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
@@ -129,6 +137,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.map.boxZoom.disable();
 
     this.map.on("load", event => {
+      this.deckgl();
+
       this.mapCanvas = this.map.getCanvasContainer();
       this.updateMapLayers(event);
     });
@@ -543,5 +553,47 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.router.navigate([""]);
       this.authenticationService.logout();
     });
+  }
+
+  // **************************************
+  private deckgl() {
+    // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/mapbox-layer.md
+    const DATA_URL = {
+      TRIPS:
+        "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
+    };
+    const deck = new Deck({
+      controller: true,
+      layers: []
+    });
+    // animation loop
+    setInterval(() => {
+      renderLayers();
+    });
+    this.map.addLayer(new MapboxLayer({ id: "deckgl", deck }));
+    function renderLayers() {
+      let loopLength = 1800;
+      let animationSpeed = 50;
+      const timestamp = Date.now() / 1000;
+      const loopTime = loopLength / animationSpeed;
+      let time = ((timestamp % loopTime) / loopTime) * loopLength;
+      let trailLength = 500;
+      const tripLayer = new TripsLayer({
+        id: "trips",
+        data: DATA_URL.TRIPS,
+        getPath: d => d.segments,
+        getColor: d => (d.vendor === 0 ? [255, 50, 255] : [60, 150, 255]),
+        opacity: 0.5,
+        widthMinPixels: 2,
+        rounded: true,
+        trailLength,
+        currentTime: time
+      });
+      // then put this updated layer into deck
+      deck.setProps({
+        layers: [tripLayer]
+      });
+    }
+    // **************************************
   }
 }
