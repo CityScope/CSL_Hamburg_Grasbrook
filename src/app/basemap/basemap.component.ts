@@ -340,7 +340,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           if (feature.properties["color"] === "#ff00ff") {
             feature.properties["color"] = feature.properties["initial-color"];
             // remove this cell from array
-            for (const i = this.selectedFeatures.length - 1; i >= 0; i--) {
+            for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
               if (this.selectedFeatures[i] === clickedFeature.properties["id"]) {
                 this.selectedFeatures.splice(i, 1);
               }
