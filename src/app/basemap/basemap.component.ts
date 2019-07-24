@@ -300,6 +300,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     let gridLayer: GeoJSONSource = this.map.getSource(
       "grid-test"
     ) as GeoJSONSource;
+
+    // Restore the grid but set the features to unselected stage
+    for (let feature of localStorageGrid["features"]) {
+      if (feature.properties["isSelected"]) {
+        feature.properties["isSelected"] = false;
+        feature.properties["color"] = feature.properties["initial-color"];
+      }
+    }
     gridLayer.setData(localStorageGrid);
   }
 
@@ -339,6 +347,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
           if (feature.properties["color"] === "#ff00ff") {
             feature.properties["color"] = feature.properties["initial-color"];
+            feature.properties["isSelected"] = false;
             // remove this cell from array
             for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
               if (this.selectedFeatures[i] === clickedFeature.properties["id"]) {
@@ -347,6 +356,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             }
           } else {
             feature.properties["initial-color"] = feature.properties["color"];
+            feature.properties["isSelected"] = true;
             feature.properties["color"] = "#ff00ff";
             this.selectedFeatures.push(clickedFeature.properties["id"]);
           }
