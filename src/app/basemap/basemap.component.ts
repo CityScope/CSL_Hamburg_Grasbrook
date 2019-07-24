@@ -52,7 +52,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   pitch: number;
   bearing: number;
   //
-  featureArray = [];
+  selectedFeatures = [];
 
   popUp: mapboxgl.Popup;
 
@@ -271,7 +271,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       if (e.key === "w") {
         this.removePopUp();
         for (let feature of currentSource["features"]) {
-          if (this.featureArray.includes(feature.properties["id"])) {
+          if (this.selectedFeatures.includes(feature.properties["id"])) {
             const height = feature.properties["height"];
             console.log(height);
 
@@ -338,16 +338,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
           if (feature.properties["color"] === "#ff00ff") {
-            feature.properties["color"] = "#008dd5";
+            feature.properties["color"] = feature.properties["initial-color"];
             // remove this cell from array
-            for (var i = this.featureArray.length - 1; i >= 0; i--) {
-              if (this.featureArray[i] === clickedFeature.properties["id"]) {
-                this.featureArray.splice(i, 1);
+            for (const i = this.selectedFeatures.length - 1; i >= 0; i--) {
+              if (this.selectedFeatures[i] === clickedFeature.properties["id"]) {
+                this.selectedFeatures.splice(i, 1);
               }
             }
           } else {
+            feature.properties["initial-color"] = feature.properties["color"];
             feature.properties["color"] = "#ff00ff";
-            this.featureArray.push(clickedFeature.properties["id"]);
+            this.selectedFeatures.push(clickedFeature.properties["id"]);
           }
         }
       }
