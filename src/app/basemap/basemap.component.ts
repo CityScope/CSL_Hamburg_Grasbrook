@@ -1,24 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  NgZone,
-  HostListener
-} from "@angular/core";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
-import {
-  AnySourceData,
-  Layer,
-  LngLat,
-  MapboxGeoJSONFeature,
-  LngLatBounds,
-  LngLatBoundsLike,
-  LngLatLike
-} from "mapbox-gl";
+import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
@@ -35,8 +21,6 @@ import { AppComponent } from "../app.component";
 // **************************************
 //! DeckGL imports
 import { MapboxLayer } from "@deck.gl/mapbox";
-import { Deck } from "@deck.gl/core";
-import { ScatterplotLayer } from "@deck.gl/layers";
 import { TripsLayer } from "@deck.gl/geo-layers";
 // **************************************
 
