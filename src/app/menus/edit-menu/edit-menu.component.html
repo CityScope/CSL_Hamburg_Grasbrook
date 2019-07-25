@@ -1,0 +1,17 @@
+<div id="height-slider">
+  <span>Height</span>
+  <br />
+  <mat-slider
+    (input)="onInputChange($event)"
+    style="width: 250px"
+    [max]="30"
+    [min]="1"
+    [step]="1"
+    [(ngModel)]="currentHeight"
+    [thumbLabel]="true">
+  </mat-slider>
+
+  <!--<span class="close">x</span>-->
+</div>
+
+

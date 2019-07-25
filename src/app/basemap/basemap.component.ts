@@ -60,6 +60,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   current;
   box;
 
+  // Height slider values
+  currentHeight = 10;
+  sliderTop = 0;
+  sliderLeft = 0;
+  sliderDisplay = false;
+  heightFeature = {};
+
   constructor(
     private cityio: CityIOService,
     private layerLoader: LayerLoaderService,
@@ -211,7 +218,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   private addGridInteraction() {
-    this.map.on("click", "grid-test", this.clickOnGrid);
+    this.map.on("click", "grid-test", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
 
@@ -229,7 +236,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private removeGridInteraction() {
-    this.map.off("click", "grid-test", this.clickOnGrid);
+    this.map.off("click", "grid-test", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
 
@@ -385,6 +392,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   onMouseUp = e => {
     // Capture xy coordinates
+    this.showEditMenu(e);
     this.finish([this.start, this.mousePos(e)]);
   };
 
@@ -512,6 +520,22 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     } else {
       this.router.navigate([""]);
     }
+  }
+
+  /*
+  *   Slider menu
+  */
+
+  private showEditMenu(evt) {
+    this.sliderDisplay = true;
+    this.sliderLeft = evt.x;
+    this.sliderTop = evt.y;
+    this.map.on("click", this.clickMenuClose);
+  }
+
+  clickMenuClose = e => {
+    this.sliderDisplay = false;
+    this.map.off("click",  this.clickMenuClose);
   }
 
   /*

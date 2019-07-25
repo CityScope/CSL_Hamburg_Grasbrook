@@ -9,6 +9,7 @@ import {
   MatButtonModule,
   MatDialogModule,
   MatIconModule,
+  MatSliderModule,
   MatSnackBarModule,
   MatTooltipModule
 } from "@angular/material";
@@ -21,9 +22,10 @@ import {CityIOService} from "./services/cityio.service";
 import {LoginComponent} from "./login/login.component";
 import {fakeBackendProvider} from "./interceptors/fake-backend";
 import {JwtInterceptor} from "./interceptors/jwt.interceptor";
-import {ReactiveFormsModule} from "@angular/forms";
+import {ReactiveFormsModule, FormsModule } from "@angular/forms";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
+import { EditMenuComponent } from './menus/edit-menu/edit-menu.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +36,8 @@ import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
     LegendComponent,
     LayerControlComponent,
     LoginComponent,
-    ExitEditorDialog
+    ExitEditorDialog,
+    EditMenuComponent
   ],
   imports: [
     BrowserModule,
@@ -45,7 +48,9 @@ import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
     MatTooltipModule,
     MatDialogModule,
     MatButtonModule,
-    ReactiveFormsModule
+    MatSliderModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
   exports: [MatSnackBarModule],
   providers: [

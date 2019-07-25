@@ -12,6 +12,10 @@
        matTooltipPosition="right" matTooltip="Log out and go to main menu">close</i>
   </div>
 
+  <app-edit-menu *ngIf="sliderDisplay" [currentHeight]="currentHeight" style="position: absolute"
+                     [style.top.px]="sliderTop" [style.left.px]="sliderLeft"
+                     (heightOutput)="setNewHeight($event)"></app-edit-menu>
+
   <div *ngIf="isShowMenu" class="modal-container-left container-left-top">
     <app-map-setting (mapSettings)="mapSettingsListener($event)"></app-map-setting>
   </div>
