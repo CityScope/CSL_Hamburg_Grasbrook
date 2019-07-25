@@ -30,6 +30,7 @@ import {Router} from "@angular/router";
 import {LocalStorageService} from "../services/local-storage.service";
 import {MatBottomSheet} from "@angular/material";
 import {RestoreMessage} from "../dial/restore-message";
+import {AlertService} from "../services/alert.service";
 
 @Component({
   selector: "app-basemap",
@@ -71,6 +72,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
               private authenticationService: AuthenticationService,
               public dialog: MatDialog,
               private router: Router,
+              private alertService: AlertService,
               private _bottomSheet: MatBottomSheet,
               private localStorageService: LocalStorageService,
               private zone: NgZone) {
@@ -544,11 +546,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private closeAndLogout() {
-    if (this.authenticationService.currentUserValue) {
+    if (this.authenticationService.currentUserValue && this.localStorageService.getGrid()) {
       this.openDialog();
     } else {
-      this.router.navigate(['']);
+      this.exitEditor();
     }
+  }
+
+  private saveCurrentChanges() {
+    // TODO: send data to cityIO
+    this.localStorageService.removeGrid();
+    this.alertService.success("Data saved", "");
   }
 
   /*
@@ -563,11 +571,15 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if(result) {
-        // TODO: send data to cityIO
+        this.saveCurrentChanges();
       }
-      this.router.navigate(['']);
-      this.authenticationService.logout();
-      this.localStorageService.removeGrid();
+      this.exitEditor();
     });
+  }
+
+  private exitEditor() {
+    this.localStorageService.removeGrid();
+    this.authenticationService.logout();
+    this.router.navigate(['']);
   }
 }
