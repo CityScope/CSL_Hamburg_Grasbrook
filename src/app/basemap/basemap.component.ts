@@ -22,6 +22,8 @@ import { AppComponent } from "../app.component";
 //! DeckGL imports
 import { MapboxLayer } from "@deck.gl/mapbox";
 import { TripsLayer } from "@deck.gl/geo-layers";
+import * as mob from "../../assets/modules_json_backup/mobility_service.json";
+
 // **************************************
 
 @NgModule({
@@ -44,6 +46,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
   intervalMap = {};
+
+  json: any = mob;
 
   // Map config
   center: any;
@@ -105,9 +109,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ];
 
     // Just what I would suggest to center GB - more or less
-    // this.center = [10.014390953386766, 53.53128461384861];
+    this.center = [10.014390953386766, 53.53128461384861];
 
-    this.center = [-74.006, 40.7128];
+    // this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
@@ -546,28 +550,42 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   private deckgl() {
     const DATA_URL = {
       TRIPS:
-        "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
+        // "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
+        "https://cityio.media.mit.edu/api/table/grasbrook/trips"
+      // "https://cityio.media.mit.edu/api/table/grasbrook/cityIO_Gama_Hamburg"
     };
 
     function renderLayers() {
-      let loopLength = 1800;
+      let loopLength = 4 * 60 * 60;
       let animationSpeed = 50;
       const timestamp = Date.now() / 1000;
       const loopTime = loopLength / animationSpeed;
-      let time = ((timestamp % loopTime) / loopTime) * loopLength;
-      // update the layer prop
+      let time = 30000 + ((timestamp % loopTime) / loopTime) * loopLength;
+
       tripLayer.setProps({
         currentTime: time
       });
     }
+
     const tripLayer = new MapboxLayer({
       type: TripsLayer,
       id: "trips",
       data: DATA_URL.TRIPS,
       getPath: d => d.segments,
-      getColor: d => (d.vendor === 0 ? [255, 50, 255] : [60, 150, 255]),
+      getColor: d => {
+        switch (d.mode) {
+          case 0:
+            return [255, 0, 255];
+          case 1:
+            return [60, 128, 255];
+          case 2:
+            return [153, 255, 51];
+          case 3:
+            return [153, 180, 100];
+        }
+      },
       opacity: 0.5,
-      widthMinPixels: 2,
+      widthMinPixels: 4,
       rounded: true,
       trailLength: 500,
       currentTime: 0
