@@ -1,24 +1,10 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  NgZone,
-  HostListener
-} from "@angular/core";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
 import { environment } from "../../environments/environment";
 import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
-import {
-  AnySourceData,
-  Layer,
-  LngLat,
-  MapboxGeoJSONFeature,
-  LngLatBounds,
-  LngLatBoundsLike,
-  LngLatLike
-} from "mapbox-gl";
+import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
@@ -27,6 +13,18 @@ import { AuthenticationService } from "../services/authentication.service";
 import { MatDialog } from "@angular/material";
 import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
 import { Router } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+import { AppComponent } from "../app.component";
+
+
+@NgModule({
+  imports: [BrowserModule, FormsModule],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
 
 @Component({
   selector: "app-basemap",
@@ -102,8 +100,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ];
 
     // Just what I would suggest to center GB - more or less
-    // this.center = [10.014390953386766, 53.53128461384861];
+    this.center = [10.014390953386766, 53.53128461384861];
 
+    // this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
