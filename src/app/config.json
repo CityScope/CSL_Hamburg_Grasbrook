@@ -1,6 +1,6 @@
 {
   "mapCenter": [10.0143909533867, 53.53128461384861],
-  "mapZoom": 13,
+  "mapZoom": 15,
   "bearing": 34.8,
   "pitch": 30,
   "gridZoom": 16.3,
@@ -57,7 +57,11 @@
       "addOnMapInitialisation": false
     },
     {
-      "id": "trips-deckgl"
+      "id": "trips-deckgl",
+      "type": "circle",
+      "addDirectly" : true,
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
     },
     {
       "id": "noisehh",
