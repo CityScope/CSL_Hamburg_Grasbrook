@@ -57,6 +57,9 @@
       "addOnMapInitialisation": false
     },
     {
+      "id": "trips-deckgl"
+    },
+    {
       "id": "noisehh",
       "displayName": "Noise",
       "showInLayerList": true,
