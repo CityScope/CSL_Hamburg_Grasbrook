@@ -2,23 +2,26 @@
   <div class="basemap" id="basemap"></div>
 
   <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
+     <!--<app-legend [layer]="mapKeyLayer" [visible]="mapKeyVisible" (close)="mapKeyVisible = false"></app-legend>-->
+
     <app-layer-control
       [layers]="layers"
       (toggleLayer)="toggleLayer()"
-      (showInfo)="showMapKey($event)"
-    ></app-layer-control>
+      (showInfo)="showMapKey($event)">
+    </app-layer-control>
   </div>
 
-  <div
-    (click)="closeAndLogout()"
-    class="modal-container-left container-right-top map-control-element"
-  >
-    <i
-      class="material-icons menu-icons white"
-      matTooltipPosition="right"
-      matTooltip="Log out and go to main menu"
-      >close</i
-    >
+  <div (click)="closeAndLogout()"
+    class="modal-container-left container-right-top map-control-element">
+    <i class="material-icons menu-icons white"
+       matTooltipPosition="right"
+       matTooltip="Log out and go to main menu">close</i>
+  </div>
+
+  <div class="modal-container-left container-right-top map-control-element save"
+       (click)="saveCurrentChanges()">
+    <i class="material-icons menu-icons white"
+       matTooltipPosition="right" matTooltip="Save current changes">save</i>
   </div>
 
   <div *ngIf="isShowMenu" class="modal-container-left container-left-top">

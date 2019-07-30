@@ -4,7 +4,7 @@ import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
-import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
+import { AnySourceData, Layer, LngLat, LngLatBoundsLike, MapboxGeoJSONFeature, LngLatBounds, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
@@ -18,13 +18,13 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "../app.component";
 
-
 @NgModule({
   imports: [BrowserModule, FormsModule],
   declarations: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
 
 @Component({
   selector: "app-basemap",
@@ -46,7 +46,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   pitch: number;
   bearing: number;
   //
-  featureArray = [];
+  selectedFeatures = [];
 
   popUp: mapboxgl.Popup;
 
@@ -58,15 +58,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   current;
   box;
 
+
   constructor(
     private cityio: CityIOService,
     private layerLoader: LayerLoaderService,
     private config: ConfigurationService,
     private authenticationService: AuthenticationService,
+    private alertService: AlertService,
+    private _bottomSheet: MatBottomSheet,
+    private localStorageService: LocalStorageService,
     public dialog: MatDialog,
     private router: Router,
-    private zone: NgZone
-  ) {
+    private zone: NgZone) {
+
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -210,6 +214,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   private addGridInteraction() {
+    let localStorageGrid = this.localStorageService.getGrid();
+    if (localStorageGrid) {
+      this._bottomSheet.open(RestoreMessage);
+
+      this._bottomSheet._openedBottomSheetRef.afterDismissed().subscribe((data) => {
+        if (data) {
+          this.restoreLocalStorageGrid(localStorageGrid);
+        } else {
+          this.localStorageService.removeGrid();
+        }
+      })
+    }
     this.map.on("click", "grid-test", this.clickOnGrid);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
@@ -252,7 +268,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       if (e.key === "w") {
         this.removePopUp();
         for (let feature of currentSource["features"]) {
-          if (this.featureArray.includes(feature.properties["id"])) {
+          if (this.selectedFeatures.includes(feature.properties["id"])) {
             const height = feature.properties["height"];
             console.log(height);
 
@@ -267,6 +283,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           clickedLayer.setData(currentSource);
         }
       }
+      this.localStorageService.saveGrid(currentSource);
     }
 
     //Keystroke for menu toggle
@@ -275,6 +292,21 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.toggleMenu();
     }
   };
+
+  private restoreLocalStorageGrid(localStorageGrid) {
+    let gridLayer: GeoJSONSource = this.map.getSource(
+      "grid-test"
+    ) as GeoJSONSource;
+
+    // Restore the grid but set the features to unselected stage
+    for (let feature of localStorageGrid["features"]) {
+      if (feature.properties["isSelected"]) {
+        feature.properties["isSelected"] = false;
+        feature.properties["color"] = feature.properties["initial-color"];
+      }
+    }
+    gridLayer.setData(localStorageGrid);
+  }
 
   private removePopUp() {
     if (this.popUp) {
@@ -311,16 +343,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
           if (feature.properties["color"] === "#ff00ff") {
-            feature.properties["color"] = "#008dd5";
+            feature.properties["color"] = feature.properties["initial-color"];
+            feature.properties["isSelected"] = false;
             // remove this cell from array
-            for (var i = this.featureArray.length - 1; i >= 0; i--) {
-              if (this.featureArray[i] === clickedFeature.properties["id"]) {
-                this.featureArray.splice(i, 1);
+            for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
+              if (this.selectedFeatures[i] === clickedFeature.properties["id"]) {
+                this.selectedFeatures.splice(i, 1);
               }
             }
           } else {
+            feature.properties["initial-color"] = feature.properties["color"];
+            feature.properties["isSelected"] = true;
             feature.properties["color"] = "#ff00ff";
-            this.featureArray.push(clickedFeature.properties["id"]);
+            this.selectedFeatures.push(clickedFeature.properties["id"]);
           }
         }
       }
@@ -506,11 +541,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private closeAndLogout() {
-    if (this.authenticationService.currentUserValue) {
+    if (this.authenticationService.currentUserValue && this.localStorageService.getGrid()) {
       this.openDialog();
     } else {
-      this.router.navigate([""]);
+      this.exitEditor();
     }
+  }
+
+  private saveCurrentChanges() {
+    // TODO: send data to cityIO
+    this.localStorageService.removeGrid();
+    this.alertService.success("Data saved", "");
   }
 
   /*
@@ -524,11 +565,16 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        // TODO: send data to cityIO
+      if(result) {
+        this.saveCurrentChanges();
       }
-      this.router.navigate([""]);
-      this.authenticationService.logout();
+      this.exitEditor();
     });
+  }
+
+  private exitEditor() {
+    this.localStorageService.removeGrid();
+    this.authenticationService.logout();
+    this.router.navigate(['']);
   }
 }
