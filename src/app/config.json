@@ -1,6 +1,6 @@
 {
   "mapCenter": [10.0143909533867, 53.53128461384861],
-  "mapZoom": 16,
+  "mapZoom": 15,
   "bearing": 34.8,
   "pitch": 30,
   "gridZoom": 16.3,
@@ -53,6 +53,13 @@
       "paint": {
         "circle-color": "red"
       },
+      "showInLayerList": true,
+      "addOnMapInitialisation": false
+    },
+    {
+      "id": "trips-deckgl",
+      "type": "circle",
+      "addDirectly" : true,
       "showInLayerList": true,
       "addOnMapInitialisation": false
     },

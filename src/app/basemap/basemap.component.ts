@@ -1,36 +1,30 @@
-import {
-  AfterViewInit,
-  Component,
-  OnInit,
-  NgZone,
-  HostListener
-} from "@angular/core";
-import {environment} from "../../environments/environment";
-import {interval} from "rxjs";
+import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
+import { environment } from "../../environments/environment";
+import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {CsLayer} from "../../typings";
-import {
-  AnySourceData,
-  Layer,
-  LngLat,
-  MapboxGeoJSONFeature,
-  LngLatBounds,
-  LngLatBoundsLike,
-  LngLatLike
-} from "mapbox-gl";
-import {GeoJSONSource} from "mapbox-gl";
-import {ConfigurationService} from "../services/configuration.service";
-import {LayerLoaderService} from "../services/layer-loader.service";
-import {CityIOService} from "../services/cityio.service";
-import {AuthenticationService} from "../services/authentication.service";
-import {MatDialog} from "@angular/material";
-import {ExitEditorDialog} from "../dialogues/exit-editor-dialog";
-import {Router} from "@angular/router";
-import {LocalStorageService} from "../services/local-storage.service";
-import {MatBottomSheet} from "@angular/material";
-import {RestoreMessage} from "../dial/restore-message";
-import {AlertService} from "../services/alert.service";
+import { CsLayer } from "../../typings";
+import { AnySourceData, Layer, LngLat, LngLatBoundsLike, MapboxGeoJSONFeature, LngLatBounds, LngLatLike } from "mapbox-gl";
+import { GeoJSONSource } from "mapbox-gl";
+import { ConfigurationService } from "../services/configuration.service";
+import { LayerLoaderService } from "../services/layer-loader.service";
+import { CityIOService } from "../services/cityio.service";
+import { AuthenticationService } from "../services/authentication.service";
+import { MatDialog } from "@angular/material";
+import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
+import { Router } from "@angular/router";
+import { NgModule } from "@angular/core";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
+import { AppComponent } from "../app.component";
+
+@NgModule({
+  imports: [BrowserModule, FormsModule],
+  declarations: [AppComponent],
+  bootstrap: [AppComponent]
+})
+export class AppModule {}
+
 
 @Component({
   selector: "app-basemap",
@@ -38,7 +32,6 @@ import {AlertService} from "../services/alert.service";
   styleUrls: ["./basemap.component.scss"]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
-
   map: mapboxgl.Map;
   mapCanvas;
   style;
@@ -66,16 +59,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   box;
 
 
-  constructor(private cityio: CityIOService,
-              private layerLoader: LayerLoaderService,
-              private config: ConfigurationService,
-              private authenticationService: AuthenticationService,
-              public dialog: MatDialog,
-              private router: Router,
-              private alertService: AlertService,
-              private _bottomSheet: MatBottomSheet,
-              private localStorageService: LocalStorageService,
-              private zone: NgZone) {
+  constructor(
+    private cityio: CityIOService,
+    private layerLoader: LayerLoaderService,
+    private config: ConfigurationService,
+    private authenticationService: AuthenticationService,
+    private alertService: AlertService,
+    private _bottomSheet: MatBottomSheet,
+    private localStorageService: LocalStorageService,
+    public dialog: MatDialog,
+    private router: Router,
+    private zone: NgZone) {
+
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -91,8 +86,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit() {
-  }
+  ngAfterViewInit() {}
 
   private initializeMap(cityIOdata) {
     // TODO: more variables from cityIO or we would suggest setting them via config.json since not everyone has a cityio server
@@ -110,8 +104,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ];
 
     // Just what I would suggest to center GB - more or less
-    // this.center = [10.014390953386766, 53.53128461384861];
+    this.center = [10.014390953386766, 53.53128461384861];
 
+    // this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
@@ -237,7 +232,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     // map multi select for logged in users
     if (this.authenticationService.currentUserValue) {
-      this.mapCanvas.addEventListener('mousedown', this.mouseDown, true);
+      this.mapCanvas.addEventListener("mousedown", this.mouseDown, true);
     }
 
     this.map.on("dragstart", e => {
@@ -332,9 +327,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       .setLngLat(e.lngLat)
       .setHTML(
         "type: " +
-        clickedFeature.properties.type +
-        " id: " +
-        clickedFeature.properties.id
+          clickedFeature.properties.type +
+          " id: " +
+          clickedFeature.properties.id
       )
       .addTo(this.map);
   };
@@ -366,9 +361,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       }
       clickedLayer.setData(currentSource);
     }
-
   }
-
 
   /*
    *   Handle multiple element selection
@@ -380,7 +373,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       e.clientX - rect.left - this.mapCanvas.clientLeft,
       e.clientY - rect.top - this.mapCanvas.clientTop
     );
-  }
+  };
 
   mouseDown = e => {
     // Continue the rest of the function if the shiftkey is pressed.
@@ -391,13 +384,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // this.map.boxZoom.disable();
 
     // Call functions for the following events
-    document.addEventListener('mousemove', this.onMouseMove);
-    document.addEventListener('mouseup', this.onMouseUp);
-    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener("mousemove", this.onMouseMove);
+    document.addEventListener("mouseup", this.onMouseUp);
+    document.addEventListener("keydown", this.onKeyDown);
 
     // Capture the first xy coordinates
     this.start = this.mousePos(e);
-  }
+  };
 
   onMouseMove = e => {
     // Capture the ongoing xy coordinates
@@ -405,8 +398,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     // Append the box element if it doesnt exist
     if (!this.box) {
-      this.box = document.createElement('div');
-      this.box.style.cssText = "background: rgba(56,135,190,0.1); border: 2px solid #3887be;";
+      this.box = document.createElement("div");
+      this.box.style.cssText =
+        "background: rgba(56,135,190,0.1); border: 2px solid #3887be;";
       this.mapCanvas.appendChild(this.box);
     }
 
@@ -416,28 +410,28 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       maxY = Math.max(this.start.y, this.current.y);
 
     // Adjust width and xy position of the box element ongoing
-    let pos = 'translate(' + minX + 'px,' + minY + 'px)';
+    let pos = "translate(" + minX + "px," + minY + "px)";
     this.box.style.transform = pos;
     this.box.style.WebkitTransform = pos;
-    this.box.style.width = maxX - minX + 'px';
-    this.box.style.height = maxY - minY + 'px';
-  }
+    this.box.style.width = maxX - minX + "px";
+    this.box.style.height = maxY - minY + "px";
+  };
 
   onMouseUp = e => {
     // Capture xy coordinates
     this.finish([this.start, this.mousePos(e)]);
-  }
+  };
 
   onKeyDown = e => {
     // If the ESC key is pressed
     if (e.keyCode === 27) this.finish(null);
-  }
+  };
 
   finish(bbox) {
     // Remove these events now that finish has been called.
-    document.removeEventListener('mousemove', this.onMouseMove);
-    document.removeEventListener('keydown', this.onKeyDown);
-    document.removeEventListener('mouseup', this.onMouseUp);
+    document.removeEventListener("mousemove", this.onMouseMove);
+    document.removeEventListener("keydown", this.onKeyDown);
+    document.removeEventListener("mouseup", this.onMouseUp);
 
     if (this.box) {
       this.box.parentNode.removeChild(this.box);
@@ -446,16 +440,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     // If bbox exists. use this value as the argument for `queryRenderedFeatures`
     if (bbox) {
-      let features = this.map.queryRenderedFeatures(bbox, {layers: ['grid-test']});
+      let features = this.map.queryRenderedFeatures(bbox, {
+        layers: ["grid-test"]
+      });
 
       if (features.length >= 1000) {
-        return window.alert('Select a smaller number of features');
+        return window.alert("Select a smaller number of features");
       }
 
       // Run through the selected features and set a filter
       // to match features with unique FIPS codes to activate
       // the `counties-highlighted` layer.
-/*      let filter = features.reduce(function (memo, feature) {
+      /*      let filter = features.reduce(function (memo, feature) {
         memo.push(feature.properties.FIPS);
         return memo;
       }, ['in', 'FIPS']);
@@ -466,7 +462,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     this.map.dragPan.enable();
   }
-
 
   /*
    *   Map menu logic
@@ -516,7 +511,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     const topLeft: LngLatLike = coordinates[0];
     const bottomRight: LngLatLike = coordinates[1];
 
-    const bounds = coordinates.reduce(function (bounds, coord) {
+    const bounds = coordinates.reduce(function(bounds, coord) {
       return bounds.extend(LngLat.convert(coord));
     }, new mapboxgl.LngLatBounds(topLeft, bottomRight));
 
@@ -560,12 +555,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-  *   On exit actions
-  */
+   *   On exit actions
+   */
 
   openDialog(): void {
     const dialogRef = this.dialog.open(ExitEditorDialog, {
-      width: '250px',
+      width: "250px",
       autoFocus: false
     });
 
