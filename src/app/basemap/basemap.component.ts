@@ -10,13 +10,16 @@ import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
 import { CityIOService } from "../services/cityio.service";
 import { AuthenticationService } from "../services/authentication.service";
-import { MatDialog } from "@angular/material";
+import {MatBottomSheet, MatDialog} from "@angular/material";
 import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
 import { Router } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "../app.component";
+import {AlertService} from "../services/alert.service";
+import {LocalStorageService} from "../services/local-storage.service";
+import {RestoreMessage} from "../dial/restore-message";
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
