@@ -2,7 +2,6 @@ import { MapboxLayer } from "@deck.gl/mapbox";
 import { TripsLayer } from "@deck.gl/geo-layers";
 
 export class GamaDeckGlLayer {
-
   public static createTripsLayer(layerId): MapboxLayer {
     const DATA_URL = {
       TRIPS:
@@ -10,7 +9,7 @@ export class GamaDeckGlLayer {
     };
 
     function renderLayers() {
-      let loopLength = 500;
+      let loopLength = 1000;
       let animationSpeed = 50;
       const timestamp = Date.now() / 1000;
       const loopTime = loopLength / animationSpeed;
@@ -27,7 +26,7 @@ export class GamaDeckGlLayer {
       data: DATA_URL.TRIPS,
       getPath: d => d.segments,
       getColor: d => {
-        switch (d.profile) {
+        switch (d.vendor) {
           case 0:
             return [255, 0, 255];
           case 1:
