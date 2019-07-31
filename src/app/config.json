@@ -59,14 +59,12 @@
     {
       "id": "trips-deckgl",
       "type": "circle",
-      "addDirectly": true,
       "showInLayerList": true,
       "addOnMapInitialisation": false
     },
     {
       "id": "gama-deckgl",
       "type": "circle",
-      "addDirectly": true,
       "showInLayerList": true,
       "addOnMapInitialisation": false
     },

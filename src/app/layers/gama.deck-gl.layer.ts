@@ -1,15 +1,9 @@
-// **************************************
-//! DeckGL imports
 import { MapboxLayer } from "@deck.gl/mapbox";
 import { TripsLayer } from "@deck.gl/geo-layers";
-import { CsLayer } from "../../typings";
-
-// **************************************
 
 export class GamaDeckGlLayer {
-  // **************************************
 
-  public static createTripsLayer(): CsLayer {
+  public static createTripsLayer(): MapboxLayer {
     const DATA_URL = {
       TRIPS:
         "https://cityio.media.mit.edu/api/table/grasbrook/cityIO_Gama_Hamburg"
@@ -58,12 +52,6 @@ export class GamaDeckGlLayer {
       renderLayers();
     });
 
-    let csLayer: CsLayer = tripLayer;
-    csLayer.addOnMapInitialisation = true;
-    csLayer.showInLayerList = true;
-    csLayer.displayName = "gama";
-    return csLayer;
-
-    // **************************************
+    return tripLayer;
   }
 }

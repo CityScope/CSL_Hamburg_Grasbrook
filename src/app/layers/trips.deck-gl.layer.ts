@@ -1,20 +1,14 @@
-// **************************************
-//! DeckGL imports
 import { MapboxLayer } from "@deck.gl/mapbox";
 import { TripsLayer } from "@deck.gl/geo-layers";
 import * as mobilityData from "../../assets/modules_json_backup/mobility_service.json";
-import { CsLayer } from "../../typings";
-
-// **************************************
 
 export class TripsDeckGlLayer {
-  // **************************************
   // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/mapbox-layer.md
   // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/overview.md?source=post_page---------------------------#using-with-pure-js
 
   json: any = mobilityData;
 
-  public static createTripsLayer(): CsLayer {
+  public static createTripsLayer(): MapboxLayer {
     const DATA_URL = {
       TRIPS:
         // "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
@@ -63,12 +57,6 @@ export class TripsDeckGlLayer {
       renderLayers();
     });
 
-    let csLayer: CsLayer = tripLayer;
-    csLayer.addOnMapInitialisation = true;
-    csLayer.showInLayerList = true;
-    csLayer.displayName = "Trips";
-    return csLayer;
-
-    // **************************************
+    return tripLayer;
   }
 }

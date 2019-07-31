@@ -17,13 +17,20 @@ export class LayerLoaderService {
     for (let layer of layers) {
       if (layer.id === "trips-deckgl") {
         let tripsDeck = TripsDeckGlLayer.createTripsLayer();
-        layers[layers.indexOf(layer)] = tripsDeck;
+        layers[layers.indexOf(layer)] = this.castCSLayer(tripsDeck, "trips");
       } else if (layer.id === "gama-deckgl") {
         let gamaDeck = GamaDeckGlLayer.createTripsLayer();
-        layers[layers.indexOf(layer)] = gamaDeck;
+        layers[layers.indexOf(layer)] = this.castCSLayer(gamaDeck, "gama");
       }
     }
-
     return layers;
+  }
+
+  castCSLayer(layer, displayName) {
+    let csLayer: CsLayer = layer;
+    csLayer.addOnMapInitialisation = true;
+    csLayer.showInLayerList = true;
+    csLayer.displayName = displayName;
+    return csLayer;
   }
 }
