@@ -16,11 +16,11 @@ export class LayerLoaderService {
 
     for (let layer of layers) {
       if (layer.id === "trips-deckgl") {
-        let tripsDeck = TripsDeckGlLayer.createTripsLayer();
-        layers[layers.indexOf(layer)] = this.castCSLayer(tripsDeck, "trips");
+        let tripsDeck = TripsDeckGlLayer.createTripsLayer(layer.id);
+        layers[layers.indexOf(layer)] = this.castCSLayer(tripsDeck, layer.id);
       } else if (layer.id === "gama-deckgl") {
-        let gamaDeck = GamaDeckGlLayer.createTripsLayer();
-        layers[layers.indexOf(layer)] = this.castCSLayer(gamaDeck, "gama");
+        let gamaDeck = GamaDeckGlLayer.createTripsLayer(layer.id);
+        layers[layers.indexOf(layer)] = this.castCSLayer(gamaDeck, layer.id);
       }
     }
     return layers;

@@ -3,7 +3,7 @@ import { TripsLayer } from "@deck.gl/geo-layers";
 
 export class GamaDeckGlLayer {
 
-  public static createTripsLayer(): MapboxLayer {
+  public static createTripsLayer(layerId): MapboxLayer {
     const DATA_URL = {
       TRIPS:
         "https://cityio.media.mit.edu/api/table/grasbrook/cityIO_Gama_Hamburg"
@@ -23,7 +23,7 @@ export class GamaDeckGlLayer {
 
     const tripLayer = new MapboxLayer({
       type: TripsLayer,
-      id: "gama",
+      id: layerId,
       data: DATA_URL.TRIPS,
       getPath: d => d.segments,
       getColor: d => {

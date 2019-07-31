@@ -8,7 +8,7 @@ export class TripsDeckGlLayer {
 
   json: any = mobilityData;
 
-  public static createTripsLayer(): MapboxLayer {
+  public static createTripsLayer(layerId): MapboxLayer {
     const DATA_URL = {
       TRIPS:
         // "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
@@ -30,7 +30,7 @@ export class TripsDeckGlLayer {
 
     const tripLayer = new MapboxLayer({
       type: TripsLayer,
-      id: "trips",
+      id: layerId,
       data: DATA_URL.TRIPS,
       getPath: d => d.segments,
       getColor: d => {
