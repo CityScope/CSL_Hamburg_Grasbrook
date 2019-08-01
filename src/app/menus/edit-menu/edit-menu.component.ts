@@ -7,20 +7,24 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 })
 export class EditMenuComponent implements OnInit {
 
-  @Input() currentHeight = 10;
-  @Output() heightOutput = new EventEmitter<Object>();
+  @Input() currentHeight = 25;
+  @Output() menuOutput = new EventEmitter<Object>();
   constructor() { }
 
   ngOnInit() {
   }
 
-  onInputChange(event: any) {
+  onInputChange(event: any, attributeId) {
+    let output = {};
+    output[attributeId] = event.value;
+    this.menuOutput.emit(output);
+
   }
 
   onCloseMenu(event: any) {
-    let output = {}
-    output['height'] = this.currentHeight;
-    this.heightOutput.emit(output);
+    // let output = {}
+    // output['height'] = this.currentHeight;
+    // this.menuOutput.emit(output);
   }
 
 }

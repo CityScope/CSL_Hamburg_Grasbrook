@@ -2,9 +2,9 @@
   <span>Height</span>
   <br />
   <mat-slider
-    (input)="onInputChange($event)"
+    (change)="onInputChange($event, 'height')"
     style="width: 250px"
-    [max]="30"
+    [max]="50"
     [min]="1"
     [step]="1"
     [(ngModel)]="currentHeight"

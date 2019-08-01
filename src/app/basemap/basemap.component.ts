@@ -218,7 +218,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   private addGridInteraction() {
-    this.map.on("click", "grid-test", this.clickMenuClose);
+    this.map.on("click", "grid-test", this.clickOnGrid);
+    this.map.on("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
 
@@ -236,7 +237,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private removeGridInteraction() {
-    this.map.off("click", "grid-test", this.clickMenuClose);
+    this.map.off("click", "grid-test", this.clickOnGrid);
+    this.map.off("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
 
@@ -253,17 +255,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   keyStrokeOnMap = e => {
     if (this.authenticationService.currentUserValue) {
-      let clickedLayer: GeoJSONSource = this.map.getSource(
-        "grid-test"
-      ) as GeoJSONSource;
-      let currentSource = clickedLayer["_data"];
       if (e.key === "w") {
+        let {clickedLayer, currentSource} = this.getGridSource();
         this.removePopUp();
         for (let feature of currentSource["features"]) {
           if (this.featureArray.includes(feature.properties["id"])) {
             const height = feature.properties["height"];
-            console.log(height);
-
             if (height !== null) {
               if (height < 50) {
                 feature.properties["height"] = height + 1;
@@ -272,8 +269,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
               }
             }
           }
-          clickedLayer.setData(currentSource);
         }
+        clickedLayer.setData(currentSource);
       }
     }
 
@@ -283,6 +280,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.toggleMenu();
     }
   };
+
+  private getGridSource() {
+    let clickedLayer: GeoJSONSource = this.map.getSource(
+      "grid-test"
+    ) as GeoJSONSource;
+    let currentSource = clickedLayer["_data"];
+    return {clickedLayer, currentSource};
+  }
 
   private removePopUp() {
     if (this.popUp) {
@@ -311,11 +316,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   };
 
   private showFeaturesSelected(selectedFeature: any[]) {
+    let {clickedLayer, currentSource} = this.getGridSource();
     for (let clickedFeature of selectedFeature) {
-      let clickedLayer: GeoJSONSource = this.map.getSource(
-        "grid-test"
-      ) as GeoJSONSource;
-      let currentSource = clickedLayer["_data"];
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
           if (feature.properties["color"] === "#ff00ff") {
@@ -422,20 +424,28 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         return window.alert("Select a smaller number of features");
       }
 
-      // Run through the selected features and set a filter
-      // to match features with unique FIPS codes to activate
-      // the `counties-highlighted` layer.
-      /*      let filter = features.reduce(function (memo, feature) {
-        memo.push(feature.properties.FIPS);
-        return memo;
-      }, ['in', 'FIPS']);
-
-      this.map.setFilter("counties-highlighted", filter);*/
       this.showFeaturesSelected(features);
     }
 
     this.map.dragPan.enable();
   }
+
+  /*
+   *   Select menu logic
+   */
+
+  public handleMenuOutput(menuOutput) {
+    let {clickedLayer, currentSource} = this.getGridSource();
+    for (let feature of currentSource["features"]) {
+      if (this.featureArray.includes(feature.properties["id"])) {
+        for (let key of Object.keys(menuOutput)) {
+          feature.properties[key] = menuOutput[key];
+        }
+      }
+    }
+    clickedLayer.setData(currentSource);
+  }
+
 
   /*
    *   Map menu logic
