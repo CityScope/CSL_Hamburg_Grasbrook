@@ -26,7 +26,7 @@ export class GamaDeckGlLayer {
       data: DATA_URL.TRIPS,
       getPath: d => d.segments,
       getColor: d => {
-        switch (d.vendor) {
+        switch (d.profile) {
           case 0:
             return [255, 0, 255];
           case 1:
