@@ -180,7 +180,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           this.removeGridInteraction();
         }
         this.map.removeLayer(layer.id);
-        this.map.removeSource(layer.id);
+        if (this.map.getSource(layer.id)) {
+          this.map.removeSource(layer.id);
+        }
       }
     }
   }
