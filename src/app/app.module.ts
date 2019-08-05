@@ -13,6 +13,7 @@ import {
   MatSnackBarModule,
   MatTooltipModule
 } from "@angular/material";
+import {EditMenuComponent } from './menus/edit-menu/edit-menu.component';
 import {HomeComponent} from "./home/home.component";
 import {MapSettingComponent} from "./basemap/map-controls/map-setting/map-setting.component";
 import {LegendComponent} from "./basemap/map-controls/legend/legend.component";
@@ -25,7 +26,6 @@ import {JwtInterceptor} from "./interceptors/jwt.interceptor";
 import {ReactiveFormsModule, FormsModule } from "@angular/forms";
 import {ErrorInterceptor} from "./interceptors/error.interceptor";
 import {ExitEditorDialog} from "./dialogues/exit-editor-dialog";
-import { EditMenuComponent } from './menus/edit-menu/edit-menu.component';
 
 @NgModule({
   declarations: [

@@ -65,7 +65,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   sliderTop = 0;
   sliderLeft = 0;
   sliderDisplay = false;
-  heightFeature = {};
+
 
   constructor(
     private cityio: CityIOService,
