@@ -24,6 +24,10 @@
        matTooltipPosition="right" matTooltip="Save current changes">save</i>
   </div>
 
+  <app-edit-menu *ngIf="sliderDisplay" [currentHeight]="currentHeight" style="position: absolute"
+                     [style.top.px]="sliderTop" [style.left.px]="sliderLeft"
+                      (menuOutput)="handleMenuOutput($event)"></app-edit-menu>
+
   <div *ngIf="isShowMenu" class="modal-container-left container-left-top">
     <app-map-setting
       (mapSettings)="mapSettingsListener($event)"

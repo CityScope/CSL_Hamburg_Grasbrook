@@ -11,6 +11,7 @@ import {
   MatButtonModule,
   MatDialogModule,
   MatIconModule,
+  MatSliderModule,
   MatSnackBarModule,
   MatTooltipModule
 } from "@angular/material";
@@ -29,7 +30,7 @@ import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { ExitEditorDialog } from "./dialogues/exit-editor-dialog";
 import {LocalStorageService} from "./services/local-storage.service";
 import {RestoreMessage} from "./dial/restore-message";
-
+import {EditMenuComponent } from './menus/edit-menu/edit-menu.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import {RestoreMessage} from "./dial/restore-message";
     LayerControlComponent,
     LoginComponent,
     ExitEditorDialog,
+    EditMenuComponent,
     RestoreMessage
   ],
   imports: [
@@ -52,9 +54,12 @@ import {RestoreMessage} from "./dial/restore-message";
     MatTooltipModule,
     MatDialogModule,
     MatButtonModule,
+    MatSliderModule,
+    FormsModule
     MatBottomSheetModule,
     MatListModule,
     ReactiveFormsModule
+
   ],
   exports: [MatSnackBarModule],
   providers: [
