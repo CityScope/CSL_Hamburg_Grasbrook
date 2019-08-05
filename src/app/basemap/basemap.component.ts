@@ -273,8 +273,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   keyStrokeOnMap = e => {
     if (this.authenticationService.currentUserValue) {
+      let {gridLayer, currentSource} = this.getGridSource();
       if (e.key === "w") {
-        let {clickedLayer, currentSource} = this.getGridSource();
         this.removePopUp();
         for (let feature of currentSource["features"]) {
           if (this.selectedFeatures.includes(feature.properties["id"])) {
@@ -288,7 +288,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             }
           }
         }
-        clickedLayer.setData(currentSource);
+        gridLayer.setData(currentSource);
       }
       this.localStorageService.saveGrid(currentSource);
     }
@@ -300,19 +300,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
   };
 
-  private getGridSource() {
-    let clickedLayer: GeoJSONSource = this.map.getSource(
-      "grid-test"
-    ) as GeoJSONSource;
-    let currentSource = clickedLayer["_data"];
-    return {clickedLayer, currentSource};
-  }
-
   private restoreLocalStorageGrid(localStorageGrid) {
-    let gridLayer: GeoJSONSource = this.map.getSource(
-      "grid-test"
-    ) as GeoJSONSource;
-
+    let {gridLayer, currentSource} = this.getGridSource();
     // Restore the grid but set the features to unselected stage
     for (let feature of localStorageGrid["features"]) {
       if (feature.properties["isSelected"]) {
@@ -321,6 +310,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       }
     }
     gridLayer.setData(localStorageGrid);
+  }
+
+  private getGridSource() {
+    let gridLayer: GeoJSONSource = this.map.getSource(
+      "grid-test"
+    ) as GeoJSONSource;
+    let currentSource = gridLayer["_data"];
+    return {gridLayer, currentSource};
   }
 
   private removePopUp() {
@@ -350,7 +347,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   };
 
   private showFeaturesSelected(selectedFeature: any[]) {
-    let {clickedLayer, currentSource} = this.getGridSource();
+    let {gridLayer, currentSource} = this.getGridSource();
     for (let clickedFeature of selectedFeature) {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
@@ -371,7 +368,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           }
         }
       }
-      clickedLayer.setData(currentSource);
+      gridLayer.setData(currentSource);
     }
   }
 
@@ -472,15 +469,15 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   public handleMenuOutput(menuOutput) {
-    let {clickedLayer, currentSource} = this.getGridSource();
+    let {gridLayer, currentSource} = this.getGridSource();
     for (let feature of currentSource["features"]) {
-      if (this.featureArray.includes(feature.properties["id"])) {
+      if (this.selectedFeatures.includes(feature.properties["id"])) {
         for (let key of Object.keys(menuOutput)) {
           feature.properties[key] = menuOutput[key];
         }
       }
     }
-    clickedLayer.setData(currentSource);
+    gridLayer.setData(currentSource);
   }
 
 

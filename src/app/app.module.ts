@@ -25,7 +25,7 @@ import { CityIOService } from "./services/cityio.service";
 import { LoginComponent } from "./login/login.component";
 import { fakeBackendProvider } from "./interceptors/fake-backend";
 import { JwtInterceptor } from "./interceptors/jwt.interceptor";
-import { ReactiveFormsModule } from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { ErrorInterceptor } from "./interceptors/error.interceptor";
 import { ExitEditorDialog } from "./dialogues/exit-editor-dialog";
 import {LocalStorageService} from "./services/local-storage.service";
@@ -55,7 +55,7 @@ import {EditMenuComponent } from './menus/edit-menu/edit-menu.component';
     MatDialogModule,
     MatButtonModule,
     MatSliderModule,
-    FormsModule
+    FormsModule,
     MatBottomSheetModule,
     MatListModule,
     ReactiveFormsModule
