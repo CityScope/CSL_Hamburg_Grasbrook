@@ -593,18 +593,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   clickMenuClose = e => {
-    this.selectedFeatures = [];
-
     this.sliderDisplay = false;
     this.map.off("click", this.clickMenuClose);
     //
     // !!!!!
     let { gridLayer, currentSource } = this.getGridSource();
     for (let feature of currentSource["features"]) {
-      feature.properties["color"] = feature.properties["initial-color"];
-      feature.properties["isSelected"] = false;
+      if (feature.properties["color"] === "#ff00ff") {
+        feature.properties["color"] = feature.properties["initial-color"];
+        feature.properties["isSelected"] = false;
+      }
     }
     gridLayer.setData(currentSource);
+    this.selectedFeatures = [];
   };
 
   /*
