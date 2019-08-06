@@ -4,22 +4,30 @@ import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
-import { AnySourceData, Layer, LngLat, LngLatBoundsLike, MapboxGeoJSONFeature, LngLatBounds, LngLatLike } from "mapbox-gl";
+import {
+  AnySourceData,
+  Layer,
+  LngLat,
+  LngLatBoundsLike,
+  MapboxGeoJSONFeature,
+  LngLatBounds,
+  LngLatLike
+} from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
 import { CityIOService } from "../services/cityio.service";
 import { AuthenticationService } from "../services/authentication.service";
-import {MatBottomSheet, MatDialog} from "@angular/material";
+import { MatBottomSheet, MatDialog } from "@angular/material";
 import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
 import { Router } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { AppComponent } from "../app.component";
-import {AlertService} from "../services/alert.service";
-import {LocalStorageService} from "../services/local-storage.service";
-import {RestoreMessage} from "../dial/restore-message";
+import { AlertService } from "../services/alert.service";
+import { LocalStorageService } from "../services/local-storage.service";
+import { RestoreMessage } from "../dial/restore-message";
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
@@ -27,7 +35,6 @@ import {RestoreMessage} from "../dial/restore-message";
   bootstrap: [AppComponent]
 })
 export class AppModule {}
-
 
 @Component({
   selector: "app-basemap",
@@ -77,8 +84,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private localStorageService: LocalStorageService,
     public dialog: MatDialog,
     private router: Router,
-    private zone: NgZone) {
-
+    private zone: NgZone
+  ) {
     // get the acess token
     // mapboxgl.accessToken = environment.mapbox.accessToken;
     (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -228,13 +235,15 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     if (localStorageGrid) {
       this._bottomSheet.open(RestoreMessage);
 
-      this._bottomSheet._openedBottomSheetRef.afterDismissed().subscribe((data) => {
-        if (data) {
-          this.restoreLocalStorageGrid(localStorageGrid);
-        } else {
-          this.localStorageService.removeGrid();
-        }
-      })
+      this._bottomSheet._openedBottomSheetRef
+        .afterDismissed()
+        .subscribe(data => {
+          if (data) {
+            this.restoreLocalStorageGrid(localStorageGrid);
+          } else {
+            this.localStorageService.removeGrid();
+          }
+        });
     }
     this.map.on("click", "grid-test", this.clickOnGrid);
     this.map.on("click", this.clickMenuClose);
@@ -273,14 +282,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   keyStrokeOnMap = e => {
     if (this.authenticationService.currentUserValue) {
-      let {gridLayer, currentSource} = this.getGridSource();
+      let { gridLayer, currentSource } = this.getGridSource();
       if (e.key === "w") {
         this.removePopUp();
         for (let feature of currentSource["features"]) {
           if (this.selectedFeatures.includes(feature.properties["id"])) {
             const height = feature.properties["height"];
             if (height !== null) {
-              if (height < 50) {
+              if (height < 100) {
                 feature.properties["height"] = height + 1;
               } else {
                 feature.properties["height"] = 0;
@@ -301,7 +310,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   };
 
   private restoreLocalStorageGrid(localStorageGrid) {
-    let {gridLayer, currentSource} = this.getGridSource();
+    let { gridLayer, currentSource } = this.getGridSource();
     // Restore the grid but set the features to unselected stage
     for (let feature of localStorageGrid["features"]) {
       if (feature.properties["isSelected"]) {
@@ -317,7 +326,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       "grid-test"
     ) as GeoJSONSource;
     let currentSource = gridLayer["_data"];
-    return {gridLayer, currentSource};
+    return { gridLayer, currentSource };
   }
 
   private removePopUp() {
@@ -347,7 +356,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   };
 
   private showFeaturesSelected(selectedFeature: any[]) {
-    let {gridLayer, currentSource} = this.getGridSource();
+    let { gridLayer, currentSource } = this.getGridSource();
     for (let clickedFeature of selectedFeature) {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
@@ -356,7 +365,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             feature.properties["isSelected"] = false;
             // remove this cell from array
             for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
-              if (this.selectedFeatures[i] === clickedFeature.properties["id"]) {
+              if (
+                this.selectedFeatures[i] === clickedFeature.properties["id"]
+              ) {
                 this.selectedFeatures.splice(i, 1);
               }
             }
@@ -442,25 +453,21 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     document.removeEventListener("mousemove", this.onMouseMove);
     document.removeEventListener("keydown", this.onKeyDown);
     document.removeEventListener("mouseup", this.onMouseUp);
-
+    let features = null;
     if (this.box) {
       this.box.parentNode.removeChild(this.box);
       this.box = null;
     }
-
     // If bbox exists. use this value as the argument for `queryRenderedFeatures`
     if (bbox) {
-      let features = this.map.queryRenderedFeatures(bbox, {
+      features = this.map.queryRenderedFeatures(bbox, {
         layers: ["grid-test"]
       });
-
       if (features.length >= 1000) {
         return window.alert("Select a smaller number of features");
       }
-
       this.showFeaturesSelected(features);
     }
-
     this.map.dragPan.enable();
   }
 
@@ -469,7 +476,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    */
 
   public handleMenuOutput(menuOutput) {
-    let {gridLayer, currentSource} = this.getGridSource();
+    let { gridLayer, currentSource } = this.getGridSource();
     for (let feature of currentSource["features"]) {
       if (this.selectedFeatures.includes(feature.properties["id"])) {
         for (let key of Object.keys(menuOutput)) {
@@ -479,7 +486,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
     gridLayer.setData(currentSource);
   }
-
 
   /*
    *   Map menu logic
@@ -559,7 +565,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private closeAndLogout() {
-    if (this.authenticationService.currentUserValue && this.localStorageService.getGrid()) {
+    if (
+      this.authenticationService.currentUserValue &&
+      this.localStorageService.getGrid()
+    ) {
       this.openDialog();
     } else {
       this.exitEditor();
@@ -573,8 +582,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   /*
-  *   Slider menu
-  */
+   *   Slider menu
+   */
 
   private showEditMenu(evt) {
     this.sliderDisplay = true;
@@ -585,8 +594,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   clickMenuClose = e => {
     this.sliderDisplay = false;
-    this.map.off("click",  this.clickMenuClose);
-  }
+    this.map.off("click", this.clickMenuClose);
+    //
+    // !!!!!
+    let { gridLayer, currentSource } = this.getGridSource();
+    for (let feature of currentSource["features"]) {
+      if (feature.properties["color"] === "#ff00ff") {
+        feature.properties["color"] = feature.properties["initial-color"];
+        feature.properties["isSelected"] = false;
+      }
+    }
+    gridLayer.setData(currentSource);
+    this.selectedFeatures = [];
+  };
 
   /*
    *   On exit actions
@@ -599,7 +619,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if(result) {
+      if (result) {
         this.saveCurrentChanges();
       }
       this.exitEditor();
@@ -609,6 +629,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   private exitEditor() {
     this.localStorageService.removeGrid();
     this.authenticationService.logout();
-    this.router.navigate(['']);
+    this.router.navigate([""]);
   }
 }
