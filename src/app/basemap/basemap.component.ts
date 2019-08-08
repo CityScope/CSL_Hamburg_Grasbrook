@@ -64,8 +64,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   // Height slider values
   currentHeight = 10;
-  sliderTop = 0;
-  sliderLeft = 0;
+  sliderTop = 200;
+  sliderLeft = 200;
   sliderDisplay = false;
 
   constructor(
@@ -308,7 +308,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   clickOnGrid = e => {
-    this.showEditMenu(e);
+    this.showEditMenu();
 
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
@@ -400,7 +400,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   onMouseUp = e => {
     // Capture xy coordinates
     this.finish([this.start, this.mousePos(e)]);
-    this.showEditMenu(e);
+    this.showEditMenu();
   };
 
   onKeyDown = e => {
@@ -546,10 +546,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    *   Slider menu
    */
 
-  private showEditMenu(evt) {
+  private showEditMenu() {
     this.sliderDisplay = true;
-    this.sliderLeft = evt.x;
-    this.sliderTop = evt.y;
     this.map.on("click", this.clickMenuClose);
   }
 
