@@ -42,7 +42,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
   intervalMap = {};
-  selectedCellColor = "rgba(255,50,200,0.5)";
+  selectedCellColor = "rgba(0,255,0,0.8)";
 
   // Map config
   center: any;
@@ -216,8 +216,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   showMapLegend(layer: CsLayer) {
     // Activate the potential legend for the layer
-    // this.mapKeyLayer = layer;
-    // this.mapKeyVisible = true;
+    this.mapKeyLayer = layer;
+    this.mapKeyVisible = true;
   }
 
   /*
@@ -308,19 +308,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   clickOnGrid = e => {
+    this.showEditMenu(e);
+
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     this.showFeaturesSelected([clickedFeature]);
-    // add a popup data window
-    this.popUp = new mapboxgl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(
-        "type: " +
-          clickedFeature.properties.type +
-          " id: " +
-          clickedFeature.properties.id
-      )
-      .addTo(this.map);
   };
 
   private showFeaturesSelected(selectedFeature: any[]) {
@@ -407,8 +399,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   onMouseUp = e => {
     // Capture xy coordinates
-    this.showEditMenu(e);
     this.finish([this.start, this.mousePos(e)]);
+    this.showEditMenu(e);
   };
 
   onKeyDown = e => {
