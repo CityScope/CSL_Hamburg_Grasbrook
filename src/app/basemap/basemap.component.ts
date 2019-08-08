@@ -20,6 +20,7 @@ import { AppComponent } from "../app.component";
 import { AlertService } from "../services/alert.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { RestoreMessage } from "../dial/restore-message";
+import { rgb } from "d3";
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
@@ -41,6 +42,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
   intervalMap = {};
+  selectedCellColor = "rgba(255,50,200,0.5)";
 
   // Map config
   center: any;
@@ -326,7 +328,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     for (let clickedFeature of selectedFeature) {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
-          if (feature.properties["color"] === "#ff00ff") {
+          if (feature.properties["color"] === this.selectedCellColor) {
             feature.properties["color"] = feature.properties["initial-color"];
             feature.properties["isSelected"] = false;
             // remove this cell from array
@@ -340,7 +342,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           } else {
             feature.properties["initial-color"] = feature.properties["color"];
             feature.properties["isSelected"] = true;
-            feature.properties["color"] = "#ff00ff";
+            feature.properties["color"] = this.selectedCellColor;
             this.selectedFeatures.push(clickedFeature.properties["id"]);
           }
         }
@@ -530,6 +532,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.isShowMenu = !this.isShowMenu;
   }
 
+  // close button function
+  private closeAndLogout() {
+    if (
+      this.authenticationService.currentUserValue &&
+      this.localStorageService.getGrid()
+    ) {
+      this.openDialog();
+    } else {
+      this.exitEditor();
+    }
+  }
+
   private saveCurrentChanges() {
     // TODO: send data to cityIO
     this.localStorageService.removeGrid();
@@ -553,7 +567,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // restore grid colors when clikcing out of select box
     let { gridLayer, currentSource } = this.getGridSource();
     for (let feature of currentSource["features"]) {
-      if (feature.properties["color"] === "#ff00ff") {
+      if (feature.properties["color"] === this.selectedCellColor) {
         feature.properties["color"] = feature.properties["initial-color"];
         feature.properties["isSelected"] = false;
       }
