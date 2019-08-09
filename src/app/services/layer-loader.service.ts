@@ -28,7 +28,7 @@ export class LayerLoaderService {
 
   castCSLayer(layer, displayName) {
     let csLayer: CsLayer = layer;
-    csLayer.addOnMapInitialisation = true;
+    csLayer.addOnMapInitialisation = false;
     csLayer.showInLayerList = true;
     csLayer.displayName = displayName;
     return csLayer;

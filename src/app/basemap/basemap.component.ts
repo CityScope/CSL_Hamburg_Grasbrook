@@ -86,7 +86,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    console.log("init map");
+
     if (this.cityio.table_data == null) {
+      console.log("null cityIO");
+
       this.cityio.fetchCityIOdata().subscribe(data => {
         this.initializeMap(data);
       });
