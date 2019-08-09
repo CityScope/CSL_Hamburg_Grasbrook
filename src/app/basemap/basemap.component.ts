@@ -51,6 +51,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   bearing: number;
   //
   selectedFeatures = [];
+  editableGridLayer = "grid-test";
 
   popUp: mapboxgl.Popup;
 
@@ -162,7 +163,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
       // Too static - has to go somewhere
-      if (csLayer.id === "grid-test") {
+      if (csLayer.id === this.editableGridLayer) {
         this.addGridInteraction();
       }
     }
@@ -181,12 +182,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         } else {
           this.map.addLayer(layer);
           // Too static - has to go somewhere
-          if (layer.id === "grid-test") {
+          if (layer.id === this.editableGridLayer) {
             this.addGridInteraction();
           }
         }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
-        if (layer.id === "grid-test") {
+        if (layer.id === this.editableGridLayer) {
           this.removeGridInteraction();
         }
         this.map.removeLayer(layer.id);
@@ -243,7 +244,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           }
         });
     }
-    this.map.on("click", "grid-test", this.clickOnGrid);
+    this.map.on("click", this.editableGridLayer, this.clickOnGrid);
     this.map.on("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
@@ -260,7 +261,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private removeGridInteraction() {
-    this.map.off("click", "grid-test", this.clickOnGrid);
+    this.map.off("click", this.editableGridLayer, this.clickOnGrid);
     this.map.off("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
@@ -298,7 +299,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   private getGridSource() {
     let gridLayer: GeoJSONSource = this.map.getSource(
-      "grid-test"
+      this.editableGridLayer
     ) as GeoJSONSource;
     let currentSource = gridLayer["_data"];
     return { gridLayer, currentSource };
@@ -312,8 +313,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   clickOnGrid = e => {
-    this.showEditMenu();
-
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     this.showFeaturesSelected([clickedFeature]);
@@ -340,6 +339,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             feature.properties["isSelected"] = true;
             feature.properties["color"] = this.selectedCellColor;
             this.selectedFeatures.push(clickedFeature.properties["id"]);
+            this.showEditMenu();
           }
         }
       }
@@ -425,7 +425,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // If bbox exists. use this value as the argument for `queryRenderedFeatures`
     if (bbox) {
       features = this.map.queryRenderedFeatures(bbox, {
-        layers: ["grid-test"]
+        layers: [this.editableGridLayer]
       });
       if (features.length >= 1000) {
         return window.alert("Select a smaller number of features");
