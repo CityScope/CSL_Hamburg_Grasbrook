@@ -21,7 +21,7 @@
     "@angular/platform-browser": "^8.0.2",
     "@angular/platform-browser-dynamic": "^8.0.2",
     "@angular/router": "^8.0.2",
-    "@types/mapbox-gl": "^0.51.7",
+    "@types/mapbox-gl": "^0.51.12",
     "bootstrap": "^4.3.1",
     "core-js": "^3.1.4",
     "deck.gl": "^7.1.10",

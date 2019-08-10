@@ -3,6 +3,7 @@ import { CsLayer } from "../../typings";
 import { ConfigurationService } from "./configuration.service";
 import { TripsDeckGlLayer } from "../layers/trips.deck-gl.layer";
 import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
+import { GridLayer } from "../layers/grid.layer";
 
 @Injectable({
   providedIn: "root"
@@ -21,6 +22,9 @@ export class LayerLoaderService {
       } else if (layer.id === "gama-deckgl") {
         let gamaDeck = GamaDeckGlLayer.createTripsLayer(layer.id);
         layers[layers.indexOf(layer)] = this.castCSLayer(gamaDeck, layer.id);
+      } else if (layer.id === "grid") {
+        let gridLayer = GridLayer.createGridLayer(layer.id);
+        layers[layers.indexOf(layer)] = this.castCSLayer(gridLayer, layer.id);
       }
     }
     return layers;
