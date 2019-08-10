@@ -8,7 +8,7 @@ import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
-import { CityIOService } from "../services/cityio.service";
+// import { CityIOService } from "../services/cityio.service";
 import { AuthenticationService } from "../services/authentication.service";
 import { MatBottomSheet, MatDialog } from "@angular/material";
 import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
@@ -68,7 +68,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   sliderDisplay = false;
 
   constructor(
-    private cityio: CityIOService,
+    // private cityio: CityIOService,
     private layerLoader: LayerLoaderService,
     private config: ConfigurationService,
     private authenticationService: AuthenticationService,
@@ -86,16 +86,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     console.log("init map");
+    this.initializeMap([10.0143909533867, 53.53128461384861]);
 
-    if (this.cityio.table_data == null) {
-      console.log("null cityIO");
-
-      this.cityio.fetchCityIOdata().subscribe(data => {
-        this.initializeMap(data);
-      });
-    } else {
-      this.initializeMap(this.cityio.table_data);
-    }
+    // if (this.cityio.table_data == null) {
+    //   console.log("null cityIO");
+    //   this.cityio.fetchCityIOdata().subscribe(data => {
+    //     this.initializeMap(data);
+    //   });
+    // }
   }
 
   ngAfterViewInit() {}
@@ -110,15 +108,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.pitch = this.config.pitch;
 
     this.style = this.config.mapStyle;
-    this.center = [
-      cityIOdata.header.spatial.longitude,
-      cityIOdata.header.spatial.latitude
-    ];
+    // this.center = [
+    //   cityIOdata.header.spatial.longitude,
+    //   cityIOdata.header.spatial.latitude
+    // ];
 
     // Just what I would suggest to center GB - more or less
-    this.center = [10.014390953386766, 53.53128461384861];
+    this.center = cityIOdata;
 
-    // this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
@@ -137,7 +134,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("mousedown", event => {
-      this.cityio.mapPosition.next(event.point);
+      // this.cityio.mapPosition.next(event.point);
     });
 
     this.map.on("error", event => {
