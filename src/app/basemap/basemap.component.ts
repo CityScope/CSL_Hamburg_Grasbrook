@@ -20,7 +20,6 @@ import { AppComponent } from "../app.component";
 import { AlertService } from "../services/alert.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { RestoreMessage } from "../dial/restore-message";
-import { rgb } from "d3";
 
 @NgModule({
   imports: [BrowserModule, FormsModule],
