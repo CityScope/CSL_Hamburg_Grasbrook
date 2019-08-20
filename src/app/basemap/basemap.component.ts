@@ -4,15 +4,7 @@ import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import { CsLayer } from "../../typings";
-import {
-  AnySourceData,
-  Layer,
-  LngLat,
-  LngLatBoundsLike,
-  MapboxGeoJSONFeature,
-  LngLatBounds,
-  LngLatLike
-} from "mapbox-gl";
+import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
@@ -49,6 +41,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
   intervalMap = {};
+  selectedCellColor = "rgba(255,50,200,0.5)";
 
   // Map config
   center: any;
@@ -251,9 +244,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
 
     // map multi select for logged in users
-    if (this.authenticationService.currentUserValue) {
-      this.mapCanvas.addEventListener("mousedown", this.mouseDown, true);
-    }
+    this.mapCanvas.addEventListener("mousedown", this.mouseDown, true);
 
     this.map.on("dragstart", e => {
       this.removePopUp();
@@ -281,27 +272,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   // Handle all map keystroke interactions
 
   keyStrokeOnMap = e => {
-    if (this.authenticationService.currentUserValue) {
-      let { gridLayer, currentSource } = this.getGridSource();
-      if (e.key === "w") {
-        this.removePopUp();
-        for (let feature of currentSource["features"]) {
-          if (this.selectedFeatures.includes(feature.properties["id"])) {
-            const height = feature.properties["height"];
-            if (height !== null) {
-              if (height < 100) {
-                feature.properties["height"] = height + 1;
-              } else {
-                feature.properties["height"] = 0;
-              }
-            }
-          }
-        }
-        gridLayer.setData(currentSource);
-      }
-      this.localStorageService.saveGrid(currentSource);
-    }
-
     //Keystroke for menu toggle
     if (e.code === "Space") {
       // TODO: we could make this option only available for superusers
@@ -339,10 +309,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   clickOnGrid = e => {
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
-    if (this.authenticationService.currentUserValue) {
-      this.showFeaturesSelected([clickedFeature]);
-    }
-
+    this.showFeaturesSelected([clickedFeature]);
     // add a popup data window
     this.popUp = new mapboxgl.Popup()
       .setLngLat(e.lngLat)
@@ -360,7 +327,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     for (let clickedFeature of selectedFeature) {
       for (let feature of currentSource["features"]) {
         if (feature.properties["id"] === clickedFeature.properties["id"]) {
-          if (feature.properties["color"] === "#ff00ff") {
+          if (feature.properties["color"] === this.selectedCellColor) {
             feature.properties["color"] = feature.properties["initial-color"];
             feature.properties["isSelected"] = false;
             // remove this cell from array
@@ -374,7 +341,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           } else {
             feature.properties["initial-color"] = feature.properties["color"];
             feature.properties["isSelected"] = true;
-            feature.properties["color"] = "#ff00ff";
+            feature.properties["color"] = this.selectedCellColor;
             this.selectedFeatures.push(clickedFeature.properties["id"]);
           }
         }
@@ -564,6 +531,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.isShowMenu = !this.isShowMenu;
   }
 
+  // close button function
   private closeAndLogout() {
     if (
       this.authenticationService.currentUserValue &&
@@ -595,11 +563,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   clickMenuClose = e => {
     this.sliderDisplay = false;
     this.map.off("click", this.clickMenuClose);
-    //
-    // !!!!!
+    // restore grid colors when clikcing out of select box
     let { gridLayer, currentSource } = this.getGridSource();
     for (let feature of currentSource["features"]) {
-      if (feature.properties["color"] === "#ff00ff") {
+      if (feature.properties["color"] === this.selectedCellColor) {
         feature.properties["color"] = feature.properties["initial-color"];
         feature.properties["isSelected"] = false;
       }
