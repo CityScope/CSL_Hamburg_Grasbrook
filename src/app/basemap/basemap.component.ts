@@ -8,7 +8,7 @@ import { LngLat, LngLatBoundsLike, LngLatLike } from "mapbox-gl";
 import { GeoJSONSource } from "mapbox-gl";
 import { ConfigurationService } from "../services/configuration.service";
 import { LayerLoaderService } from "../services/layer-loader.service";
-import { CityIOService } from "../services/cityio.service";
+// import { CityIOService } from "../services/cityio.service";
 import { AuthenticationService } from "../services/authentication.service";
 import { MatBottomSheet, MatDialog } from "@angular/material";
 import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
@@ -20,7 +20,6 @@ import { AppComponent } from "../app.component";
 import { AlertService } from "../services/alert.service";
 import { LocalStorageService } from "../services/local-storage.service";
 import { RestoreMessage } from "../dial/restore-message";
-
 @NgModule({
   imports: [BrowserModule, FormsModule],
   declarations: [AppComponent],
@@ -41,7 +40,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   mapKeyVisible: boolean;
   layers: CsLayer[] = [];
   intervalMap = {};
-  selectedCellColor = "rgba(255,50,200,0.5)";
+  selectedCellColor = "rgba(0,255,0,0.8)";
 
   // Map config
   center: any;
@@ -50,6 +49,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   bearing: number;
   //
   selectedFeatures = [];
+  editableGridLayer = "grid";
 
   popUp: mapboxgl.Popup;
 
@@ -63,12 +63,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   // Height slider values
   currentHeight = 10;
-  sliderTop = 0;
-  sliderLeft = 0;
+  sliderTop = 200;
+  sliderLeft = 200;
   sliderDisplay = false;
 
   constructor(
-    private cityio: CityIOService,
+    // private cityio: CityIOService,
     private layerLoader: LayerLoaderService,
     private config: ConfigurationService,
     private authenticationService: AuthenticationService,
@@ -85,13 +85,15 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    if (this.cityio.table_data == null) {
-      this.cityio.fetchCityIOdata().subscribe(data => {
-        this.initializeMap(data);
-      });
-    } else {
-      this.initializeMap(this.cityio.table_data);
-    }
+    console.log("init map");
+    this.initializeMap([10.0143909533867, 53.53128461384861]);
+
+    // if (this.cityio.table_data == null) {
+    //   console.log("null cityIO");
+    //   this.cityio.fetchCityIOdata().subscribe(data => {
+    //     this.initializeMap(data);
+    //   });
+    // }
   }
 
   ngAfterViewInit() {}
@@ -106,15 +108,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     this.pitch = this.config.pitch;
 
     this.style = this.config.mapStyle;
-    this.center = [
-      cityIOdata.header.spatial.longitude,
-      cityIOdata.header.spatial.latitude
-    ];
+    // this.center = [
+    //   cityIOdata.header.spatial.longitude,
+    //   cityIOdata.header.spatial.latitude
+    // ];
 
     // Just what I would suggest to center GB - more or less
-    this.center = [10.014390953386766, 53.53128461384861];
+    this.center = cityIOdata;
 
-    // this.center = [-74.006, 40.7128];
     // add the base map and config
     this.map = new mapboxgl.Map({
       container: "basemap",
@@ -133,7 +134,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     });
 
     this.map.on("mousedown", event => {
-      this.cityio.mapPosition.next(event.point);
+      // this.cityio.mapPosition.next(event.point);
     });
 
     this.map.on("error", event => {
@@ -157,7 +158,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
       this.map.addLayer(csLayer);
       csLayer.visible = true;
       // Too static - has to go somewhere
-      if (csLayer.id === "grid-test") {
+      if (csLayer.id === this.editableGridLayer) {
         this.addGridInteraction();
       }
     }
@@ -176,12 +177,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         } else {
           this.map.addLayer(layer);
           // Too static - has to go somewhere
-          if (layer.id === "grid-test") {
+          if (layer.id === this.editableGridLayer) {
             this.addGridInteraction();
           }
         }
       } else if (!layer.visible && this.map.getLayer(layer.id) != null) {
-        if (layer.id === "grid-test") {
+        if (layer.id === this.editableGridLayer) {
           this.removeGridInteraction();
         }
         this.map.removeLayer(layer.id);
@@ -215,8 +216,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   showMapLegend(layer: CsLayer) {
     // Activate the potential legend for the layer
-    // this.mapKeyLayer = layer;
-    // this.mapKeyVisible = true;
+    this.mapKeyLayer = layer;
+    this.mapKeyVisible = true;
   }
 
   /*
@@ -238,7 +239,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
           }
         });
     }
-    this.map.on("click", "grid-test", this.clickOnGrid);
+    this.map.on("click", this.editableGridLayer, this.clickOnGrid);
     this.map.on("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
@@ -255,7 +256,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
   }
 
   private removeGridInteraction() {
-    this.map.off("click", "grid-test", this.clickOnGrid);
+    this.map.off("click", this.editableGridLayer, this.clickOnGrid);
     this.map.off("click", this.clickMenuClose);
     // keyboard event
     this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
@@ -293,7 +294,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   private getGridSource() {
     let gridLayer: GeoJSONSource = this.map.getSource(
-      "grid-test"
+      this.editableGridLayer
     ) as GeoJSONSource;
     let currentSource = gridLayer["_data"];
     return { gridLayer, currentSource };
@@ -310,16 +311,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //Manipulate the clicked feature
     let clickedFeature = e.features[0];
     this.showFeaturesSelected([clickedFeature]);
-    // add a popup data window
-    this.popUp = new mapboxgl.Popup()
-      .setLngLat(e.lngLat)
-      .setHTML(
-        "type: " +
-          clickedFeature.properties.type +
-          " id: " +
-          clickedFeature.properties.id
-      )
-      .addTo(this.map);
   };
 
   private showFeaturesSelected(selectedFeature: any[]) {
@@ -343,6 +334,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             feature.properties["isSelected"] = true;
             feature.properties["color"] = this.selectedCellColor;
             this.selectedFeatures.push(clickedFeature.properties["id"]);
+            this.showEditMenu();
           }
         }
       }
@@ -406,8 +398,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
   onMouseUp = e => {
     // Capture xy coordinates
-    this.showEditMenu(e);
     this.finish([this.start, this.mousePos(e)]);
+    this.showEditMenu();
   };
 
   onKeyDown = e => {
@@ -428,7 +420,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // If bbox exists. use this value as the argument for `queryRenderedFeatures`
     if (bbox) {
       features = this.map.queryRenderedFeatures(bbox, {
-        layers: ["grid-test"]
+        layers: [this.editableGridLayer]
       });
       if (features.length >= 1000) {
         return window.alert("Select a smaller number of features");
@@ -553,10 +545,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
    *   Slider menu
    */
 
-  private showEditMenu(evt) {
+  private showEditMenu() {
     this.sliderDisplay = true;
-    this.sliderLeft = evt.x;
-    this.sliderTop = evt.y;
     this.map.on("click", this.clickMenuClose);
   }
 
