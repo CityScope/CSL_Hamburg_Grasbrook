@@ -12,7 +12,7 @@ export class GridLayer {
         "fill-extrusion-color": ["get", "color"],
         "fill-extrusion-height": ["get", "height"],
         "fill-extrusion-base": 5,
-        "fill-extrusion-opacity": 0.95
+        "fill-extrusion-opacity": 0.5
       },
       source: {
         type: "geojson",

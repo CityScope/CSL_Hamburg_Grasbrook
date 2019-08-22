@@ -11,7 +11,7 @@ import { LayerLoaderService } from "../services/layer-loader.service";
 // import { CityIOService } from "../services/cityio.service";
 import { AuthenticationService } from "../services/authentication.service";
 import { MatBottomSheet, MatDialog } from "@angular/material";
-import { ExitEditorDialog } from "../dialogues/exit-editor-dialog";
+import { ExitEditorDialog } from "../menus/exit-editor/exit-editor-dialog";
 import { Router } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { BrowserModule } from "@angular/platform-browser";
@@ -19,7 +19,7 @@ import { FormsModule } from "@angular/forms";
 import { AppComponent } from "../app.component";
 import { AlertService } from "../services/alert.service";
 import { LocalStorageService } from "../services/local-storage.service";
-import { RestoreMessage } from "../dial/restore-message";
+import { RestoreMessage } from "../menus/restore-message/restore-message";
 @NgModule({
   imports: [BrowserModule, FormsModule],
   declarations: [AppComponent],
