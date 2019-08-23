@@ -1,4 +1,4 @@
-import gridGeoJSON from "../../assets/modules_json_backup/geojson_grid.json";
+import gridGeoJSON from "../../assets/layers_json/geojson_grid.json";
 
 export class GridLayer {
   public static createGridLayer(layerId): any {

@@ -1,5 +1,5 @@
 {
-	"access": {
+
 		"features": [{
 			"geometry": {
 				"coordinates": [9.9710041, 53.5110544],
@@ -30003,4 +30003,3 @@
 		}],
 		"type": "FeatureCollection"
 	}
-}

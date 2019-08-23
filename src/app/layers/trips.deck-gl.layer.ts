@@ -1,6 +1,6 @@
 import { MapboxLayer } from "@deck.gl/mapbox";
 import { TripsLayer } from "@deck.gl/geo-layers";
-import * as mobilityData from "../../assets/modules_json_backup/mobility_service.json";
+import * as mobilityData from "../../assets/layers_json/mobility_service.json";
 
 export class TripsDeckGlLayer {
   // https://github.com/uber/deck.gl/blob/master/docs/api-reference/mapbox/mapbox-layer.md

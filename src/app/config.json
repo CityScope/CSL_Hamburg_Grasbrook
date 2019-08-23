@@ -47,6 +47,11 @@
       "addOnMapInitialisation": true
     },
     {
+      "id": "access",
+      "showInLayerList": true,
+      "addOnMapInitialisation": true
+    },
+    {
       "id": "trips-deckgl",
       "type": "circle",
       "showInLayerList": true,
@@ -72,130 +77,6 @@
         "tileSize": 512
       },
       "paint": {}
-    },
-    {
-      "id": "Education Access",
-      "type": "circle",
-      "displayName": "Education Access",
-      "hasReloadInterval": true,
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
-      },
-      "paint": {
-        "circle-translate": [0, 0],
-        "circle-radius": {
-          "property": "education",
-          "stops": [
-            [{ "zoom": 8, "value": 0 }, 0.1],
-            [{ "zoom": 8, "value": 1 }, 1],
-            [{ "zoom": 11, "value": 0 }, 0.5],
-            [{ "zoom": 11, "value": 1 }, 2],
-            [{ "zoom": 16, "value": 0 }, 3],
-            [{ "zoom": 16, "value": 1 }, 9]
-          ]
-        },
-        "circle-color": {
-          "property": "education",
-          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
-        }
-      },
-
-      "showInLayerList": true,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "Food Access",
-      "type": "circle",
-      "displayName": "Food Access",
-      "hasReloadInterval": true,
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
-      },
-      "paint": {
-        "circle-translate": [0, 5],
-        "circle-radius": {
-          "property": "food",
-          "stops": [
-            [{ "zoom": 8, "value": 0 }, 0.1],
-            [{ "zoom": 8, "value": 1 }, 1],
-            [{ "zoom": 11, "value": 0 }, 0.5],
-            [{ "zoom": 11, "value": 1 }, 2],
-            [{ "zoom": 16, "value": 0 }, 3],
-            [{ "zoom": 16, "value": 1 }, 9]
-          ]
-        },
-        "circle-color": {
-          "property": "food",
-          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
-        }
-      },
-
-      "showInLayerList": true,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "Groceries Access",
-      "type": "circle",
-      "displayName": "Groceries Access",
-      "hasReloadInterval": true,
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
-      },
-      "paint": {
-        "circle-translate": [5, 0],
-        "circle-radius": {
-          "property": "groceries",
-          "stops": [
-            [{ "zoom": 8, "value": 0 }, 0.1],
-            [{ "zoom": 8, "value": 1 }, 1],
-            [{ "zoom": 11, "value": 0 }, 0.5],
-            [{ "zoom": 11, "value": 1 }, 2],
-            [{ "zoom": 16, "value": 0 }, 3],
-            [{ "zoom": 16, "value": 1 }, 9]
-          ]
-        },
-        "circle-color": {
-          "property": "groceries",
-          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
-        }
-      },
-
-      "showInLayerList": true,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "Nightlife Access",
-      "type": "circle",
-      "displayName": "Nightlife Access",
-      "hasReloadInterval": true,
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook/access"
-      },
-      "paint": {
-        "circle-translate": [5, 5],
-        "circle-radius": {
-          "property": "nightlife",
-          "stops": [
-            [{ "zoom": 8, "value": 0 }, 0.1],
-            [{ "zoom": 8, "value": 1 }, 1],
-            [{ "zoom": 11, "value": 0 }, 0.5],
-            [{ "zoom": 11, "value": 1 }, 2],
-            [{ "zoom": 16, "value": 0 }, 3],
-            [{ "zoom": 16, "value": 1 }, 9]
-          ]
-        },
-        "circle-color": {
-          "property": "nightlife",
-          "stops": [[0, "red"], [0.5, "yellow"], [1, "green"]]
-        }
-      },
-
-      "showInLayerList": true,
-      "addOnMapInitialisation": false
     }
   ]
 }

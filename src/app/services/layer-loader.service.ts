@@ -4,6 +4,7 @@ import { ConfigurationService } from "./configuration.service";
 import { TripsDeckGlLayer } from "../layers/trips.deck-gl.layer";
 import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
+import { AccessLayer } from "../layers/access.layer";
 
 @Injectable({
   providedIn: "root"
@@ -34,6 +35,13 @@ export class LayerLoaderService {
         let gridLayer = GridLayer.createGridLayer(layer.id);
         layers[layers.indexOf(layer)] = this.castCSLayer(
           gridLayer,
+          layer.id,
+          true
+        );
+      } else if (layer.id === "access") {
+        let accessLayer = AccessLayer.createAccessLayer(layer.id);
+        layers[layers.indexOf(layer)] = this.castCSLayer(
+          accessLayer,
           layer.id,
           true
         );
