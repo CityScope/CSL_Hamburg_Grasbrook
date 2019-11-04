@@ -1,6 +1,6 @@
 export class GridCell {
 
-    type: BuildingType;
+    type = BuildingType.building;
 
     str_speed = 50;
     str_numLanes = 0;
@@ -19,7 +19,6 @@ export class GridCell {
         const props = feature["properties"];
         this.bld_numLevels = props["height"]
     }
-
 }
 
 enum BuildingType {

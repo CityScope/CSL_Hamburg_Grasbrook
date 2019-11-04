@@ -50,4 +50,19 @@
     right: 5px;
     cursor: pointer;
   }
+
+  .bottom-menu {
+    height: 40px;
+    padding-top: 5px;
+    margin-bottom: 7px;
+
+    .row {
+      margin: 0 !important;
+    }
+
+    button {
+      background: white;
+      border: 1px solid lightgray;
+    }
+  }
 }

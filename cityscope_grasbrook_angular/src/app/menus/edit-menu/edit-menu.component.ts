@@ -25,6 +25,10 @@ export class EditMenuComponent implements OnInit {
     //TODO: vielleicht auch die ganze zeit die changes vershicken!
   }
 
+  onChangeSetCellType(event: any, newType: number) {
+    this.cell.type = newType;
+  }
+
   onCloseMenu(event: any) {
     // let output = {}
     // output['height'] = this.currentHeight;
