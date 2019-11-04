@@ -11,8 +11,9 @@ export class GridLayer {
       paint: {
         "fill-extrusion-color": ["get", "color"],
         "fill-extrusion-height": ["get", "height"],
-        "fill-extrusion-base": 5,
-        "fill-extrusion-opacity": 0.5
+        "fill-extrusion-base": 1,
+        "fill-extrusion-opacity": 0.8,
+        "fill-extrusion-vertical-gradient": true
       },
       source: {
         type: "geojson",

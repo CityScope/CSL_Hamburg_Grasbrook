@@ -16,9 +16,10 @@
 			},
 			"type": "Feature",
 			"properties": {
-				"color": "#A9A9A9",
+				"color": "#ba1414",
+                "fillColor": "#ff00ff",
 				"type": 0,
-				"height": 0,
+				"height": 40,
 				"rotation": 34,
 				"base_height": 0,
 				"id": 0

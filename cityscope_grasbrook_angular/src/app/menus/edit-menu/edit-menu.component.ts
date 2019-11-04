@@ -1,4 +1,5 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {GridCell} from "../../entities/cell";
 
 @Component({
   selector: 'app-edit-menu',
@@ -7,18 +8,21 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 })
 export class EditMenuComponent implements OnInit {
 
-  @Input() currentHeight = 25;
-  @Output() menuOutput = new EventEmitter<Object>();
-  constructor() { }
+  @Input() currentCell: GridCell;
+  @Output() menuOutput = new EventEmitter<GridCell>();
+  cell:GridCell = new GridCell();
+
+  constructor() {
+  }
 
   ngOnInit() {
+      if (this.currentCell) {
+          this.cell = this.currentCell;
+      }
   }
 
   onInputChange(event: any, attributeId) {
-    let output = {};
-    output[attributeId] = event.value;
-    this.menuOutput.emit(output);
-
+    //TODO: vielleicht auch die ganze zeit die changes vershicken!
   }
 
   onCloseMenu(event: any) {
@@ -26,5 +30,9 @@ export class EditMenuComponent implements OnInit {
     // output['height'] = this.currentHeight;
     // this.menuOutput.emit(output);
   }
+
+    ngOnDestroy() {
+        this.menuOutput.emit(this.cell);
+    }
 
 }

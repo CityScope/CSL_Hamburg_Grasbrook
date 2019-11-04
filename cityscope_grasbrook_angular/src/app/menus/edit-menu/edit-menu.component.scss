@@ -1,9 +1,42 @@
-#height-slider {
+#cell-menu {
   position: absolute;
-  padding: 5px;
-  //border: 1px solid black;
-  border-radius: 4px;
-  background-color:rgba(255, 255, 255, 0.8);
+  /* padding: 1px; */
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0.4);
+
+  mat-expansion-panel {
+
+    mat-radio-group {
+      float: right;
+    }
+
+    mat-expansion-panel-header {
+      padding: 0 10px !important;
+
+      mat-panel-title {
+        margin-right: 10px !important;
+      }
+
+      mat-panel-description {
+        justify-content: flex-end;
+        margin-right: 0 !important;
+
+        mat-icon {
+          margin-left: 5px;
+        }
+      }
+    }
+
+    mat-checkbox {
+      margin-left: 15px;
+    }
+
+    mat-radio-button {
+      margin-left: 15px;
+    }
+  }
+
+
 
   span {
     font-weight: bold;

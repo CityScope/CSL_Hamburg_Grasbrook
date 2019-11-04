@@ -37,8 +37,8 @@
   </div>
 
   <app-edit-menu
-    *ngIf="sliderDisplay"
-    [currentHeight]="currentHeight"
+    *ngIf="isEditmenu"
+    [currentCell]="currentCell"
     style="position: absolute"
     [style.top.px]="sliderTop"
     [style.left.px]="sliderLeft"
