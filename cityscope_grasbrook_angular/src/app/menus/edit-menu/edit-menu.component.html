@@ -149,11 +149,17 @@
     <div class="bottom-menu">
         <div class="row">
             <div class="col-md-4">
-                <button mat-button>Cancel</button></div>
-            <div class="col-md-4">
-                <button mat-button>Preview</button></div>
-            <div class="col-md-4">
-                <button mat-button>Submit</button></div>
+                <button mat-button (click)="onCancel()">
+                    Cancel
+                </button></div>
+            <div class="col-md-4" (click)="onPreview()">
+                <button mat-button>
+                    Preview
+                </button></div>
+            <div class="col-md-4" (click)="onSave()">
+                <button mat-button>
+                    Submit
+                </button></div>
         </div>
     </div>
 </div>

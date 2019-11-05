@@ -547,11 +547,19 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         } else {
             let feature = this.getFeatureById(this.selectedFeatures[0])
             this.currentCell = new GridCell();
-            this.currentCell.fillGridCellByFeature(feature);
+            GridCell.fillGridCellByFeature(this.currentCell, feature);
         }
 
         this.isEditmenu = true;
         this.map.on("click", this.clickMenuClose);
+    }
+
+    private hideMenu(menuOutput: GridCell) {
+        if (menuOutput) {
+            this.handleMenuOutput(menuOutput);
+            this.clickMenuClose(null);
+        }
+        this.isEditmenu = false;
     }
 
     clickMenuClose = e => {
@@ -566,18 +574,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 }
             }
             gridLayer.setData(currentSource);
-            this.selectedFeatures = [];
 
     };
 
-    public handleMenuOutput(menuOutput) {
-        //TODO: here we need to handle what happens to the grid cells on menu close!
+    public handleMenuOutput(menuOutput: GridCell) {
+        console.log("menu ouotput")
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource["features"]) {
             if (this.selectedFeatures.includes(feature.properties["id"])) {
-                for (let key of Object.keys(menuOutput)) {
-                    feature.properties[key] = menuOutput[key];
-                }
+                GridCell.fillFeatureByGridCell(feature, menuOutput)
+                // for (let key of Object.keys(menuOutput)) {
+                //     feature.properties[key] = menuOutput[key];
+                // }
             }
         }
         gridLayer.setData(currentSource);

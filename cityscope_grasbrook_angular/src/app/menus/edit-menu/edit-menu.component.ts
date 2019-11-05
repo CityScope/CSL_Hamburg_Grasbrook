@@ -2,41 +2,50 @@ import {Component, Input, OnInit, Output, EventEmitter, OnDestroy} from '@angula
 import {GridCell} from "../../entities/cell";
 
 @Component({
-  selector: 'app-edit-menu',
-  templateUrl: './edit-menu.component.html',
-  styleUrls: ['./edit-menu.component.scss']
+    selector: 'app-edit-menu',
+    templateUrl: './edit-menu.component.html',
+    styleUrls: ['./edit-menu.component.scss']
 })
 export class EditMenuComponent implements OnInit {
 
-  @Input() currentCell: GridCell;
-  @Output() menuOutput = new EventEmitter<GridCell>();
-  cell:GridCell = new GridCell();
+    @Input() currentCell: GridCell;
+    @Output() menuOutput = new EventEmitter<GridCell>();
+    @Output() dismissMenu: EventEmitter<any> = new EventEmitter();
+    cell: GridCell = new GridCell();
+    isDismissed = false;
 
-  constructor() {
-  }
+    constructor() {
+    }
 
-  ngOnInit() {
-      if (this.currentCell) {
-          this.cell = this.currentCell;
-      }
-  }
+    ngOnInit() {
+        if (this.currentCell) {
+            this.cell = Object.assign({}, this.currentCell);
+        }
+    }
 
-  onInputChange(event: any, attributeId) {
-    //TODO: vielleicht auch die ganze zeit die changes vershicken!
-  }
+    onChangeSetCellType(event: any, newType: number) {
+        this.cell.type = newType;
+    }
 
-  onChangeSetCellType(event: any, newType: number) {
-    this.cell.type = newType;
-  }
+    // Button actions
 
-  onCloseMenu(event: any) {
-    // let output = {}
-    // output['height'] = this.currentHeight;
-    // this.menuOutput.emit(output);
-  }
+    onPreview() {
+        this.menuOutput.emit(this.cell);
+    }
+
+    onCancel() {
+        this.isDismissed = true;
+        this.dismissMenu.emit(this.currentCell)
+    }
+
+    onSave() {
+        this.dismissMenu.emit(null)
+    }
 
     ngOnDestroy() {
-        this.menuOutput.emit(this.cell);
+        if (!this.isDismissed) {
+            this.menuOutput.emit(this.cell);
+        }
     }
 
 }

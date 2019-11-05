@@ -15,9 +15,20 @@ export class GridCell {
     bld_useGround = BuildingUse.commercial;
     bld_useUpper = BuildingUse.residential;
 
-    public fillGridCellByFeature(feature) {
-        const props = feature["properties"];
-        this.bld_numLevels = props["height"]
+    public static fillGridCellByFeature(gridCell, feature) {
+        const props = feature['properties'];
+        gridCell.bld_numLevels = props['height']
+    }
+
+    public static fillFeatureByGridCell(feature, gridCell: GridCell) {
+        // TODO: hier müssen auch die farben gesetzt werden
+        for (let key of Object.keys(gridCell)) {
+            if (key === 'bld_numLevels') {
+                feature.properties['height'] = gridCell[key];
+            } else {
+                feature.properties[key] = gridCell[key];
+            }
+        }
     }
 }
 
