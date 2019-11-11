@@ -112,7 +112,7 @@
                 <mat-radio-group [(ngModel)]="cell.str_elevator"
                                  (change)="onChangeSetCellType($event, 1)">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
-                    <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
+                    <mat-radio-button [value]="false" [checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
             </section>
         </mat-expansion-panel>
@@ -151,15 +151,18 @@
             <div class="col-md-4">
                 <button mat-button (click)="onCancel()">
                     Cancel
-                </button></div>
+                </button>
+            </div>
             <div class="col-md-4" (click)="onPreview()">
-                <button mat-button>
-                    Preview
-                </button></div>
+                <!--<button mat-button>-->
+                    <!--Preview-->
+                <!--</button>-->
+            </div>
             <div class="col-md-4" (click)="onSave()">
                 <button mat-button>
                     Submit
-                </button></div>
+                </button>
+            </div>
         </div>
     </div>
 </div>

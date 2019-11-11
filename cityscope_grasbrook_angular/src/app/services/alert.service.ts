@@ -18,11 +18,16 @@ export class AlertService {
     });
   }
 
-  error(message: string, action: string) {
+  error(message: string, action: string, time: number) {
+    let timer = time ? time : 5000;
     this._snackBar.open(message, action, {
-      duration: 5000,
+      duration: timer,
       panelClass: ['error-snackbar']
     });
-
   }
+
+  dismiss() {
+    this._snackBar.dismiss();
+  }
+
 }

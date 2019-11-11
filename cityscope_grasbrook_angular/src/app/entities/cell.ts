@@ -16,15 +16,36 @@ export class GridCell {
     bld_useUpper = BuildingUse.residential;
 
     public static fillGridCellByFeature(gridCell, feature) {
-        const props = feature['properties'];
-        gridCell.bld_numLevels = props['height']
+        const properties = feature['properties'];
+        for (let property of Object.keys(properties)) {
+            if (property !== 'id') {
+                if (property == 'height') {
+                    gridCell.bld_numLevels = properties['height']
+                } else {
+                    gridCell[property] = properties[property];
+                }
+            }
+        }
     }
 
     public static fillFeatureByGridCell(feature, gridCell: GridCell) {
-        // TODO: hier müssen auch die farben gesetzt werden
         for (let key of Object.keys(gridCell)) {
             if (key === 'bld_numLevels') {
                 feature.properties['height'] = gridCell[key];
+            } else if (key === 'type') {
+                feature.properties[key] = gridCell[key];
+                let color = "";
+                if (gridCell[key] === 0) {
+                    color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
+                } else {
+                    if (gridCell[key] === 1) {
+                        color = '#333333';
+                    } else if (gridCell[key] === 2) {
+                        color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
+                    }
+                    delete feature.properties["height"];
+                }
+                feature.properties['changedTypeColor'] = color;
             } else {
                 feature.properties[key] = gridCell[key];
             }
@@ -39,22 +60,22 @@ enum BuildingType {
     empty,
 }
 
-enum OpenSpaceType {
-    green_space,
-    promenade,
-    athletic_field,
-    playground,
-    daycare_playground,
-    schoolyard,
-    exhibition_space,
-    recycling_center,
-    water
+enum BuildingUse {
+    residential = "#FF6E40",
+    commercial = "#FF5252",
+    office = "#FF4081",
+    educational = "#40C4FF",
+    culture = "#7C4DFF",
 }
 
-enum BuildingUse {
-    residential,
-    commercial,
-    office,
-    educational,
-    culture
+enum OpenSpaceType {
+    green_space = "#69F0AE",
+    promenade = "#48A377",
+    athletic_field = "#AFF7D3",
+    playground = "#AFF7D3",
+    daycare_playground = "#AFF7D3",
+    schoolyard = "#AFF7D3",
+    exhibition_space = "#A3A5FF",
+    recycling_center = "#4D4D4D",
+    water = "#9FE1FF"
 }

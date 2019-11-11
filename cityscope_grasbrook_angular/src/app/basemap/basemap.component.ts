@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
 import {environment} from "../../environments/environment";
-import {interval} from "rxjs";
+import {interval, throwError} from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import {CsLayer} from "../../typings";
@@ -43,16 +43,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     mapKeyVisible: boolean;
     layers: CsLayer[] = [];
     intervalMap = {};
-    selectedCellColor = "rgba(0,255,0,0.8)";
+    selectedCellColor = "#00FF00";
 
     // Map config
     center: any;
     zoom: number;
     pitch: number;
     bearing: number;
-    //
-    selectedFeatures = [];
-    editableGridLayer = "grid";
+
 
     popUp: mapboxgl.Popup;
 
@@ -64,22 +62,25 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     current;
     box;
 
-    // Height slider values
-    currentCell: GridCell;
+    //Edit menu
     sliderTop = 200;
     sliderLeft = 200;
-    isEditmenu = false;
+    isEditMenu = false;
+    editableGridLayer = "grid";
+    selectedFeatures = [];
+    selectedGridCell: GridCell;
+    menuOutput: GridCell;
 
     constructor(// private cityio: CityIOService,
-                private layerLoader: LayerLoaderService,
-                private config: ConfigurationService,
-                private authenticationService: AuthenticationService,
-                private alertService: AlertService,
-                private _bottomSheet: MatBottomSheet,
-                private localStorageService: LocalStorageService,
-                public dialog: MatDialog,
-                private router: Router,
-                private zone: NgZone) {
+        private layerLoader: LayerLoaderService,
+        private config: ConfigurationService,
+        private authenticationService: AuthenticationService,
+        private alertService: AlertService,
+        private _bottomSheet: MatBottomSheet,
+        private localStorageService: LocalStorageService,
+        public dialog: MatDialog,
+        private router: Router,
+        private zone: NgZone) {
         // get the acess token
         // mapboxgl.accessToken = environment.mapbox.accessToken;
         (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -310,9 +311,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     clickOnGrid = e => {
-        //Manipulate the clicked feature
         let clickedFeature = e.features[0];
         this.showFeaturesSelected([clickedFeature]);
+        this.isNewSelectionDifferentType([clickedFeature]);
     };
 
     private showFeaturesSelected(selectedFeature: any[]) {
@@ -342,6 +343,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             }
             gridLayer.setData(currentSource);
         }
+        this.isNewSelectionDifferentType(selectedFeature);
     }
 
     private getFeatureById(id: Number) {
@@ -352,6 +354,23 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             }
         }
     }
+
+    private isNewSelectionDifferentType(newSelection: any[]) {
+        let featureType = null;
+        for (let selectedId of this.selectedFeatures) {
+            const selectedFeatureType = this.getFeatureById(selectedId).properties["type"];
+            if (!featureType) {
+                featureType = selectedFeatureType;
+            } else if (featureType !== selectedFeatureType) {
+                this.alertService.error("Warning", "The selected features are of different types", 10000)
+                break;
+            }
+
+        }
+
+    }
+
+
 
     /*
      *   Handle multiple element selection
@@ -546,50 +565,67 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             // Check if features are all the same?
         } else {
             let feature = this.getFeatureById(this.selectedFeatures[0])
-            this.currentCell = new GridCell();
-            GridCell.fillGridCellByFeature(this.currentCell, feature);
+            this.selectedGridCell = new GridCell();
+            GridCell.fillGridCellByFeature(this.selectedGridCell, feature);
         }
 
-        this.isEditmenu = true;
-        this.map.on("click", this.clickMenuClose);
+        this.isEditMenu = true;
+
+        // Menu needs to be confirmed or cancelled
+        // this.map.on("click", this.clickMenuClose);
     }
 
     private hideMenu(menuOutput: GridCell) {
         if (menuOutput) {
-            this.handleMenuOutput(menuOutput);
+            this.menuOutput = menuOutput;
+            // this.handleMenuOutput(menuOutput);
             this.clickMenuClose(null);
         }
-        this.isEditmenu = false;
+        this.isEditMenu = false;
     }
 
+
     clickMenuClose = e => {
-            this.isEditmenu = false;
-            this.map.off("click", this.clickMenuClose);
-            // restore grid colors when clikcing out of select box
-            let {gridLayer, currentSource} = this.getGridSource();
-            for (let feature of currentSource["features"]) {
-                if (feature.properties["color"] === this.selectedCellColor) {
-                    feature.properties["color"] = feature.properties["initial-color"];
-                    feature.properties["isSelected"] = false;
-                }
-            }
-            gridLayer.setData(currentSource);
-
-    };
-
-    public handleMenuOutput(menuOutput: GridCell) {
-        console.log("menu ouotput")
+        this.isEditMenu = false;
+        this.map.off("click", this.clickMenuClose);
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource["features"]) {
-            if (this.selectedFeatures.includes(feature.properties["id"])) {
-                GridCell.fillFeatureByGridCell(feature, menuOutput)
-                // for (let key of Object.keys(menuOutput)) {
-                //     feature.properties[key] = menuOutput[key];
-                // }
+            if (this.selectedFeatures.indexOf(feature['id']) > -1) {
+                GridCell.fillFeatureByGridCell(feature, this.menuOutput);
+
+                // Color change has to be done here again!?
+                if (feature.properties["changedTypeColor"]) {
+                    feature.properties["color"] = feature.properties["changedTypeColor"];
+                    delete feature.properties["changedTypeColor"];
+                } else {
+                    feature.properties["color"] = feature.properties["initial-color"];
+                    delete feature.properties["changedTypeColor"];
+                }
+                if (feature.properties["type"] !== 0) {
+                    feature.properties["height"] = 0;
+                }
+
+                feature.properties["isSelected"] = false;
             }
         }
         gridLayer.setData(currentSource);
-    }
+        this.selectedFeatures = [];
+        this.menuOutput = null;
+        this.alertService.dismiss();
+    };
+
+    // public handleMenuOutput(menuOutput: GridCell) {
+    //     let {gridLayer, currentSource} = this.getGridSource();
+    //     for (let feature of currentSource["features"]) {
+    //         if (this.selectedFeatures.includes(feature.properties["id"])) {
+    //             GridCell.fillFeatureByGridCell(feature, menuOutput)
+    //             // for (let key of Object.keys(menuOutput)) {
+    //             //     feature.properties[key] = menuOutput[key];
+    //             // }
+    //         }
+    //     }
+    //     gridLayer.setData(currentSource);
+    // }
 
 
     /*

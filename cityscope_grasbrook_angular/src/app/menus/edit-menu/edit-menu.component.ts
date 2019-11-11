@@ -29,9 +29,9 @@ export class EditMenuComponent implements OnInit {
 
     // Button actions
 
-    onPreview() {
-        this.menuOutput.emit(this.cell);
-    }
+    // onPreview() {
+    //     this.menuOutput.emit(this.cell);
+    // }
 
     onCancel() {
         this.isDismissed = true;
@@ -39,10 +39,12 @@ export class EditMenuComponent implements OnInit {
     }
 
     onSave() {
-        this.dismissMenu.emit(null)
+        this.isDismissed = true;
+        this.dismissMenu.emit(this.cell);
     }
 
     ngOnDestroy() {
+        // WHAT TO DO HERE????
         if (!this.isDismissed) {
             this.menuOutput.emit(this.cell);
         }
