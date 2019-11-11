@@ -10,6 +10,8 @@ export class ConfigurationService {
   bearing: number;
   pitch: number;
 
+  isShowPopUp: boolean;
+
   gridZoom: number;
   gridBearing: number;
   gridPitch: number;

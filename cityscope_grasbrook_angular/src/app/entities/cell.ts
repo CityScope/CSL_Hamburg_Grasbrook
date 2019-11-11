@@ -16,38 +16,38 @@ export class GridCell {
     bld_useUpper = BuildingUse.residential;
 
     public static fillGridCellByFeature(gridCell, feature) {
-        const properties = feature['properties'];
-        for (let property of Object.keys(properties)) {
+        const featureProps = feature['properties'];
+        for (let property of Object.keys(featureProps)) {
             if (property !== 'id') {
                 if (property == 'height') {
-                    gridCell.bld_numLevels = properties['height']
+                    gridCell.bld_numLevels = featureProps['height']
                 } else {
-                    gridCell[property] = properties[property];
+                    gridCell[property] = featureProps[property];
                 }
             }
         }
     }
 
     public static fillFeatureByGridCell(feature, gridCell: GridCell) {
-        for (let key of Object.keys(gridCell)) {
-            if (key === 'bld_numLevels') {
-                feature.properties['height'] = gridCell[key];
-            } else if (key === 'type') {
-                feature.properties[key] = gridCell[key];
+        for (let gridCellKey of Object.keys(gridCell)) {
+            if (gridCellKey === 'bld_numLevels') {
+                feature.properties['height'] = gridCell[gridCellKey];
+            } else if (gridCellKey === 'type') {
+                feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
-                if (gridCell[key] === 0) {
+                if (gridCell[gridCellKey] === 0) {
                     color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
                 } else {
-                    if (gridCell[key] === 1) {
+                    if (gridCell[gridCellKey] === 1) {
                         color = '#333333';
-                    } else if (gridCell[key] === 2) {
+                    } else if (gridCell[gridCellKey] === 2) {
                         color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
                     }
                     delete feature.properties["height"];
                 }
                 feature.properties['changedTypeColor'] = color;
             } else {
-                feature.properties[key] = gridCell[key];
+                feature.properties[gridCellKey] = gridCell[gridCellKey];
             }
         }
     }

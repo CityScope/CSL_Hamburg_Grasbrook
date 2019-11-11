@@ -1,26 +1,26 @@
-import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
-import {environment} from "../../environments/environment";
-import {interval, throwError} from "rxjs";
-import * as mapboxgl from "mapbox-gl";
-import * as Maptastic from "maptastic/dist/maptastic.min.js";
-import {CsLayer} from "../../typings";
-import {LngLat, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
-import {GeoJSONSource} from "mapbox-gl";
-import {ConfigurationService} from "../services/configuration.service";
-import {LayerLoaderService} from "../services/layer-loader.service";
-// import { CityIOService } from "../services/cityio.service";
-import {AuthenticationService} from "../services/authentication.service";
-import {MatBottomSheet, MatDialog} from "@angular/material";
-import {ExitEditorDialog} from "../menus/exit-editor/exit-editor-dialog";
-import {Router} from "@angular/router";
-import {NgModule} from "@angular/core";
-import {BrowserModule} from "@angular/platform-browser";
-import {FormsModule} from "@angular/forms";
-import {AppComponent} from "../app.component";
-import {AlertService} from "../services/alert.service";
-import {LocalStorageService} from "../services/local-storage.service";
-import {RestoreMessage} from "../menus/restore-message/restore-message";
-import {GridCell} from "../entities/cell";
+import {AfterViewInit, Component, OnInit, NgZone} from '@angular/core';
+import {environment} from '../../environments/environment';
+import {interval, throwError} from 'rxjs';
+import * as mapboxgl from 'mapbox-gl';
+import * as Maptastic from 'maptastic/dist/maptastic.min.js';
+import {CsLayer} from '../../typings';
+import {LngLat, LngLatBoundsLike, LngLatLike} from 'mapbox-gl';
+import {GeoJSONSource} from 'mapbox-gl';
+import {ConfigurationService} from '../services/configuration.service';
+import {LayerLoaderService} from '../services/layer-loader.service';
+// import { CityIOService } from '../services/cityio.service';
+import {AuthenticationService} from '../services/authentication.service';
+import {MatBottomSheet, MatDialog} from '@angular/material';
+import {ExitEditorDialog} from '../menus/exit-editor/exit-editor-dialog';
+import {Router} from '@angular/router';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {FormsModule} from '@angular/forms';
+import {AppComponent} from '../app.component';
+import {AlertService} from '../services/alert.service';
+import {LocalStorageService} from '../services/local-storage.service';
+import {RestoreMessage} from '../menus/restore-message/restore-message';
+import {GridCell} from '../entities/cell';
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
@@ -31,9 +31,9 @@ export class AppModule {
 }
 
 @Component({
-    selector: "app-basemap",
-    templateUrl: "./basemap.component.html",
-    styleUrls: ["./basemap.component.scss"]
+    selector: 'app-basemap',
+    templateUrl: './basemap.component.html',
+    styleUrls: ['./basemap.component.scss']
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
@@ -43,7 +43,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     mapKeyVisible: boolean;
     layers: CsLayer[] = [];
     intervalMap = {};
-    selectedCellColor = "#00FF00";
+    selectedCellColor = '#00FF00';
 
     // Map config
     center: any;
@@ -66,7 +66,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     sliderTop = 200;
     sliderLeft = 200;
     isEditMenu = false;
-    editableGridLayer = "grid";
+    editableGridLayer = 'grid';
     selectedFeatures = [];
     selectedGridCell: GridCell;
     menuOutput: GridCell;
@@ -87,11 +87,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        console.log("init map");
+        console.log('init map');
         this.initializeMap([10.0143909533867, 53.53128461384861]);
 
         // if (this.cityio.table_data == null) {
-        //   console.log("null cityIO");
+        //   console.log('null cityIO');
         //   this.cityio.fetchCityIOdata().subscribe(data => {
         //     this.initializeMap(data);
         //   });
@@ -121,7 +121,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         // add the base map and config
         this.map = new mapboxgl.Map({
-            container: "basemap",
+            container: 'basemap',
             style: this.style,
             zoom: this.zoom,
             bearing: this.bearing,
@@ -131,17 +131,22 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         this.map.boxZoom.disable();
 
-        this.map.on("load", event => {
+        this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
         });
 
-        this.map.on("mousedown", event => {
+        this.map.on('mousedown', event => {
             // this.cityio.mapPosition.next(event.point);
         });
 
-        this.map.on("error", event => {
-            console.log("Map error: " + event);
+        if (this.config.isShowPopUp) {
+            this.map.on('mouseenter', this.editableGridLayer, this.initPopup);
+            this.map.on('mouseleave', this.editableGridLayer, this.removePopUp);
+        }
+
+        this.map.on('error', event => {
+            console.log('Map error: ' + event);
         });
     }
 
@@ -213,7 +218,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     resetDataUrl = (csLayer: CsLayer) => {
         (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
-            csLayer["source"]["data"]
+            csLayer['source']['data']
         );
     };
 
@@ -242,34 +247,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                     }
                 });
         }
-        this.map.on("click", this.editableGridLayer, this.clickOnGrid);
-        // this.map.on("click", this.clickMenuClose);
+        this.map.on('click', this.editableGridLayer, this.clickOnGrid);
+        // this.map.on('click', this.clickMenuClose);
         // keyboard event
-        this.mapCanvas.addEventListener("keydown", this.keyStrokeOnMap);
+        this.mapCanvas.addEventListener('keydown', this.keyStrokeOnMap);
 
         // map multi select for logged in users
-        this.mapCanvas.addEventListener("mousedown", this.mouseDown, true);
+        this.mapCanvas.addEventListener('mousedown', this.mouseDown, true);
 
-        this.map.on("dragstart", e => {
-            this.removePopUp();
-        });
-        this.map.on("zoomstart", e => {
-            this.removePopUp();
-        });
+        this.map.on('dragstart', this.removePopUp);
+        this.map.on('zoomstart',  this.removePopUp);
     }
 
     private removeGridInteraction() {
-        this.map.off("click", this.editableGridLayer, this.clickOnGrid);
-        this.map.off("click", this.clickMenuClose);
+        this.map.off('click', this.editableGridLayer, this.clickOnGrid);
+        this.map.off('click', this.clickMenuClose);
         // keyboard event
-        this.mapCanvas.removeEventListener("keydown", this.keyStrokeOnMap);
+        this.mapCanvas.removeEventListener('keydown', this.keyStrokeOnMap);
 
-        this.map.off("dragstart", e => {
-            this.removePopUp();
-        });
-        this.map.off("zoomstart", e => {
-            this.removePopUp();
-        });
+        this.map.off('dragstart',  this.removePopUp);
+        this.map.off('zoomstart',  this.removePopUp);
     }
 
     //
@@ -277,7 +274,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     keyStrokeOnMap = e => {
         //Keystroke for menu toggle
-        if (e.code === "Space") {
+        if (e.code === 'Space') {
             // TODO: we could make this option only available for superusers
             this.toggleMenu();
         }
@@ -286,10 +283,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private restoreLocalStorageGrid(localStorageGrid) {
         let {gridLayer, currentSource} = this.getGridSource();
         // Restore the grid but set the features to unselected stage
-        for (let feature of localStorageGrid["features"]) {
-            if (feature.properties["isSelected"]) {
-                feature.properties["isSelected"] = false;
-                feature.properties["color"] = feature.properties["initial-color"];
+        for (let feature of localStorageGrid['features']) {
+            if (feature.properties['isSelected']) {
+                feature.properties['isSelected'] = false;
+                feature.properties['color'] = feature.properties['initial-color'];
             }
         }
         gridLayer.setData(localStorageGrid);
@@ -299,15 +296,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         let gridLayer: GeoJSONSource = this.map.getSource(
             this.editableGridLayer
         ) as GeoJSONSource;
-        let currentSource = gridLayer["_data"];
+        let currentSource = gridLayer['_data'];
         return {gridLayer, currentSource};
-    }
-
-    private removePopUp() {
-        if (this.popUp) {
-            this.popUp.remove();
-            this.popUp = null;
-        }
     }
 
     clickOnGrid = e => {
@@ -319,24 +309,24 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private showFeaturesSelected(selectedFeature: any[]) {
         let {gridLayer, currentSource} = this.getGridSource();
         for (let clickedFeature of selectedFeature) {
-            for (let feature of currentSource["features"]) {
-                if (feature.properties["id"] === clickedFeature.properties["id"]) {
-                    if (feature.properties["color"] === this.selectedCellColor) {
-                        feature.properties["color"] = feature.properties["initial-color"];
-                        feature.properties["isSelected"] = false;
+            for (let feature of currentSource['features']) {
+                if (feature.properties['id'] === clickedFeature.properties['id']) {
+                    if (feature.properties['color'] === this.selectedCellColor) {
+                        feature.properties['color'] = feature.properties['initial-color'];
+                        feature.properties['isSelected'] = false;
                         // remove this cell from array
                         for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
                             if (
-                                this.selectedFeatures[i] === clickedFeature.properties["id"]
+                                this.selectedFeatures[i] === clickedFeature.properties['id']
                             ) {
                                 this.selectedFeatures.splice(i, 1);
                             }
                         }
                     } else {
-                        feature.properties["initial-color"] = feature.properties["color"];
-                        feature.properties["isSelected"] = true;
-                        feature.properties["color"] = this.selectedCellColor;
-                        this.selectedFeatures.push(clickedFeature.properties["id"]);
+                        feature.properties['initial-color'] = feature.properties['color'];
+                        feature.properties['isSelected'] = true;
+                        feature.properties['color'] = this.selectedCellColor;
+                        this.selectedFeatures.push(clickedFeature.properties['id']);
                         this.showEditMenu();
                     }
                 }
@@ -348,7 +338,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     private getFeatureById(id: Number) {
         let {gridLayer, currentSource} = this.getGridSource();
-        for (let feature of currentSource["features"]) {
+        for (let feature of currentSource['features']) {
             if (feature['id'] === id) {
                 return feature;
             }
@@ -358,18 +348,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private isNewSelectionDifferentType(newSelection: any[]) {
         let featureType = null;
         for (let selectedId of this.selectedFeatures) {
-            const selectedFeatureType = this.getFeatureById(selectedId).properties["type"];
+            const selectedFeatureType = this.getFeatureById(selectedId).properties['type'];
             if (!featureType) {
                 featureType = selectedFeatureType;
             } else if (featureType !== selectedFeatureType) {
-                this.alertService.error("Warning", "The selected features are of different types", 10000)
+                this.alertService.error('Warning', 'The selected features are of different types', 10000)
                 break;
             }
 
         }
 
     }
-
 
 
     /*
@@ -393,9 +382,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         // this.map.boxZoom.disable();
 
         // Call functions for the following events
-        document.addEventListener("mousemove", this.onMouseMove);
-        document.addEventListener("mouseup", this.onMouseUp);
-        document.addEventListener("keydown", this.onKeyDown);
+        document.addEventListener('mousemove', this.onMouseMove);
+        document.addEventListener('mouseup', this.onMouseUp);
+        document.addEventListener('keydown', this.onKeyDown);
 
         // Capture the first xy coordinates
         this.start = this.mousePos(e);
@@ -407,9 +396,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         // Append the box element if it doesnt exist
         if (!this.box) {
-            this.box = document.createElement("div");
+            this.box = document.createElement('div');
             this.box.style.cssText =
-                "background: rgba(56,135,190,0.1); border: 2px solid #3887be;";
+                'background: rgba(56,135,190,0.1); border: 2px solid #3887be;';
             this.mapCanvas.appendChild(this.box);
         }
 
@@ -419,11 +408,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             maxY = Math.max(this.start.y, this.current.y);
 
         // Adjust width and xy position of the box element ongoing
-        let pos = "translate(" + minX + "px," + minY + "px)";
+        let pos = 'translate(' + minX + 'px,' + minY + 'px)';
         this.box.style.transform = pos;
         this.box.style.WebkitTransform = pos;
-        this.box.style.width = maxX - minX + "px";
-        this.box.style.height = maxY - minY + "px";
+        this.box.style.width = maxX - minX + 'px';
+        this.box.style.height = maxY - minY + 'px';
     };
 
     onMouseUp = e => {
@@ -439,9 +428,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     finish(bbox) {
         // Remove these events now that finish has been called.
-        document.removeEventListener("mousemove", this.onMouseMove);
-        document.removeEventListener("keydown", this.onKeyDown);
-        document.removeEventListener("mouseup", this.onMouseUp);
+        document.removeEventListener('mousemove', this.onMouseMove);
+        document.removeEventListener('keydown', this.onKeyDown);
+        document.removeEventListener('mouseup', this.onMouseUp);
         let features = null;
         if (this.box) {
             this.box.parentNode.removeChild(this.box);
@@ -453,7 +442,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 layers: [this.editableGridLayer]
             });
             if (features.length >= 1000) {
-                return window.alert("Select a smaller number of features");
+                return window.alert('Select a smaller number of features');
             }
             this.showFeaturesSelected(features);
         }
@@ -466,34 +455,34 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     public mapSettingsListener(menuOutput: Object[]) {
         switch (menuOutput[0]) {
-            case "resetMap": {
+            case 'resetMap': {
                 this.resetMapPosition();
                 break;
             }
-            case "csMode": {
+            case 'csMode': {
                 this.map.setPitch(0);
                 if (this.initialExtrusionHeight) {
                     this.map.setPaintProperty(
-                        "building",
-                        "fill-extrusion-height",
+                        'building',
+                        'fill-extrusion-height',
                         this.initialExtrusionHeight
                     );
                     this.initialExtrusionHeight = null;
                     this.resetMapPosition();
                 } else {
                     this.initialExtrusionHeight = this.map.getPaintProperty(
-                        "building",
-                        "fill-extrusion-height"
+                        'building',
+                        'fill-extrusion-height'
                     );
-                    this.map.setPaintProperty("building", "fill-extrusion-height", 0);
+                    this.map.setPaintProperty('building', 'fill-extrusion-height', 0);
                 }
                 break;
             }
-            case "maptasticMode": {
+            case 'maptasticMode': {
                 this.toggleMaptasticMode();
                 break;
             }
-            case "fitToGrid": {
+            case 'fitToGrid': {
                 this.zoomToBounds();
                 break;
             }
@@ -530,7 +519,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     toggleMaptasticMode() {
-        Maptastic("basemap");
+        Maptastic('basemap');
     }
 
     private toggleMenu() {
@@ -552,7 +541,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private saveCurrentChanges() {
         // TODO: send data to cityIO
         this.localStorageService.removeGrid();
-        this.alertService.success("Data saved", "");
+        this.alertService.success('Data saved', '');
     }
 
     /*
@@ -572,7 +561,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.isEditMenu = true;
 
         // Menu needs to be confirmed or cancelled
-        // this.map.on("click", this.clickMenuClose);
+        // this.map.on('click', this.clickMenuClose);
     }
 
     private hideMenu(menuOutput: GridCell) {
@@ -587,25 +576,25 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     clickMenuClose = e => {
         this.isEditMenu = false;
-        this.map.off("click", this.clickMenuClose);
+        this.map.off('click', this.clickMenuClose);
         let {gridLayer, currentSource} = this.getGridSource();
-        for (let feature of currentSource["features"]) {
+        for (let feature of currentSource['features']) {
             if (this.selectedFeatures.indexOf(feature['id']) > -1) {
                 GridCell.fillFeatureByGridCell(feature, this.menuOutput);
 
                 // Color change has to be done here again!?
-                if (feature.properties["changedTypeColor"]) {
-                    feature.properties["color"] = feature.properties["changedTypeColor"];
-                    delete feature.properties["changedTypeColor"];
+                if (feature.properties['changedTypeColor']) {
+                    feature.properties['color'] = feature.properties['changedTypeColor'];
+                    delete feature.properties['changedTypeColor'];
                 } else {
-                    feature.properties["color"] = feature.properties["initial-color"];
-                    delete feature.properties["changedTypeColor"];
+                    feature.properties['color'] = feature.properties['initial-color'];
+                    delete feature.properties['changedTypeColor'];
                 }
-                if (feature.properties["type"] !== 0) {
-                    feature.properties["height"] = 0;
+                if (feature.properties['type'] !== 0) {
+                    feature.properties['height'] = 0;
                 }
 
-                feature.properties["isSelected"] = false;
+                feature.properties['isSelected'] = false;
             }
         }
         gridLayer.setData(currentSource);
@@ -616,8 +605,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     // public handleMenuOutput(menuOutput: GridCell) {
     //     let {gridLayer, currentSource} = this.getGridSource();
-    //     for (let feature of currentSource["features"]) {
-    //         if (this.selectedFeatures.includes(feature.properties["id"])) {
+    //     for (let feature of currentSource['features']) {
+    //         if (this.selectedFeatures.includes(feature.properties['id'])) {
     //             GridCell.fillFeatureByGridCell(feature, menuOutput)
     //             // for (let key of Object.keys(menuOutput)) {
     //             //     feature.properties[key] = menuOutput[key];
@@ -627,6 +616,37 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //     gridLayer.setData(currentSource);
     // }
 
+    // PopUp
+
+    private createPopUp() {
+        this.popUp = new mapboxgl.Popup({
+            closeButton: false,
+            closeOnClick: true
+        });
+    }
+
+    initPopup = e => {
+        this.createPopUp();
+        const gridCell = new GridCell();
+        GridCell.fillGridCellByFeature(gridCell, e.features[0]);
+
+        let description = '<h5> Cell details </h5>';
+        for (let gridCellKey of Object.keys(gridCell)) {
+            description = description + '<span style="width: 100%; float: left">' + gridCellKey + ': ' + gridCell[gridCellKey] + ' </span>';
+        }
+
+        
+        this.popUp.setLngLat(e.lngLat)
+            .setHTML(description)
+            .addTo(this.map);
+    };
+
+    removePopUp = e => {
+        if (this.popUp) {
+            this.popUp.remove();
+            this.popUp = null;
+        }
+    };
 
     /*
      *   On exit actions
@@ -634,7 +654,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     openDialog(): void {
         const dialogRef = this.dialog.open(ExitEditorDialog, {
-            width: "250px",
+            width: '250px',
             autoFocus: false
         });
 
@@ -649,6 +669,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private exitEditor() {
         this.localStorageService.removeGrid();
         this.authenticationService.logout();
-        this.router.navigate([""]);
+        this.router.navigate(['']);
     }
 }
