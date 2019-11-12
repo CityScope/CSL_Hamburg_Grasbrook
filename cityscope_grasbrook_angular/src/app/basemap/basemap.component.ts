@@ -556,9 +556,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.alertService.success("Data saved", "");
 
         console.log(this.cityio.table_data["grid"])
-        // TODO: convert getGridSource() JSON to cell array
-        // or change cityio.table_data["grid"] when editing features
-        this.cityio.pushCityIOdata("grid", this.cityio.table_data["grid"])
+        // cityio.table_data["grid"] is changed when editing features
+        this.cityio.pushCityIOdata("grid", this.cityio.table_data["grid"]);
     }
 
     /*
@@ -593,26 +592,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     updateCityIOgridCell(feature){
         if( !this.cityio.table_data) { return }
         // get properties of changed features
-        let typeDefinition = GridCell.featureToTypemap(feature)
+        let typeDefinition = GridCell.featureToTypemap(feature);
 
         // find or create type in header
         let header = this.cityio.table_data["header"]
-        let typeint = header["mapping"]["type"].findIndex(function(element){
+        let typeint = header["mapping"]["type"].findIndex(e => {
             // TODO: this is a really bad way to compare two objects!
-            let a = JSON.stringify(typeDefinition).split("").sort().join()
-            let b = JSON.stringify(element).split("").sort().join()
+            const a = JSON.stringify(typeDefinition).split("").sort().join()
+            const b = JSON.stringify(e).split("").sort().join()
             return a==b
         })
-        if(typeint == -1) { 
+        if (typeint === -1) {
             // new type
-            typeint = header["mapping"]["type"].length 
-            header["mapping"]["type"][typeint] = typeDefinition
-            this.cityio.pushCityIOdata("header", header)
+            typeint = header["mapping"]["type"].length;
+            header["mapping"]["type"][typeint] = typeDefinition;
+            this.cityio.pushCityIOdata("header", header);
         }
         
         let id = feature["id"]
         console.log("write cell",id,"value",typeint)
-        this.cityio.table_data["grid"][id] = [typeint, 0] // TODO: this will be overwritten by the next cityIO.update
+        this.cityio.table_data["grid"][id] = [typeint, 0]; // TODO: this will be overwritten by the next cityIO.update
     }
 
     clickMenuClose = e => {

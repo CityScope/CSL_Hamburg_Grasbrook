@@ -30,31 +30,31 @@ export class GridCell {
 
     static string_of_enum(enumn, value)
     {
-        for (var k in enumn)
-            if (enumn[k] == value) 
+        for (let k in enumn) {
+            if (enumn[k] == value) {
                 return k;
+            }
+        }
         return null;
-    } 
+    }
 
     static string_of_obj(objn, value)
     {
-        let it = 0
-        for (var k in objn)
-        {
+        let it = 0;
+        for (let k in objn) {
             if(it == value) {
                 return k
             }
             it+=1
         }
         return null;
-    } 
+    }
 
     public static featureToTypemap(feature)
     {
         let typeDefinition = {}
 
         const properties = feature['properties'];
-        typeDefinition["id"] = properties["id"]
         switch(properties["type"])
         {
             case BuildingType.building:
@@ -79,23 +79,7 @@ export class GridCell {
             default:
                 return {}
         }
-        return typeDefinition
-        
-        /*
-        "base_height":0,
-        "bld_numLevels":10,
-        "bld_useGround":0,
-        "bld_useUpper":0,
-        "initial-color":"#A9A9A9",
-        "os_type":"#69F0AE",
-        "str_bike":true,
-        "str_elevator":false,
-        "str_numLanes":0,
-        "str_ramp":false,
-        "str_speed":50,
-        "str_stairs":false,
-        "type":0
-        */
+        return typeDefinition;
     }
 
     public static fillFeatureByGridCell(feature, gridCell: GridCell) {
