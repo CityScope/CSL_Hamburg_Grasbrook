@@ -555,9 +555,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.localStorageService.removeGrid();
         this.alertService.success("Data saved", "");
 
-        console.log(this.cityio.table_data["grid"])
-        // cityio.table_data["grid"] is changed when editing features
-        this.cityio.pushCityIOdata("grid", this.cityio.table_data["grid"]);
+        // cityio.pending_changes is changed when editing features
+        this.cityio.pushAllChanges()
     }
 
     /*
@@ -611,7 +610,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         
         let id = feature["id"]
         console.log("write cell",id,"value",typeint)
-        this.cityio.table_data["grid"][id] = [typeint, 0]; // TODO: this will be overwritten by the next cityIO.update
+        this.cityio.pending_changes[id]= [typeint, 0]   // remember change
     }
 
     clickMenuClose = e => {

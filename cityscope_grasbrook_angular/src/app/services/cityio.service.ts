@@ -17,6 +17,8 @@ export class CityIOService {
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
 
+  pending_changes = {}
+
   constructor(private http: HttpClient) {
     this.update = interval(10000);
     this.update.subscribe(() => {
@@ -35,6 +37,21 @@ export class CityIOService {
       }),
       catchError(this.handleError("getMetadata"))
     );
+  }
+
+  /**
+   * POSTs all changed cells (pendung_changes) to cityIO.
+   */
+  pushAllChanges() {
+    if(Object.keys(this.pending_changes).length == 0) return
+
+    for(var key in this.pending_changes) {
+      console.log(key, this.pending_changes[key])
+      this.table_data["grid"][key] = this.pending_changes[key];
+    }
+    
+    this.pushCityIOdata("grid", this.table_data["grid"]);
+    this.pending_changes = {}
   }
 
   /**
