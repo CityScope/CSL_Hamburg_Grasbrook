@@ -51,6 +51,50 @@ export class GridCell {
             }
         }
     }
+
+    static int_of_enum(objn, value)
+    {
+        let it = 0
+        for (var k in objn)
+        {
+            if(k == value) {
+                return it
+            }
+            it+=1
+        }
+        return null;
+    } 
+
+    public static fillFeatureByCityIOType(feature, typeDict) {
+        for (let gridCellKey of Object.keys(typeDict)) {
+            if (gridCellKey === 'bld_numLevels') {
+                feature.properties['height'] = typeDict[gridCellKey];
+            } else if (gridCellKey === 'type') {
+                feature.properties[gridCellKey] = BuildingType[typeDict[gridCellKey]];
+                if(typeDict[gridCellKey]=="empty"){
+                    feature.properties['changedTypeColor'] = "#aaaaaa"
+                } else if(typeDict[gridCellKey]=="street"){
+                    feature.properties['changedTypeColor'] = "#333333"
+                } 
+            }
+            else if (gridCellKey === "bld_useGround") {
+                feature.properties['bld_useGround'] = GridCell.int_of_enum(BuildingUse,typeDict[gridCellKey]);
+                
+            } else if (gridCellKey === "bld_useUpper") {
+                feature.properties['bld_useUpper'] = GridCell.int_of_enum(BuildingUse,typeDict[gridCellKey]);
+                let color = BuildingUse[typeDict[gridCellKey]];
+                feature.properties['changedTypeColor'] = color;
+                
+            } else if (gridCellKey === "os_type") {
+                feature.properties['os_type'] = GridCell.int_of_enum(OpenSpaceType,typeDict[gridCellKey])
+                let color = OpenSpaceType[typeDict[gridCellKey]];
+                feature.properties['changedTypeColor'] = color;
+                
+            } else {
+                feature.properties[gridCellKey] = typeDict[gridCellKey];
+            }
+        }
+    }
 }
 
 enum BuildingType {

@@ -9,15 +9,17 @@ import { catchError, tap } from "rxjs/operators";
 })
 export class CityIOService {
   baseUrl = "https://cityio.media.mit.edu/api/table/";
-  tableName = "grasbrook";
+  tableName = "grasbrook_test";
   url = `${this.baseUrl}${this.tableName}`;
 
   table_data: any = null; // can be accessed by other components, this will always be updated
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
 
+  public gridChangeListener = []
+
   constructor(private http: HttpClient) {
-    this.update = interval(1000);
+    this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
     });
@@ -30,10 +32,19 @@ export class CityIOService {
   fetchCityIOdata(): Observable<any> {
     return this.http.get(this.url).pipe(
       tap(data => {
+        
+        let oldGridHash = (this.table_data==null?"":this.table_data["meta"]["hashes"]["grid"])
+        let newGridHash = data["meta"]["hashes"]["grid"]
         this.table_data = data;
+        if (oldGridHash != newGridHash) this.onGridChange()
       }),
       catchError(this.handleError("getMetadata"))
     );
+  }
+
+  onGridChange() {
+    if(this.gridChangeListener.length == 0) return
+    this.gridChangeListener[0]()
   }
 
   /**
