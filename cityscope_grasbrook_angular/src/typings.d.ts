@@ -25,8 +25,9 @@ declare interface Config {
   gridZoom: number;
   gridBearing: number;
   gridPitch: number;
-  style: string,
+  style: string;
   layers: CsLayer[];
+  isShowPopUp: boolean;
 }
 
 declare module '*.json' {

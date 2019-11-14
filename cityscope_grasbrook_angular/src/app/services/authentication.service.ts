@@ -1,51 +1,55 @@
-import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http";
-import { BehaviorSubject, Observable } from "rxjs";
-import { map } from "rxjs/operators";
-import { User } from "../models/user";
-import { MatSnackBar } from "@angular/material";
-import { AlertService } from "./alert.service";
+import {Injectable} from "@angular/core";
+import {HttpClient} from "@angular/common/http";
+import {BehaviorSubject, Observable} from "rxjs";
+import {map} from "rxjs/operators";
+import {User} from "../models/user";
+import {MatSnackBar} from "@angular/material";
+import {AlertService} from "./alert.service";
 
 @Injectable({
-  providedIn: "root"
+    providedIn: "root"
 })
 export class AuthenticationService {
-  private currentUserSubject: BehaviorSubject<User>;
-  public currentUser: Observable<User>;
+    private currentUserSubject: BehaviorSubject<User>;
+    public currentUser: Observable<User>;
+    public auth_url = `https://cityio.media.mit.edu/users/authenticate`;
 
-  constructor(private http: HttpClient,
-              private alertService: AlertService) {
-    this.currentUserSubject = new BehaviorSubject<User>(
-      JSON.parse(localStorage.getItem("currentUser"))
-    );
-    this.currentUser = this.currentUserSubject.asObservable();
-  }
+    constructor(private http: HttpClient,
+                private alertService: AlertService) {
+        this.currentUserSubject = new BehaviorSubject<User>(
+            JSON.parse(localStorage.getItem("currentUser"))
+        );
+        this.currentUser = this.currentUserSubject.asObservable();
+    }
 
-  public get currentUserValue(): User {
-    return this.currentUserSubject.value;
-  }
+    public get currentUserValue(): User {
+        return this.currentUserSubject.value;
+    }
 
-  login(username, password) {
-    return this.http
-      .post<any>(`http://localhost:4200/users/authenticate`, {
-        username,
-        password
-      })
-      .pipe(
-        map(user => {
-          // store user details and jwt token in local storage to keep user logged in between page refreshes
-          localStorage.setItem("currentUser", JSON.stringify(user));
-          this.currentUserSubject.next(user);
-          this.alertService.success("Designer Login successful", "");
-          return user;
-        })
-      );
-  }
+    login(username, password) {
+        // username = btoa(username);
+        password = btoa(password);
+        return this.http
+            .post<any>(this.auth_url, {
+                username,
+                password
+            })
+            .pipe(
+                map(user => {
+                    console.log(user);
+                    // store user details and jwt token in local storage to keep user logged in between page refreshes
+                    localStorage.setItem("currentUser", JSON.stringify(user));
+                    this.currentUserSubject.next(user);
+                    this.alertService.success("Designer Login successful", "");
+                    return user;
+                })
+            );
+    }
 
-  logout() {
-    // remove user from local storage and set current user to null
-    localStorage.removeItem("currentUser");
-    this.currentUserSubject.next(null);
-    this.alertService.success("Logout successful", "");
-  }
+    logout() {
+        // remove user from local storage and set current user to null
+        localStorage.removeItem("currentUser");
+        this.currentUserSubject.next(null);
+        this.alertService.success("Logout successful", "");
+    }
 }

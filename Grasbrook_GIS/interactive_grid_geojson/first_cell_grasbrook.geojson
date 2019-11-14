@@ -1,0 +1,52 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              10.006299477123012,
+              53.53810980906281
+            ],
+            [
+              10.006163051352946,
+              53.537991261597405
+            ],
+            [
+              10.00636205531999,
+              53.53790999202728
+            ],
+            [
+              10.006498481090055,
+              53.538028539492686
+            ],
+            [
+              10.006299477123012,
+              53.53810980906281
+            ]
+          ]
+        ]
+      },
+      "properties": {
+        "height": 10,
+        "interactive": false,
+        "interactive_id": null,
+        "land_use": "None"
+      },
+      "type": "Feature"
+    },
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          10.006299477123012,
+          53.53810980906281
+        ]
+      }
+    }
+  ]
+}

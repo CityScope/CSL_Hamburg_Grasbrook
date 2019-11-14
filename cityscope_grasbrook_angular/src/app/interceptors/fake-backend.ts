@@ -20,8 +20,8 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
     function handleRoute() {
       switch (true) {
-        case url.endsWith('/users/authenticate') && method === 'POST':
-          return authenticate();
+        // case url.endsWith('/users/authenticate') && method === 'POST':
+        //   return authenticate();
         case url.endsWith('/users/register') && method === 'POST':
           return register();
         case url.endsWith('/users') && method === 'GET':
