@@ -28,6 +28,60 @@ export class GridCell {
         }
     }
 
+    static string_of_enum(enumn, value)
+    {
+        for (let k in enumn) {
+            if (enumn[k] == value) {
+                return k;
+            }
+        }
+        return null;
+    }
+
+    static string_of_obj(objn, value)
+    {
+        let it = 0;
+        for (let k in objn) {
+            if(it == value) {
+                return k
+            }
+            it+=1
+        }
+        return null;
+    }
+
+    public static featureToTypemap(feature)
+    {
+        let typeDefinition = {}
+
+        const properties = feature['properties'];
+        switch(properties["type"])
+        {
+            case BuildingType.building:
+                typeDefinition["type"] = this.string_of_enum(BuildingType,properties["type"])
+                typeDefinition["bld_numLevels"] = properties['height']
+                typeDefinition["bld_useGround"] = this.string_of_obj(BuildingUse, properties["bld_useGround"])
+                typeDefinition["bld_useUpper"] = this.string_of_obj(BuildingUse, properties["bld_useUpper"])
+                break;
+            case BuildingType.open_space:
+                typeDefinition["type"] = "open_space"
+                typeDefinition["os_type"] = this.string_of_obj(OpenSpaceType, properties['os_type'])
+                break;
+            case BuildingType.street:
+                typeDefinition["type"] = "street"
+                typeDefinition["str_speed"] = properties["str_speed"]
+                typeDefinition["str_numLanes"] = properties["str_numLanes"]
+                typeDefinition["str_bike"] = properties["str_bike"]
+                typeDefinition["str_stairs"] = properties["str_stairs"]
+                typeDefinition["str_ramp"] = properties["str_ramp"]
+                typeDefinition["str_elevator"] = properties["str_elevator"]
+                break;
+            default:
+                return {}
+        }
+        return typeDefinition;
+    }
+
     public static fillFeatureByGridCell(feature, gridCell: GridCell) {
         for (let gridCellKey of Object.keys(gridCell)) {
             if (gridCellKey === 'bld_numLevels') {
