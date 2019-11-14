@@ -9,31 +9,59 @@ import { catchError, tap } from "rxjs/operators";
 })
 export class CityIOService {
   baseUrl = "https://cityio.media.mit.edu/api/table/";
-  tableName = "grasbrook";
+  tableName = "grasbrook_test";
   url = `${this.baseUrl}${this.tableName}`;
 
-  table_data: any = null; // can be accessed by other components, this will always be updated
+  table_data: any = {}; // can be accessed by other components, this will always be up to date
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
 
+  public gridChangeListener = []
+  lastHashes = {}
+
   constructor(private http: HttpClient) {
-    this.update = interval(1000);
+    this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
     });
   }
 
   /**
-   * fetches cityio data once
+   * fetches cityio hashes and fetch data for changed fields
    * @param result - Observable<any> containing cityio table data
    */
   fetchCityIOdata(): Observable<any> {
-    return this.http.get(this.url).pipe(
+    return this.http.get(this.url+"/meta/hashes").pipe(
       tap(data => {
-        this.table_data = data;
+        for(let key in data) {
+          if(this.lastHashes[key] !== data[key]) {
+            // data changed!
+            this.updateGrid(key).subscribe() // get data for field that has changed
+          }
+        }
+        this.lastHashes = data // update hashes
       }),
-      catchError(this.handleError("getMetadata"))
+      catchError(this.handleError("getHashes"))
     );
+  }
+
+  /**
+   * Get CityIO data once
+   * @param field the endpoint to fetch data from (e.g. "grid")
+   */
+  updateGrid(field : string): Observable<any> {
+    return this.http.get(this.url+"/"+field).pipe(
+      tap(data => {
+        this.table_data[field] = data;
+        if (field === "grid") this.onGridChange()
+      }),
+      catchError(this.handleError("getData:"+field))
+    );
+  }
+
+  onGridChange() {
+    if(this.gridChangeListener.length == 0) return
+    this.gridChangeListener[0]()
   }
 
   /**

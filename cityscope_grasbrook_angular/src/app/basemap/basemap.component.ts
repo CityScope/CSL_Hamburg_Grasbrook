@@ -8,7 +8,7 @@ import {LngLat, LngLatBoundsLike, LngLatLike} from 'mapbox-gl';
 import {GeoJSONSource} from 'mapbox-gl';
 import {ConfigurationService} from '../services/configuration.service';
 import {LayerLoaderService} from '../services/layer-loader.service';
-// import { CityIOService } from '../services/cityio.service';
+import { CityIOService } from '../services/cityio.service';
 import {AuthenticationService} from '../services/authentication.service';
 import {MatBottomSheet, MatDialog} from '@angular/material';
 import {ExitEditorDialog} from '../menus/exit-editor/exit-editor-dialog';
@@ -71,7 +71,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     selectedGridCell: GridCell;
     menuOutput: GridCell;
 
-    constructor(// private cityio: CityIOService,
+    constructor(
+        private cityio: CityIOService,
         private layerLoader: LayerLoaderService,
         private config: ConfigurationService,
         private authenticationService: AuthenticationService,
@@ -96,6 +97,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         //     this.initializeMap(data);
         //   });
         // }
+        this.cityio.gridChangeListener.push(this.updateFromCityIO)
     }
 
     ngAfterViewInit() {
@@ -544,6 +546,36 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.alertService.success('Data saved', '');
     }
 
+    public updateFromCityIO = e => {
+        console.log("update grid")
+
+        let {gridLayer, currentSource} = this.getGridSource();
+        for (let feature of currentSource['features']) {
+            if(this.cityio.table_data["grid"].length <= feature["id"]) break
+            if(this.cityio.table_data["grid"][feature["id"]] == null) break
+
+            let typeint = this.cityio.table_data["grid"][feature["id"]][0]
+            let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
+
+            GridCell.fillFeatureByCityIOType(feature, typeDict);
+
+            // Color change has to be done here again!?
+            if (feature.properties['changedTypeColor']) {
+                feature.properties['color'] = feature.properties['changedTypeColor'];
+                delete feature.properties['changedTypeColor'];
+            } else {
+                feature.properties['color'] = feature.properties['initial-color'];
+                delete feature.properties['changedTypeColor'];
+            }
+            if (feature.properties['type'] !== 0) {
+                feature.properties['height'] = 0;
+            }
+
+            feature.properties['isSelected'] = false;
+        }
+        gridLayer.setData(currentSource);
+    }
+
     /*
      *   Slider menu
      */
@@ -595,6 +627,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 }
 
                 feature.properties['isSelected'] = false;
+                // console.log(feature.properties)
             }
         }
         gridLayer.setData(currentSource);
