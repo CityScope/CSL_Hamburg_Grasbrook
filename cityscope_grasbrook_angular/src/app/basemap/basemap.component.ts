@@ -552,7 +552,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource['features']) {
             if(this.cityio.table_data["grid"].length <= feature["id"]) break
-            if(this.cityio.table_data["grid"][feature["id"]] == null)
+            if(this.cityio.table_data["grid"][feature["id"]] == null) break
 
             let typeint = this.cityio.table_data["grid"][feature["id"]][0]
             let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
