@@ -22,6 +22,7 @@ export class CityIOService {
   lastHashes = {}
 
   constructor(private http: HttpClient) {
+    this.updateData("header").subscribe()
     this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
@@ -38,7 +39,7 @@ export class CityIOService {
         for(let key in data) {
           if(this.lastHashes[key] !== data[key]) {
             // data changed!
-            this.updateGrid(key).subscribe() // get data for field that has changed
+            this.updateData(key).subscribe() // get data for field that has changed
           }
         }
         this.lastHashes = data // update hashes
@@ -51,7 +52,7 @@ export class CityIOService {
    * Get CityIO data once
    * @param field the endpoint to fetch data from (e.g. "grid")
    */
-  updateGrid(field : string): Observable<any> {
+  updateData(field : string): Observable<any> {
     return this.http.get(this.url+"/"+field).pipe(
       tap(data => {
         this.table_data[field] = data;
