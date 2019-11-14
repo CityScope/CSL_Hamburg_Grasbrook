@@ -547,20 +547,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     public updateFromCityIO = e => {
-        console.log("update")
-
-
+        console.log("update grid")
 
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource['features']) {
-            console.log(feature["id"])
             if(this.cityio.table_data["grid"].length <= feature["id"]) break
+            if(this.cityio.table_data["grid"][feature["id"]] == null)
+
             let typeint = this.cityio.table_data["grid"][feature["id"]][0]
             let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
 
-            // console.log(feature)
             GridCell.fillFeatureByCityIOType(feature, typeDict);
-            // console.log(feature)
 
             // Color change has to be done here again!?
             if (feature.properties['changedTypeColor']) {
@@ -630,7 +627,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 }
 
                 feature.properties['isSelected'] = false;
-                console.log(feature.properties)
+                // console.log(feature.properties)
             }
         }
         gridLayer.setData(currentSource);
