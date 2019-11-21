@@ -1,7 +1,8 @@
 import {Injectable} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
-import {BehaviorSubject, Observable} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {BehaviorSubject, Observable, of} from "rxjs";
 import {map} from "rxjs/operators";
+import {catchError, tap} from 'rxjs/internal/operators';
 import {User} from "../models/user";
 import {MatSnackBar} from "@angular/material";
 import {AlertService} from "./alert.service";
@@ -27,13 +28,22 @@ export class AuthenticationService {
     }
 
     login(username, password) {
+        // possible base64
         // username = btoa(username);
-        password = btoa(password);
+        // password = btoa(password);
+
+        // possible json for body
+        // const user = {
+        //     'username': username,
+        //     'password': password
+        // };
+
+        let headers = new HttpHeaders();
+        headers = headers.set('username', username);
+        headers = headers.set('password', password);
+
         return this.http
-            .post<any>(this.auth_url, {
-                username,
-                password
-            })
+            .post<any>(this.auth_url, {}, {headers: headers})
             .pipe(
                 map(user => {
                     console.log(user);
