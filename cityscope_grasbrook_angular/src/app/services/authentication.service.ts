@@ -28,22 +28,15 @@ export class AuthenticationService {
     }
 
     login(username, password) {
-        // possible base64
-        // username = btoa(username);
-        // password = btoa(password);
-
-        // possible json for body
-        // const user = {
-        //     'username': username,
-        //     'password': password
-        // };
-
-        let headers = new HttpHeaders();
-        headers = headers.set('username', username);
-        headers = headers.set('password', password);
+        const httpOptions = {
+            headers: new HttpHeaders({
+                    'username' : username,
+                    'password' : password
+            })
+        };
 
         return this.http
-            .post<any>(this.auth_url, {}, {headers: headers})
+            .post<any>(this.auth_url, {}, httpOptions)
             .pipe(
                 map(user => {
                     console.log(user);
