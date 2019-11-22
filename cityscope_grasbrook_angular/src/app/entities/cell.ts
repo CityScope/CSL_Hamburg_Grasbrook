@@ -1,6 +1,6 @@
 export class GridCell {
 
-    type = BuildingType.building;
+    type = BuildingType.empty;
 
     str_speed = 50;
     str_numLanes = 0;
@@ -9,10 +9,10 @@ export class GridCell {
     str_ramp = false;
     str_elevator = false;
 
-    os_type = OpenSpaceType.green_space;
+    os_type = null;
 
     bld_numLevels = 1;
-    bld_useGround = BuildingUse.commercial;
+    bld_useGround = null;
     bld_useUpper = BuildingUse.residential;
 
     public static fillGridCellByFeature(gridCell, feature) {

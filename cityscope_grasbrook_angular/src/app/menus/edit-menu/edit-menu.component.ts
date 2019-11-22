@@ -1,4 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
+// import {FormControl, Validators} from '@angular/forms';
 import {GridCell} from "../../entities/cell";
 
 @Component({
@@ -11,9 +12,11 @@ export class EditMenuComponent implements OnInit {
     @Input() currentCell: GridCell;
     @Output() menuOutput = new EventEmitter<GridCell>();
     @Output() dismissMenu: EventEmitter<any> = new EventEmitter();
+    // useGroundControl = new FormControl('', [Validators.required]);
     cell: GridCell = new GridCell();
     isDismissed = false;
     sliderDisabled = true;
+    fieldempty = false;
 
     constructor() {
     }
@@ -38,6 +41,11 @@ export class EditMenuComponent implements OnInit {
         }
     }
 
+    hasError() {
+        console.log(this.cell.bld_useGround)
+        return this.cell.bld_useGround == null;
+    }
+
     // Button actions
 
     // onPreview() {
@@ -50,6 +58,16 @@ export class EditMenuComponent implements OnInit {
     }
 
     onSave() {
+        console.log(this.cell)
+        if (this.cell.type === 0 && this.cell.bld_useGround == null) {
+            console.log("no ground use!")
+            this.fieldempty = true;
+            return;
+        } else if (this.cell.type === 2 && this.cell.os_type == null) {
+            console.log("no open space type!")
+            this.fieldempty = true;
+            return;
+        }
         this.isDismissed = true;
         this.dismissMenu.emit(this.cell);
     }
