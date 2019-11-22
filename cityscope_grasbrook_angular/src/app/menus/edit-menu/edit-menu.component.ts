@@ -13,6 +13,7 @@ export class EditMenuComponent implements OnInit {
     @Output() dismissMenu: EventEmitter<any> = new EventEmitter();
     cell: GridCell = new GridCell();
     isDismissed = false;
+    sliderDisabled = true;
 
     constructor() {
     }
@@ -25,6 +26,16 @@ export class EditMenuComponent implements OnInit {
 
     onChangeSetCellType(event: any, newType: number) {
         this.cell.type = newType;
+    }
+
+    onChangeSlider(event: any) {
+        if(event.value === 1) {
+            this.sliderDisabled = true;
+            this.cell.bld_useUpper = null
+        }
+        else {
+            this.sliderDisabled = false;
+        }
     }
 
     // Button actions

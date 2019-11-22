@@ -22,7 +22,7 @@
                         [step]="1"
                         [(ngModel)]="cell.bld_numLevels"
                         [thumbLabel]="true"
-                        (change)="onChangeSetCellType($event, 0)">
+                        (change)="onChangeSlider($event)">
                 </mat-slider>
             </section>
 
@@ -41,7 +41,8 @@
             <mat-form-field>
                 <mat-label>Upper floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useUpper"
-                            (selectionChange)="onChangeSetCellType($event, 0)">
+                            (selectionChange)="onChangeSetCellType($event, 0)"
+                            [disabled]="sliderDisabled">
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
