@@ -82,7 +82,7 @@ export class GridCell {
                 typeDefinition["str_elevator"] = properties["str_elevator"]
                 break;
             default:
-                return {}
+                typeDefinition["type"] = "empty"
         }
         return typeDefinition;
     }

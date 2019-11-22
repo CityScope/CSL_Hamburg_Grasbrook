@@ -57,7 +57,7 @@ export class EditMenuComponent implements OnInit {
         } else if (this.cell.type === 0 && this.cell.bld_numLevels > 1 && this.cell.bld_useUpper == null) {
             console.log("no upper level use!")
             return;
-        }else if (this.cell.type === 2 && this.cell.os_type == null) {
+        } else if (this.cell.type === 2 && this.cell.os_type == null) {
             console.log("no open space type!")
             return;
         }
