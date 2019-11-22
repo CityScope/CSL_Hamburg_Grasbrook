@@ -20,7 +20,12 @@ export class GridCell {
         for (let property of Object.keys(featureProps)) {
             if (property !== 'id') {
                 if (property == 'height') {
-                    gridCell.bld_numLevels = featureProps['height']
+                    if(featureProps['height']==0){
+                        gridCell.bld_numLevels = 1
+                    }
+                    else {
+                        gridCell.bld_numLevels = featureProps['height']
+                    }
                 } else {
                     gridCell[property] = featureProps[property];
                 }
