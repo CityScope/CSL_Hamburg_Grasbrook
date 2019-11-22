@@ -29,7 +29,8 @@
             <mat-form-field>
                 <mat-label>Ground floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useGround"
-                            (selectionChange)="onChangeSetCellType($event, 0)">
+                            (selectionChange)="onChangeSetCellType($event, 0)"
+                            required>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
@@ -43,13 +44,15 @@
                 <mat-label>Upper floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useUpper"
                             (selectionChange)="onChangeSetCellType($event, 0)"
-                            [disabled]="sliderDisabled">
+                            [disabled]="sliderDisabled"
+                            required>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
                     <mat-option [value]="3">Educational</mat-option>
                     <mat-option [value]="4">Culture - Sports - Community</mat-option>
                 </mat-select>
+                <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
         </mat-expansion-panel>
 
@@ -133,7 +136,7 @@
 
             <mat-form-field>
                 <mat-label>Open space type</mat-label>
-                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)">
+                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)" required>
                     <mat-option [value]="0">Green space</mat-option>
                     <mat-option [value]="1">Promenade</mat-option>
                     <mat-option [value]="2">Athletic field</mat-option>

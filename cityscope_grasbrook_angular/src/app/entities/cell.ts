@@ -13,7 +13,7 @@ export class GridCell {
 
     bld_numLevels = 1;
     bld_useGround = null;
-    bld_useUpper = BuildingUse.residential;
+    bld_useUpper = null;
 
     public static fillGridCellByFeature(gridCell, feature) {
         const featureProps = feature['properties'];
