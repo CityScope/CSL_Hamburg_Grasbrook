@@ -1,6 +1,6 @@
 <div id="cell-menu">
     <mat-accordion class="example-headers-align">
-        <mat-expansion-panel hideToggle [expanded]="cell.type === 0">
+        <mat-expansion-panel hideToggle [expanded]="cell.type === 0" (afterExpand)="onChangeSetCellType($event, 0)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Building
@@ -17,7 +17,7 @@
                 <label>Number of stories</label>
                 <mat-slider
                         style="width: 250px"
-                        [max]="100"
+                        [max]="20"
                         [min]="1"
                         [step]="1"
                         [(ngModel)]="cell.bld_numLevels"
@@ -51,7 +51,7 @@
             </mat-form-field>
         </mat-expansion-panel>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 1">
+        <mat-expansion-panel hideToggle  [expanded]="cell.type === 1" (afterExpand)="onChangeSetCellType($event, 1)">
             <mat-expansion-panel-header class="right-aligned-header">
                 <mat-panel-title>
                     Street
@@ -117,7 +117,7 @@
             </section>
         </mat-expansion-panel>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 2">
+        <mat-expansion-panel hideToggle  [expanded]="cell.type === 2" (afterExpand)="onChangeSetCellType($event, 2)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Open space
