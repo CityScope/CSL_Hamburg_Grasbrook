@@ -1,5 +1,6 @@
-import {Component, Input, OnInit, Output, EventEmitter, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, OnDestroy, ViewChild} from '@angular/core';
 import {GridCell} from "../../entities/cell";
+import { MatSelect } from '@angular/material';
 
 @Component({
     selector: 'app-edit-menu',
@@ -11,6 +12,9 @@ export class EditMenuComponent implements OnInit {
     @Input() currentCell: GridCell;
     @Output() menuOutput = new EventEmitter<GridCell>();
     @Output() dismissMenu: EventEmitter<any> = new EventEmitter();
+    @ViewChild('selectGroundUse', {static: false}) selectGU: MatSelect;
+    @ViewChild('selectUpperUse', {static: false}) selectUU: MatSelect;
+    @ViewChild('selectOSType', {static: false}) selectOST: MatSelect;
     cell: GridCell = new GridCell();
     isDismissed = false;
     sliderDisabled = true;
@@ -52,13 +56,16 @@ export class EditMenuComponent implements OnInit {
     onSave() {
         console.log(this.cell)
         if (this.cell.type === 0 && this.cell.bld_useGround == null) {
-            console.log("no ground use!")
+            this.selectGU.open()
+            this.selectGU.close()
             return;
         } else if (this.cell.type === 0 && this.cell.bld_numLevels > 1 && this.cell.bld_useUpper == null) {
-            console.log("no upper level use!")
+            this.selectUU.open()
+            this.selectUU.close()
             return;
         } else if (this.cell.type === 2 && this.cell.os_type == null) {
-            console.log("no open space type!")
+            this.selectOST.open()
+            this.selectOST.close()
             return;
         }
         this.isDismissed = true;

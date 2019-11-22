@@ -26,11 +26,12 @@
                 </mat-slider>
             </section>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Ground floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useGround"
                             (selectionChange)="onChangeSetCellType($event, 0)"
-                            required>
+                            required
+                            #selectGroundUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
@@ -40,12 +41,13 @@
                 <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Upper floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useUpper"
                             (selectionChange)="onChangeSetCellType($event, 0)"
                             [disabled]="sliderDisabled"
-                            required>
+                            required
+                            #selectUpperUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
@@ -134,9 +136,9 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Open space type</mat-label>
-                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)" required>
+                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)" required #selectOSType>
                     <mat-option [value]="0">Green space</mat-option>
                     <mat-option [value]="1">Promenade</mat-option>
                     <mat-option [value]="2">Athletic field</mat-option>
