@@ -95,7 +95,12 @@ export class GridCell {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
                 if (gridCell[gridCellKey] === 0) {
-                    color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
+                    if (gridCell.bld_useUpper == null) {
+                        color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useGround]];
+                    }
+                    else {
+                        color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
+                    }
                 } else {
                     if (gridCell[gridCellKey] === 1) {
                         color = '#333333';
