@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
 import {environment} from "../../environments/environment";
-import {interval, throwError} from "rxjs";
+import {interval} from "rxjs";
 import * as mapboxgl from "mapbox-gl";
 import * as Maptastic from "maptastic/dist/maptastic.min.js";
 import {CsLayer} from "../../typings";
@@ -98,7 +98,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         //     this.initializeMap(data);
         //   });
         // }
-        this.cityio.gridChangeListener.push(this.updateFromCityIO)
+        this.cityio.gridChangeListener.push(this.updateFromCityIO.bind(this));
     }
 
     ngAfterViewInit() {
@@ -314,7 +314,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         for (let clickedFeature of selectedFeature) {
             for (let feature of currentSource['features']) {
                 if (feature.properties['id'] === clickedFeature.properties['id']) {
-                    if (feature.properties['color'] === this.selectedCellColor) {
+                    if (selectedFeature.length <= 1 && feature.properties['color'] === this.selectedCellColor) {
+                        // deselect features on single click only, not with rectangle selection
                         feature.properties['color'] = feature.properties['initial-color'];
                         feature.properties['isSelected'] = false;
                         // remove this cell from array
@@ -325,7 +326,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                                 this.selectedFeatures.splice(i, 1);
                             }
                         }
-                    } else {
+                    } else {    // select additional features
                         feature.properties['initial-color'] = feature.properties['color'];
                         feature.properties['isSelected'] = true;
                         feature.properties['color'] = this.selectedCellColor;
@@ -548,8 +549,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.alertService.success('Data saved', '');
     }
 
-    public updateFromCityIO = e => {
-        console.log("update grid")
+    async updateFromCityIO(e) {
+        console.log("update grid");
 
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource['features']) {

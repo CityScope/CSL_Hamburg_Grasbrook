@@ -101,12 +101,14 @@ export class GridCell {
                     else {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
                     }
-                } else {
-                    if (gridCell[gridCellKey] === 1) {
-                        color = '#333333';
-                    } else if (gridCell[gridCellKey] === 2) {
-                        color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
-                    }
+                } else if (gridCell[gridCellKey] === 1) {
+                    color = '#333333';
+                    delete feature.properties["height"];
+                } else if (gridCell[gridCellKey] === 2) {
+                    color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
+                    delete feature.properties["height"];
+                }   else { //type == 3 -> empty
+                    color = "#aaaaaa";
                     delete feature.properties["height"];
                 }
                 feature.properties['changedTypeColor'] = color;

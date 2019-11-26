@@ -25,6 +25,9 @@ export class EditMenuComponent implements OnInit {
     ngOnInit() {
         if (this.currentCell) {
             this.cell = Object.assign({}, this.currentCell);
+            if(this.cell.bld_numLevels > 1) {
+                this.sliderDisabled = false;
+            }
         }
     }
 
