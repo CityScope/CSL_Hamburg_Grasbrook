@@ -9,8 +9,13 @@
     </div>
 
     <div class="menu" id="menu">
-      <a [routerLink]="['login']">{{loginStatus ? 'Editor' : 'Login'}}</a>
-      <a *ngIf="loginStatus" class="logout" (click)="logout()">Logout</a>
+      <ng-container *ngIf="loginStatus; else loggedOut">
+          <a [routerLink]="['map']">Editor</a>
+          <a class="logout" (click)="logout()">Logout</a>
+      </ng-container>
+      <ng-template #loggedOut>
+          <a [routerLink]="['login']">Login</a>
+      </ng-template>
     </div>
   </div>
 
