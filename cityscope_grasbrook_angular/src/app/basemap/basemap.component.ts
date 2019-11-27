@@ -149,7 +149,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         }
 
         this.map.on('error', event => {
-            console.log('Map error: ' + event);
+            console.log(event);
         });
     }
 
@@ -655,7 +655,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
                 feature.properties["isSelected"] = false;
 
-                this.updateCityIOgridCell(feature)
+                this.updateCityIOgridCell(feature);
             }
         }
         gridLayer.setData(currentSource);
