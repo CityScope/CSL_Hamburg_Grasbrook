@@ -9,8 +9,8 @@
     </div>
 
     <div class="menu" id="menu">
-      <a [routerLink]="['login']">Editor Login</a>
-      <a class="logout" (click)="logout()">Logout</a>
+      <a [routerLink]="['login']">{{loginStatus ? 'Editor' : 'Login'}}</a>
+      <a *ngIf="loginStatus" class="logout" (click)="logout()">Logout</a>
     </div>
   </div>
 
