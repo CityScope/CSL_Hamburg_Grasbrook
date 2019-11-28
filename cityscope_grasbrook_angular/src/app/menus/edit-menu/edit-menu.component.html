@@ -1,6 +1,6 @@
 <div id="cell-menu">
     <mat-accordion class="example-headers-align">
-        <mat-expansion-panel hideToggle [expanded]="cell.type === 0">
+        <mat-expansion-panel hideToggle [expanded]="cell.type === 0" (afterExpand)="onChangeSetCellType($event, 0)" (closed)="onChangeSetCellType($event, 3)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Building
@@ -17,41 +17,48 @@
                 <label>Number of stories</label>
                 <mat-slider
                         style="width: 250px"
-                        [max]="100"
+                        [max]="20"
                         [min]="1"
                         [step]="1"
                         [(ngModel)]="cell.bld_numLevels"
                         [thumbLabel]="true"
-                        (change)="onChangeSetCellType($event, 0)">
+                        (change)="onChangeSlider($event)">
                 </mat-slider>
             </section>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Ground floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useGround"
-                            (selectionChange)="onChangeSetCellType($event, 0)">
+                            (selectionChange)="onChangeSetCellType($event, 0)"
+                            required
+                            #selectGroundUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
                     <mat-option [value]="3">Educational</mat-option>
                     <mat-option [value]="4">Culture - Sports - Community</mat-option>
                 </mat-select>
+                <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Upper floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useUpper"
-                            (selectionChange)="onChangeSetCellType($event, 0)">
+                            (selectionChange)="onChangeSetCellType($event, 0)"
+                            [disabled]="sliderDisabled"
+                            required
+                            #selectUpperUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
                     <mat-option [value]="2">Office</mat-option>
                     <mat-option [value]="3">Educational</mat-option>
                     <mat-option [value]="4">Culture - Sports - Community</mat-option>
                 </mat-select>
+                <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
         </mat-expansion-panel>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 1">
+        <mat-expansion-panel hideToggle  [expanded]="cell.type === 1" (afterExpand)="onChangeSetCellType($event, 1)" (closed)="onChangeSetCellType($event, 3)">
             <mat-expansion-panel-header class="right-aligned-header">
                 <mat-panel-title>
                     Street
@@ -117,7 +124,7 @@
             </section>
         </mat-expansion-panel>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 2">
+        <mat-expansion-panel hideToggle  [expanded]="cell.type === 2" (afterExpand)="onChangeSetCellType($event, 2)" (closed)="onChangeSetCellType($event, 3)">
             <mat-expansion-panel-header>
                 <mat-panel-title>
                     Open space
@@ -129,9 +136,9 @@
                 </mat-panel-description>
             </mat-expansion-panel-header>
 
-            <mat-form-field>
+            <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Open space type</mat-label>
-                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)">
+                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)" required #selectOSType>
                     <mat-option [value]="0">Green space</mat-option>
                     <mat-option [value]="1">Promenade</mat-option>
                     <mat-option [value]="2">Athletic field</mat-option>
@@ -142,6 +149,7 @@
                     <mat-option [value]="7">Recycling center</mat-option>
                     <mat-option [value]="8">Water</mat-option>
                 </mat-select>
+                <mat-error>Please select a type!</mat-error>
             </mat-form-field>
         </mat-expansion-panel>
     </mat-accordion>

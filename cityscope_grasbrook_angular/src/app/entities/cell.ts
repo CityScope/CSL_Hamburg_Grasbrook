@@ -1,6 +1,6 @@
 export class GridCell {
 
-    type = BuildingType.building;
+    type = BuildingType.empty;
 
     str_speed = 50;
     str_numLanes = 0;
@@ -9,18 +9,23 @@ export class GridCell {
     str_ramp = false;
     str_elevator = false;
 
-    os_type = OpenSpaceType.green_space;
+    os_type = null;
 
     bld_numLevels = 1;
-    bld_useGround = BuildingUse.commercial;
-    bld_useUpper = BuildingUse.residential;
+    bld_useGround = null;
+    bld_useUpper = null;
 
     public static fillGridCellByFeature(gridCell, feature) {
         const featureProps = feature['properties'];
         for (let property of Object.keys(featureProps)) {
             if (property !== 'id') {
                 if (property == 'height') {
-                    gridCell.bld_numLevels = featureProps['height']
+                    if(featureProps['height']==0){
+                        gridCell.bld_numLevels = 1
+                    }
+                    else {
+                        gridCell.bld_numLevels = featureProps['height']
+                    }
                 } else {
                     gridCell[property] = featureProps[property];
                 }
@@ -77,7 +82,7 @@ export class GridCell {
                 typeDefinition["str_elevator"] = properties["str_elevator"]
                 break;
             default:
-                return {}
+                typeDefinition["type"] = "empty"
         }
         return typeDefinition;
     }
@@ -90,13 +95,20 @@ export class GridCell {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
                 if (gridCell[gridCellKey] === 0) {
-                    color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
-                } else {
-                    if (gridCell[gridCellKey] === 1) {
-                        color = '#333333';
-                    } else if (gridCell[gridCellKey] === 2) {
-                        color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
+                    if (gridCell.bld_useUpper == null) {
+                        color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useGround]];
                     }
+                    else {
+                        color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
+                    }
+                } else if (gridCell[gridCellKey] === 1) {
+                    color = '#333333';
+                    delete feature.properties["height"];
+                } else if (gridCell[gridCellKey] === 2) {
+                    color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
+                    delete feature.properties["height"];
+                }   else { //type == 3 -> empty
+                    color = "#aaaaaa";
                     delete feature.properties["height"];
                 }
                 feature.properties['changedTypeColor'] = color;

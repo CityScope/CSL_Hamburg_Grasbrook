@@ -12,6 +12,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
   returnUrl = 'http://localhost:4200/map';
+  state: string;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -22,7 +23,7 @@ export class LoginComponent implements OnInit {
   ) {
     // redirect to home if already logged in
     if (this.authenticationService.currentUserValue) {
-      this.router.navigate(['/map']);
+      this.router.navigate([this.returnUrl]);
       this.alertService.success('Already logged in', '');
     }
   }
