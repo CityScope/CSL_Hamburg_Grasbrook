@@ -49,10 +49,18 @@ export class AuthenticationService {
             );
     }
 
-    logout() {
+    logout(pathname?: string) {
         // remove user from local storage and set current user to null
         localStorage.removeItem("currentUser");
         this.currentUserSubject.next(null);
-        this.alertService.success("Logout successful", "");
+
+        switch (pathname) {
+            case '/login':
+                this.alertService.error('Login failed', 'Username or password are wrong', 5000);
+                break;
+            default:
+                this.alertService.success('Logout successful', '');
+                break;
+        }
     }
 }
