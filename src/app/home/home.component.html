@@ -14,7 +14,7 @@
           <a class="logout" (click)="logout()">Logout</a>
       </ng-container>
       <ng-template #loggedOut>
-          <a [routerLink]="['login']">Login</a>
+          <a (click)="login()">Login</a>
       </ng-template>
     </div>
   </div>

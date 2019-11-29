@@ -87,12 +87,17 @@
     -moz-border-radius: 0.5vw;
     -webkit-border-radius: 0.5vw;
     border: 0.5px solid #ffffff;
+    cursor: pointer;
   }
 
   .loginout {
     font-size: 5vw;
   }
+
   .logout {
-    cursor: pointer;
+  }
+
+  ::ng-deep.login-dialog {
+    background-color: rgba(255,255,255, 0.9) !important;
   }
 }
