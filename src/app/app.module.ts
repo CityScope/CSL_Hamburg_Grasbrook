@@ -39,7 +39,6 @@ import { ExitEditorDialog } from "./menus/exit-editor/exit-editor-dialog";
 import { LocalStorageService } from "./services/local-storage.service";
 import { RestoreMessage } from "./menus/restore-message/restore-message";
 import { EditMenuComponent } from "./menus/edit-menu/edit-menu.component";
-// import { ChartMenuComponent } from './menus/chart-menu/chart-menu.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +52,6 @@ import { EditMenuComponent } from "./menus/edit-menu/edit-menu.component";
     ExitEditorDialog,
     EditMenuComponent,
     RestoreMessage
-    // ChartMenuComponent
   ],
   imports: [
     BrowserModule,
