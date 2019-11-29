@@ -60,6 +60,7 @@ export class LoginDialog {
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
+                    this.alertService.error("Login failed. Please check your credentials", "", 5000)
                     this.loading = false;
                 });
     }
