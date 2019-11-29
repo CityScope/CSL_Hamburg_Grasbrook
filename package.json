@@ -29,7 +29,6 @@
     "mapbox-gl": "^1.4.1",
     "maptastic": "luftj/maptasticjs",
     "rxjs": "~6.5.3",
-    "save-dev": "^2.0.0",
     "tar": "^5.0.5",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
@@ -53,6 +52,6 @@
     "protractor": "~5.4.0",
     "ts-node": "~8.4.1",
     "tslint": "~5.20.0",
-    "typescript": "^3.5.3"
+    "typescript": "~3.5.3"
   }
 }
