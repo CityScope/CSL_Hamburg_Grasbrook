@@ -40,34 +40,40 @@
         "fill-extrusion-opacity": 0.8
       },
       "showInLayerList": true,
+      "isLoading": false,
       "addOnMapInitialisation": false
     },
     {
       "id": "grid",
       "showInLayerList": true,
+      "isLoading": false,
       "addOnMapInitialisation": true
     },
     {
       "id": "access",
       "showInLayerList": true,
+      "isLoading": false,
       "addOnMapInitialisation": true
     },
     {
       "id": "trips-deckgl",
       "type": "circle",
       "showInLayerList": true,
+      "isLoading": false,
       "addOnMapInitialisation": false
     },
     {
       "id": "gama-deckgl",
       "type": "circle",
       "showInLayerList": true,
+      "isLoading": false,
       "addOnMapInitialisation": false
     },
     {
       "id": "noisehh",
       "displayName": "Noise",
       "showInLayerList": true,
+      "isLoading": false,
       "metadata": "",
       "type": "raster",
       "source": {
@@ -83,6 +89,7 @@
       "id": "noise-hcu",
       "displayName": "Noise HCU",
       "showInLayerList": true,
+      "isLoading": true,
       "addOnMapInitialisation": false,
       "metadata": "",
       "type": "fill-extrusion",

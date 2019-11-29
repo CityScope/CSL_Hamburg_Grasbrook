@@ -2,35 +2,36 @@
   <span class=" nowrap">
     <span class="heading">Layers</span>&nbsp;
     <a
-      class="collapse-button"
-      (click)="collapsed = !collapsed"
-      href="javascript:void(0)"
+            class="collapse-button"
+            (click)="collapsed = !collapsed"
+            href="javascript:void(0)"
     >
       <i *ngIf="collapsed" class="icon-info material-icons menu-icons white"
-        >expand_less</i
+      >expand_less</i
       >
       <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white"
-        >expand_more</i
+      >expand_more</i
       >
     </a>
   </span>
-  <ul *ngIf="!collapsed">
-    <li *ngFor="let layer of layers">
-      <label>
-        <i
-          class="icon-info material-icons menu-icons white"
-          (click)="onShowInfo(layer)"
-          matTooltipPosition="right"
-          matTooltip="Legend could be displayed on click"
-          >info</i
-        >&nbsp;
-        <input
-          type="checkbox"
-          [checked]="layer.visible"
-          (change)="onToggleLayer(layer)"
-        />
-        {{ layer.displayName }} </label
-      >&nbsp;
-    </li>
-  </ul>
+    <ul *ngIf="!collapsed">
+        <li *ngFor="let layer of layers">
+            <label>
+                <i
+                        class="icon-info material-icons menu-icons white"
+                        (click)="onShowInfo(layer)"
+                        matTooltipPosition="right"
+                        matTooltip="Legend could be displayed on click"
+                >info</i
+                >&nbsp;
+                <input
+                        type="checkbox"
+                        [checked]="layer.visible"
+                        (change)="onToggleLayer(layer)"/>
+                {{ layer.displayName }} </label>&nbsp;
+
+            <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
+            </mat-spinner>
+        </li>
+    </ul>
 </div>

@@ -15,7 +15,7 @@ import {
     MatSnackBarModule,
     MatTooltipModule,
     MatExpansionModule, MatFormFieldModule, MatCheckboxModule, MatRadioModule, MatInputModule, MatOptionModule,
-    MatSelectModule
+    MatSelectModule, MatProgressSpinnerModule
 } from "@angular/material";
 
 import {HomeComponent} from "./home/home.component";
@@ -33,6 +33,7 @@ import {ExitEditorDialog} from "./menus/exit-editor/exit-editor-dialog";
 import {LocalStorageService} from "./services/local-storage.service";
 import {RestoreMessage} from "./menus/restore-message/restore-message";
 import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
+import { ChartMenuComponent } from './menus/chart-menu/chart-menu.component';
 
 @NgModule({
     declarations: [
@@ -45,7 +46,8 @@ import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
         LoginComponent,
         ExitEditorDialog,
         EditMenuComponent,
-        RestoreMessage
+        RestoreMessage,
+        ChartMenuComponent
     ],
     imports: [
         BrowserModule,
@@ -64,6 +66,7 @@ import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
         MatInputModule,
         MatOptionModule,
         MatSelectModule,
+        MatProgressSpinnerModule,
         FormsModule,
         MatBottomSheetModule,
         MatListModule,
