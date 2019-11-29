@@ -55,6 +55,8 @@ export class LoginDialog {
             .pipe(first())
             .subscribe(
                 data => {
+                    this.loading = false;
+                    this.dialogRef.close();
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {
