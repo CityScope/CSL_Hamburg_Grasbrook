@@ -89,7 +89,7 @@
       "id": "noise-hcu",
       "displayName": "Noise HCU",
       "showInLayerList": true,
-      "isLoading": true,
+      "isLoading": false,
       "addOnMapInitialisation": false,
       "metadata": "",
       "type": "fill-extrusion",
