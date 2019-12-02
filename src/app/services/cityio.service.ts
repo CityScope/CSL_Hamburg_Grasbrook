@@ -56,15 +56,15 @@ export class CityIOService {
     return this.http.get(this.url+"/"+field).pipe(
       tap(data => {
         this.table_data[field] = data;
-        if (field === "grid") this.onGridChange()
+        this.onGridChange(field)
       }),
       catchError(this.handleError("getData:"+field))
     );
   }
 
-  onGridChange() {
+  onGridChange(field) {
     if(this.gridChangeListener.length == 0) return
-    this.gridChangeListener[0]()
+    this.gridChangeListener[0](field)
   }
 
   /**
@@ -95,6 +95,27 @@ export class CityIOService {
       (response) => console.log(response),
       (error) => console.log(error)
     );
+  }
+
+  /**
+   * Checks which simulation outputs are up to date or not and returns their field names as a list
+   * @param uptodate if true, return all up to date fields, if false return all outdated fields
+   */
+  checkHashes(uptodate) {
+    let returnfields = [];
+    for(let field in this.table_data) {
+      if ('grid_hash' in this.table_data[field]) {
+        const gridhash = this.lastHashes['grid'];
+        const layerGridHash = this.table_data[field]['grid_hash'];
+        if(uptodate){
+          console.log(field, gridhash,layerGridHash)
+        }
+        if ((gridhash === layerGridHash) === uptodate) {
+          returnfields.push(field);
+        }
+      }
+    }
+    return returnfields;
   }
 
   /**

@@ -549,34 +549,47 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.alertService.success('Data saved', '');
     }
 
-    async updateFromCityIO(e) {
-        console.log("update grid");
+    async updateFromCityIO(field) {
+        console.log("update field",field);
 
-        let {gridLayer, currentSource} = this.getGridSource();
-        for (let feature of currentSource['features']) {
-            if(this.cityio.table_data["grid"].length <= feature["id"]) break
-            if(this.cityio.table_data["grid"][feature["id"]] == null) break
+        if (field === "grid") {
+            let {gridLayer, currentSource} = this.getGridSource();
+            for (let feature of currentSource['features']) {
+                if(this.cityio.table_data["grid"].length <= feature["id"]) break
+                if(this.cityio.table_data["grid"][feature["id"]] == null) break
 
-            let typeint = this.cityio.table_data["grid"][feature["id"]][0]
-            let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
+                let typeint = this.cityio.table_data["grid"][feature["id"]][0]
+                let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
 
-            GridCell.fillFeatureByCityIOType(feature, typeDict);
+                GridCell.fillFeatureByCityIOType(feature, typeDict);
 
-            // Color change has to be done here again!?
-            if (feature.properties['changedTypeColor']) {
-                feature.properties['color'] = feature.properties['changedTypeColor'];
-                delete feature.properties['changedTypeColor'];
-            } else {
-                feature.properties['color'] = feature.properties['initial-color'];
-                delete feature.properties['changedTypeColor'];
+                // Color change has to be done here again!?
+                if (feature.properties['changedTypeColor']) {
+                    feature.properties['color'] = feature.properties['changedTypeColor'];
+                    delete feature.properties['changedTypeColor'];
+                } else {
+                    feature.properties['color'] = feature.properties['initial-color'];
+                    delete feature.properties['changedTypeColor'];
+                }
+                if (feature.properties['type'] !== 0) {
+                    feature.properties['height'] = 0;
+                }
+
+                feature.properties['isSelected'] = false;
             }
-            if (feature.properties['type'] !== 0) {
-                feature.properties['height'] = 0;
-            }
-
-            feature.properties['isSelected'] = false;
+            gridLayer.setData(currentSource);
         }
-        gridLayer.setData(currentSource);
+        this.toggleLayerLoading(field);
+    }
+
+    toggleLayerLoading(changedField) {
+        const toggle = changedField === 'grid';
+        for (const field of this.cityio.checkHashes(!toggle)) {
+            const layer = this.layers.find(x => x.id === field);
+            if (layer) {
+                layer.isLoading = toggle;
+            }
+        }
     }
 
     /*

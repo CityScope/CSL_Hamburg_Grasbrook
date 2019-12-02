@@ -86,7 +86,7 @@
       "paint": {}
     },
     {
-      "id": "noise-hcu",
+      "id": "noise_result",
       "displayName": "Noise HCU",
       "showInLayerList": true,
       "isLoading": false,
