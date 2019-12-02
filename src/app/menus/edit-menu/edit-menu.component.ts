@@ -31,8 +31,11 @@ export class EditMenuComponent implements OnInit {
         }
     }
 
-    onChangeSetCellType(event: any, newType: number) {
-        this.cell.type = newType;
+    onChangeSetCellType(event: any) {
+        const idx = Number.parseInt(event);
+        if (idx > -1 && idx < 3) {
+            this.cell.type = event;
+        }
     }
 
     onChangeSlider(event: any) {

@@ -1,20 +1,11 @@
 <div id="cell-menu">
-    <mat-accordion class="example-headers-align">
-        <mat-expansion-panel hideToggle [expanded]="cell.type === 0" (afterExpand)="onChangeSetCellType($event, 0)" (closed)="onChangeSetCellType($event, 3)">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Building
-                </mat-panel-title>
-                <mat-panel-description>
-                    Edit building properties
-                    <mat-icon>house</mat-icon>
-                    <!--<mat-icon>location_city</mat-icon>-->
-                </mat-panel-description>
-            </mat-expansion-panel-header>
-
-
+    <mat-tab-group mat-align-tabs="center" [selectedIndex]="cell.type" (selectedIndexChange)="onChangeSetCellType($event)">
+        <mat-tab label="Tab Housing">
+            <ng-template mat-tab-label>
+                <mat-icon matTooltip="Building">house</mat-icon>
+            </ng-template>
             <section class="checkbox-holder">
-                <label>Number of stories</label>
+                <label style="width: 100%">Number of stories</label>
                 <mat-slider
                         style="width: 250px"
                         [max]="20"
@@ -29,7 +20,6 @@
             <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Ground floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useGround"
-                            (selectionChange)="onChangeSetCellType($event, 0)"
                             required
                             #selectGroundUse>
                     <mat-option [value]="0">Residential</mat-option>
@@ -41,10 +31,11 @@
                 <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
 
+            <br />
+
             <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Upper floor</mat-label>
                 <mat-select [(ngModel)]="cell.bld_useUpper"
-                            (selectionChange)="onChangeSetCellType($event, 0)"
                             [disabled]="sliderDisabled"
                             required
                             #selectUpperUse>
@@ -56,31 +47,22 @@
                 </mat-select>
                 <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
-        </mat-expansion-panel>
+        </mat-tab>
+        <mat-tab label="Tab Street">
+            <ng-template mat-tab-label>
+                <mat-icon matTooltip="Street">directions_car</mat-icon>
+            </ng-template>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 1" (afterExpand)="onChangeSetCellType($event, 1)" (closed)="onChangeSetCellType($event, 3)">
-            <mat-expansion-panel-header class="right-aligned-header">
-                <mat-panel-title>
-                    Street
-                </mat-panel-title>
-                <mat-panel-description>
-                    Edit street properties
-                    <mat-icon>local_movies</mat-icon>
-                    <!--<mat-icon>directions_car</mat-icon>-->
-                </mat-panel-description>
-            </mat-expansion-panel-header>
 
             <section class="input-holder">
                 <mat-form-field class="form-field">
-                    <input matInput [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"
-                           (change)="onChangeSetCellType($event, 1)">
+                    <input matInput [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes">
                 </mat-form-field>
             </section>
 
             <section class="radio-holder">
                 <label>Speed limit</label>
-                <mat-radio-group [(ngModel)]="cell.str_speed"
-                                 (change)="onChangeSetCellType($event, 1)">
+                <mat-radio-group [(ngModel)]="cell.str_speed">
                     <mat-radio-button [value]="7">7</mat-radio-button>
                     <mat-radio-button [value]="30">30</mat-radio-button>
                     <mat-radio-button [value]="50">50</mat-radio-button>
@@ -89,8 +71,7 @@
 
             <section class="radio-holder">
                 <label>Bicycles allowed</label>
-                <mat-radio-group [(ngModel)]="cell.str_bike"
-                                 (change)="onChangeSetCellType($event, 1)">
+                <mat-radio-group [(ngModel)]="cell.str_bike">
                     <mat-radio-button [value]="true"[checked]='true'>Yes</mat-radio-button>
                     <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
@@ -98,8 +79,7 @@
 
             <section class="radio-holder">
                 <label>Stairs</label>
-                <mat-radio-group [(ngModel)]="cell.str_stairs"
-                                 (change)="onChangeSetCellType($event, 1)">
+                <mat-radio-group [(ngModel)]="cell.str_stairs">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -107,8 +87,7 @@
 
             <section class="radio-holder">
                 <label>Pedestrian ramp</label>
-                <mat-radio-group [(ngModel)]="cell.str_ramp"
-                                 (change)="onChangeSetCellType($event, 1)">
+                <mat-radio-group [(ngModel)]="cell.str_ramp">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -116,29 +95,21 @@
 
             <section class="radio-holder">
                 <label>Elevator</label>
-                <mat-radio-group [(ngModel)]="cell.str_elevator"
-                                 (change)="onChangeSetCellType($event, 1)">
+                <mat-radio-group [(ngModel)]="cell.str_elevator">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false" [checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
             </section>
-        </mat-expansion-panel>
 
-        <mat-expansion-panel hideToggle  [expanded]="cell.type === 2" (afterExpand)="onChangeSetCellType($event, 2)" (closed)="onChangeSetCellType($event, 3)">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
-                    Open space
-                </mat-panel-title>
-                <mat-panel-description>
-                    Set Amenities
-                    <mat-icon>store_mall_directory</mat-icon>
-                    <!--<mat-icon>category</mat-icon>-->
-                </mat-panel-description>
-            </mat-expansion-panel-header>
 
+        </mat-tab>
+        <mat-tab label="Tab Open Space">
+            <ng-template mat-tab-label>
+                <mat-icon matTooltip="Open Space">local_florist</mat-icon>
+            </ng-template>
             <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Open space type</mat-label>
-                <mat-select [(ngModel)]="cell.os_type" (selectionChange)="onChangeSetCellType($event, 2)" required #selectOSType>
+                <mat-select [(ngModel)]="cell.os_type" required #selectOSType>
                     <mat-option [value]="0">Green space</mat-option>
                     <mat-option [value]="1">Promenade</mat-option>
                     <mat-option [value]="2">Athletic field</mat-option>
@@ -151,8 +122,9 @@
                 </mat-select>
                 <mat-error>Please select a type!</mat-error>
             </mat-form-field>
-        </mat-expansion-panel>
-    </mat-accordion>
+        </mat-tab>
+    </mat-tab-group>
+
 
     <div class="bottom-menu">
         <div class="row">
@@ -167,7 +139,7 @@
                 <!--</button>-->
             </div>
             <div class="col-md-4" (click)="onSave()">
-                <button mat-button>
+                <button style="float: right" mat-button>
                     Submit
                 </button>
             </div>

@@ -4,38 +4,36 @@
   border-radius: 5px;
   background-color: rgba(255, 255, 255, 0.4);
 
-  mat-expansion-panel {
-
-    mat-radio-group {
-      float: right;
-    }
-
-    mat-expansion-panel-header {
-      padding: 0 10px !important;
-
-      mat-panel-title {
-        margin-right: 10px !important;
-      }
-
-      mat-panel-description {
-        justify-content: flex-end;
-        margin-right: 0 !important;
-
-        mat-icon {
-          margin-left: 5px;
-        }
-      }
-    }
-
-    mat-checkbox {
-      margin-left: 15px;
-    }
-
-    mat-radio-button {
-      margin-left: 15px;
-    }
+  ::ng-deep.mat-tab-body {
+    padding: 10px 20px;
+    background-color: white;
+  }
+  ::ng-deep.mat-tab-label {
+    min-width: 130px;
   }
 
+  ::ng-deep.mat-slider-thumb {
+    background-color: rgba(0,0,0,.54)
+  }
+
+  ::ng-deep.mat-tab-label-content {
+    padding: 6px 22px;
+    background-color: white;
+    border-radius: 5px;
+
+  }
+
+  ::ng-deep.mat-radio-group {
+    float: right;
+  }
+
+  ::ng-deep.mat-checkbox {
+    margin-left: 15px;
+  }
+
+  ::ng-deep.mat-radio-button {
+    margin-left: 15px;
+  }
 
 
   span {
