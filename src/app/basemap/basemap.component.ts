@@ -73,7 +73,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     menuOutput: GridCell;
 
     constructor(
-        private cityio: CityIOService,
+        private cityIOService: CityIOService,
         private layerLoader: LayerLoaderService,
         private config: ConfigurationService,
         private authenticationService: AuthenticationService,
@@ -98,7 +98,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         //     this.initializeMap(data);
         //   });
         // }
-        this.cityio.gridChangeListener.push(this.updateFromCityIO.bind(this));
+        this.cityIOService.gridChangeListener.push(this.updateFromCityIO.bind(this));
     }
 
     ngAfterViewInit() {
@@ -550,7 +550,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private saveCurrentChanges() {
         this.localStorageService.removeGrid();
         // cityio.pending_changes is changed when editing features
-        this.cityio.pushAllChanges()
+        this.cityIOService.pushAllChanges();
         this.alertService.success('Data saved', '');
     }
 
@@ -560,11 +560,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (field === "grid") {
             let {gridLayer, currentSource} = this.getGridSource();
             for (let feature of currentSource['features']) {
-                if(this.cityio.table_data["grid"].length <= feature["id"]) break
-                if(this.cityio.table_data["grid"][feature["id"]] == null) break
+                if(this.cityIOService.table_data["grid"].length <= feature["id"]) break;
+                if(this.cityIOService.table_data["grid"][feature["id"]] == null) break;
 
-                let typeint = this.cityio.table_data["grid"][feature["id"]][0]
-                let typeDict = this.cityio.table_data["header"]["mapping"]["type"][typeint]
+                let typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
+                let typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
 
                 GridCell.fillFeatureByCityIOType(feature, typeDict);
 
@@ -589,10 +589,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     toggleLayerLoading(changedField) {
         const toggle = changedField === 'grid';
-        for (const field of this.cityio.checkHashes(!toggle)) {
+        for (const field of this.cityIOService.checkHashes(!toggle)) {
             const layer = this.layers.find(x => x.id === field);
             if (layer) {
                 layer.isLoading = toggle;
+                if (!toggle) {
+                    this.resetDataUrl(layer as CsLayer)
+                }
             }
         }
     }
@@ -627,12 +630,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     updateCityIOgridCell(feature){
-        if( !this.cityio.table_data) { return }
+        if( !this.cityIOService.table_data) { return }
         // get properties of changed features
         let typeDefinition = GridCell.featureToTypemap(feature);
 
         // find or create type in header
-        let header = this.cityio.table_data["header"]
+        let header = this.cityIOService.table_data["header"]
         let typeint = header["mapping"]["type"].findIndex(e => {
             // TODO: this is a really bad way to compare two objects!
             const a = JSON.stringify(typeDefinition).split("").sort().join()
@@ -643,12 +646,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             // new type
             typeint = header["mapping"]["type"].length;
             header["mapping"]["type"][typeint] = typeDefinition;
-            this.cityio.pushCityIOdata("header", header);
+            this.cityIOService.pushCityIOdata("header", header);
         }
         
         let id = feature["id"]
         console.log("write cell",id,"value",typeint)
-        this.cityio.pending_changes[id]= [typeint, 0]   // remember change
+        this.cityIOService.pending_changes[id]= [typeint, 0]   // remember change
     }
 
     clickMenuClose = e => {

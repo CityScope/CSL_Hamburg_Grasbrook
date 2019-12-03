@@ -91,10 +91,10 @@ export class CityIOService {
    * POSTs all changed cells (pendung_changes) to cityIO.
    */
   pushAllChanges() {
-    if(Object.keys(this.pending_changes).length == 0) return
+    if(Object.keys(this.pending_changes).length == 0) return;
 
     for(var key in this.pending_changes) {
-      console.log(key, this.pending_changes[key])
+      console.log(key, this.pending_changes[key]);
       this.table_data["grid"][key] = this.pending_changes[key];
     }
     
@@ -108,9 +108,9 @@ export class CityIOService {
    * @param data the actual data to put there
    */
   pushCityIOdata(field, data) {
-    const postData = data
-    const url = this.updateUrl + this.tableName + "/" + field
-    console.log("pushing to ",url)
+    const postData = data;
+    const url = this.updateUrl + this.tableName + "/" + field;
+    console.log("pushing to ",url);
     this.http.post(url, postData).subscribe(
       (response) => console.log(response),
       (error) => console.log(error)

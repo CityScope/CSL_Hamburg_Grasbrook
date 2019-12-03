@@ -40,7 +40,6 @@ import {LocalStorageService} from "./services/local-storage.service";
 import {RestoreMessage} from "./menus/restore-message/restore-message";
 import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
 import {LoginDialog} from "./menus/login-menu/login.dialog";
-import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
 
 @NgModule({
     declarations: [
@@ -53,7 +52,6 @@ import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
         ExitEditorDialog,
         LoginDialog,
         EditMenuComponent,
-        ChartMenuComponent,
         RestoreMessage
     ],
     imports: [
