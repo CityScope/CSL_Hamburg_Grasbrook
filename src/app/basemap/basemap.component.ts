@@ -134,9 +134,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         this.map.boxZoom.disable();
 
+        let first =true;
+
         this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
+            if(first) {
+                this.updateFromCityIO('grid')
+            }
         });
 
         this.map.on('mousedown', event => {

@@ -23,6 +23,7 @@ export class CityIOService {
 
   constructor(private http: HttpClient) {
     this.updateData("header").subscribe()
+    this.updateData("grid",false).subscribe()
     this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
@@ -52,11 +53,13 @@ export class CityIOService {
    * Get CityIO data once
    * @param field the endpoint to fetch data from (e.g. "grid")
    */
-  updateData(field : string): Observable<any> {
+  updateData(field : string, fireEvent = true): Observable<any> {
     return this.http.get(this.url+"/"+field).pipe(
       tap(data => {
         this.table_data[field] = data;
-        this.onGridChange(field)
+        if (fireEvent) {
+          this.onGridChange(field)
+        }
       }),
       catchError(this.handleError("getData:"+field))
     );
@@ -107,9 +110,6 @@ export class CityIOService {
       if ('grid_hash' in this.table_data[field]) {
         const gridhash = this.lastHashes['grid'];
         const layerGridHash = this.table_data[field]['grid_hash'];
-        if(uptodate){
-          console.log(field, gridhash,layerGridHash)
-        }
         if ((gridhash === layerGridHash) === uptodate) {
           returnfields.push(field);
         }
