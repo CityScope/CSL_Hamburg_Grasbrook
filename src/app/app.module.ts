@@ -40,6 +40,7 @@ import {LocalStorageService} from "./services/local-storage.service";
 import {RestoreMessage} from "./menus/restore-message/restore-message";
 import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
 import {LoginDialog} from "./menus/login-menu/login.dialog";
+import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
 
 @NgModule({
     declarations: [
@@ -52,6 +53,7 @@ import {LoginDialog} from "./menus/login-menu/login.dialog";
         ExitEditorDialog,
         LoginDialog,
         EditMenuComponent,
+        ChartMenuComponent,
         RestoreMessage
     ],
     imports: [
@@ -84,10 +86,7 @@ import {LoginDialog} from "./menus/login-menu/login.dialog";
         CityIOService,
         ConfigurationService,
         LocalStorageService,
-
-
         {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
-
         // provider used to create fake backend
         fakeBackendProvider
     ],

@@ -84,7 +84,9 @@ export class CityIOService {
     if(this.gridChangeListener.length === 0) {
       return;
     }
-    this.gridChangeListener[0](field);
+    for (let changeListener of this.gridChangeListener) {
+        changeListener(field)
+    }
   }
 
   /**

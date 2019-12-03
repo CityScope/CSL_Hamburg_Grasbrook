@@ -36,6 +36,8 @@
     >
   </div>
 
+  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+
   <app-edit-menu
     *ngIf="isEditMenu"
     [currentCell]="selectedGridCell"

@@ -57,6 +57,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     initialExtrusionHeight: any = null;
     isShowMenu = true;
+    isShowChart = false;
 
     // Multiple element selection
     start;
@@ -225,9 +226,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     resetDataUrl = (csLayer: CsLayer) => {
-        (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
-            csLayer['source']['data']
-        );
+        if (this.map.getSource(csLayer.id)) {
+            (this.map.getSource(csLayer.id) as GeoJSONSource).setData(
+                csLayer['source']['data']
+            );
+        }
     };
 
     showMapLegend(layer: CsLayer) {
@@ -495,6 +498,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 this.zoomToBounds();
                 break;
             }
+            case 'isShowChart': {
+                this.isShowChart = !this.isShowChart;
+                break;
+            }
         }
     }
 
@@ -592,10 +599,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         for (const field of this.cityIOService.checkHashes(!toggle)) {
             const layer = this.layers.find(x => x.id === field);
             if (layer) {
-                layer.isLoading = toggle;
-                if (!toggle) {
+                if (layer.isLoading) {
                     this.resetDataUrl(layer as CsLayer)
                 }
+                layer.isLoading = toggle;
+
             }
         }
     }
@@ -609,7 +617,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             // Snackbox warning
             // Check if features are all the same?
         } else {
-            let feature = this.getFeatureById(this.selectedFeatures[0])
+            let feature = this.getFeatureById(this.selectedFeatures[0]);
             this.selectedGridCell = new GridCell();
             GridCell.fillGridCellByFeature(this.selectedGridCell, feature);
         }
@@ -638,10 +646,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         let header = this.cityIOService.table_data["header"]
         let typeint = header["mapping"]["type"].findIndex(e => {
             // TODO: this is a really bad way to compare two objects!
-            const a = JSON.stringify(typeDefinition).split("").sort().join()
-            const b = JSON.stringify(e).split("").sort().join()
+            const a = JSON.stringify(typeDefinition).split("").sort().join();
+            const b = JSON.stringify(e).split("").sort().join();
             return a==b
-        })
+        });
         if (typeint === -1) {
             // new type
             typeint = header["mapping"]["type"].length;
@@ -683,6 +691,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.selectedFeatures = [];
         this.menuOutput = null;
         this.alertService.dismiss();
+
+        // Do we want the restore option
+        // If so - we have to cancel the method that gets the current grid state - user thinks
+        // cancel this:  this.cityio.gridChangeListener
+        // this.localStorageService.saveGrid(currentSource);
     };
 
     // public handleMenuOutput(menuOutput: GridCell) {
