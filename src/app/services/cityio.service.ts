@@ -17,13 +17,13 @@ export class CityIOService {
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
 
-  pending_changes = {}
-  public gridChangeListener = []
-  lastHashes = {}
+  pending_changes = {};
+  public gridChangeListener = [];
+  lastHashes = {};
 
   constructor(private http: HttpClient) {
-    this.updateData("header").subscribe()
-    this.updateData("grid",false).subscribe()
+    this.updateData('header').subscribe();
+    this.updateData('grid', false).subscribe();
     this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
@@ -40,12 +40,17 @@ export class CityIOService {
         for(let key in data) {
           if(this.lastHashes[key] !== data[key]) {
             // data changed!
-            this.updateData(key).subscribe() // get data for field that has changed
+            if (key === 'noise_result') {
+              // this should be done for all simulation modules, that depend on grid and are used as layers in the front end
+              this.updateModuleGridHash(key).subscribe(); // only download state of similation module result, not geodata
+            } else {
+              this.updateData(key).subscribe(); // get data for field that has changed
+            }
           }
         }
-        this.lastHashes = data // update hashes
+        this.lastHashes = data; // update hashes
       }),
-      catchError(this.handleError("getHashes"))
+      catchError(this.handleError('getHashes'))
     );
   }
 
@@ -53,21 +58,33 @@ export class CityIOService {
    * Get CityIO data once
    * @param field the endpoint to fetch data from (e.g. "grid")
    */
-  updateData(field : string, fireEvent = true): Observable<any> {
-    return this.http.get(this.url+"/"+field).pipe(
+  updateData(field: string, fireEvent = true): Observable<any> {
+    return this.http.get(this.url + '/' + field).pipe(
       tap(data => {
         this.table_data[field] = data;
         if (fireEvent) {
           this.onGridChange(field)
         }
       }),
-      catchError(this.handleError("getData:"+field))
+      catchError(this.handleError('getData:' + field))
+    );
+  }
+
+  updateModuleGridHash(field : string): Observable<any> {
+    return this.http.get(this.url + '/' + field + '/grid_hash').pipe(
+      tap(data => {
+        this.table_data[field] = {grid_hash: data};
+        this.onGridChange(field);
+      }),
+      catchError(this.handleError('getModuleGridHash:' + field))
     );
   }
 
   onGridChange(field) {
-    if(this.gridChangeListener.length == 0) return
-    this.gridChangeListener[0](field)
+    if(this.gridChangeListener.length === 0) {
+      return;
+    }
+    this.gridChangeListener[0](field);
   }
 
   /**
