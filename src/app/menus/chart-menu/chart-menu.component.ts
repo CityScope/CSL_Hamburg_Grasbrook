@@ -20,6 +20,7 @@ export class ChartMenuComponent implements OnInit {
     private chart: any;
     private width: number;
     private height: number;
+    private svg: any;
     private isLoading = false;
 
     constructor(private cityIoService: CityIOService) {
@@ -35,6 +36,7 @@ export class ChartMenuComponent implements OnInit {
         this.getDataFromCityIO();
         this.cityIoService.gridChangeListener.push(this.updateFromCityIO.bind(this));
         this.createChart();
+        this.updateChart();
     }
 
     async updateFromCityIO(field) {
@@ -45,7 +47,7 @@ export class ChartMenuComponent implements OnInit {
         if (field === "kpi_gfa") {
             // got new data
             this.getDataFromCityIO();
-            this.createChart();
+            this.updateChart();
             this.isLoading = false;
         }
      }
@@ -67,14 +69,17 @@ export class ChartMenuComponent implements OnInit {
         this.width = 300 - this.margin.left - this.margin.right;
         this.height = 200 - this.margin.top - this.margin.bottom;
 
-        d3.select("svg").remove();
-
-        let svg = d3.select(element).append('svg')
+        this.svg = d3.select(element).append('svg')
             .attr('width', element.offsetWidth)
             .attr('height', element.offsetHeight);
+    }
+
+    updateChart() {
+        console.log("dings")
+        d3.selectAll("svg > *").remove();
 
         // chart plot area
-        this.chart = svg.append('g')
+        this.chart = this.svg.append('g')
             .attr('class', 'bars')
             .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
@@ -94,7 +99,7 @@ export class ChartMenuComponent implements OnInit {
                         "<strong>Target:</strong> <span style='color:red'>" + d.target + "</span>";
             });
 
-        svg.call(tip);
+        this.svg.call(tip);
 
         // Scale the range of the data in the domains
         x.domain([0, d3.max(this.data, function (d) {
@@ -106,7 +111,7 @@ export class ChartMenuComponent implements OnInit {
         }));
 
         // append the rectangles for the bar chart
-        let eSel = svg.selectAll(".bar")
+        let eSel = this.svg.selectAll(".bar")
             .data(this.data)
             .enter();
 
@@ -136,13 +141,13 @@ export class ChartMenuComponent implements OnInit {
             });
 
         // add the x Axis
-        svg.append("g")
+        this.svg.append("g")
             .attr('class', 'axis axis-x')
             .attr("transform", "translate(" + this.margin.left + "," + this.height + ")")
             .call(d3.axisBottom(x));
 
         // add the y Axis
-        svg.append("g")
+        this.svg.append("g")
             .attr('class', 'axis axis-y')
             .attr("transform", "translate(" + this.margin.left + ",0)")
             .call(d3.axisLeft(y));
