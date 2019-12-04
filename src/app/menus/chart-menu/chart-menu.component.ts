@@ -38,12 +38,15 @@ export class ChartMenuComponent implements OnInit {
     }
 
     async updateFromCityIO(field) {
-        if (field === "grid") {
-            //this.isLoading = true
-        } else if (field === "kpi_gfa") {
+        if(this.cityIoService.checkHashes(false).indexOf("kpi_gfa") >= 0) {
+            // kpi_gfa is not up to date
+            this.isLoading = true;
+        }
+        if (field === "kpi_gfa") {
+            // got new data
             this.getDataFromCityIO();
             this.createChart();
-            //this.isLoading = false;
+            this.isLoading = false;
         }
      }
 
