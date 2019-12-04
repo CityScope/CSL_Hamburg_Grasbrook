@@ -20,6 +20,7 @@ export class LayerControlComponent implements OnInit {
   onToggleLayer(layer: CsLayer) {
     layer.visible = !layer.visible;
     this.toggleLayer.emit();
+    console.log(layer);
   }
 
   onShowInfo(evt: MouseEvent, layer: CsLayer) {

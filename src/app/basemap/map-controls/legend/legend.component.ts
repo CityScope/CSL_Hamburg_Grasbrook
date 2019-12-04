@@ -20,7 +20,7 @@ export class LegendComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if (changes.layer.currentValue) {
+    if (this.visible) {
       this.legend = changes.layer.currentValue.legend ? changes.layer.currentValue.legend : null;
     }
   }

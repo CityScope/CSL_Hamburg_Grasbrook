@@ -27,13 +27,17 @@
             <td>{{value.label}}</td>
           </tr>
         </table>
-        <ng-container *ngIf="legend.credits.length; else creditString">
-          <small *ngFor="let string of legend.credits">{{string}}</small>
-        </ng-container>
+        <ng-container *ngIf="legend.credits">
 
-        <ng-template #creditString>
-            <small>{{string}}</small>
-        </ng-template>
+          <ng-container *ngIf="legend.credits.length; else singleLineCredits">
+              <small *ngFor="let string of legend.credits">{{string}}</small>
+          </ng-container>
+          
+          <ng-template #singleLineCredits>
+              <small>{{string}}</small>
+          </ng-template>
+
+        </ng-container>
     </ng-container>
     <ng-template #noLegend>
         <div i18n>Legend not available</div>

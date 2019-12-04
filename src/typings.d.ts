@@ -20,7 +20,7 @@ declare interface CsLayer extends mapboxgl.Layer {
 }
 
 declare interface Legend {
-  styleField: string,
+  styleField: string | string[],
   styleValues: LegendValue[],
   description: string,
   credits: string | string[],
