@@ -1,20 +1,15 @@
 <div *ngIf="layer" [hidden]="!visible" class="legend">
-  <span class="nowrap">
-    <span class="heading" i18n>
-      Legend
-    </span>
-    <span 
-      (click)="onClose()" i18n
-      class="close">
-      <i
-        class="material-icons menu-icons white"
-        matTooltipPosition="right"
-        matTooltip="Close Legend">
-        close
-      </i>
-    </span>
+  <div class="legend-title">{{ layer.displayName }}:</div>
+  <span
+    (click)="onClose()" i18n
+    class="close">
+    <i
+      class="material-icons menu-icons white"
+      matTooltipPosition="right"
+      matTooltip="Close Legend">
+      close
+    </i>
   </span>
-  <div>{{ layer.displayName }}:</div>
   <div class="legend-container">
     <ng-container
       *ngIf="legend.url || legend.html || legend.styleValues; else noLegend">

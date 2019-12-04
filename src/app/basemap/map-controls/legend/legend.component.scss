@@ -3,7 +3,7 @@
   margin: 5px;
   background-color: rgba(255, 255, 255, 0.8);
   border-radius: 4px;
-  max-width: 320px;
+  max-width: 260px;
 
   .close {
     cursor: pointer;
@@ -11,14 +11,14 @@
       vertical-align: middle;
     }
   }
-
-  .heading {
-    font-size: 130%;
-    font-weight: bold;
-  }
   
   .nowrap {
     white-space: nowrap;
+  }
+
+  .legend-title {
+    display: inline-block;
+    font-weight: bold;
   }
 
   .legend-container {
@@ -35,18 +35,19 @@
     table.legend-table {
 
       td {
+        font-size: 80%;
         padding: 5px;
 
         &.color-field {
 
           span {
-            width:1.5em;
-            height:1.5em;
+            width:1em;
+            height:1em;
             display:inline-block;
             margin-right: 5px;
   
             &.circle {
-              border-radius: 0.75em;
+              border-radius: 0.5em;
             }
           }
         }
