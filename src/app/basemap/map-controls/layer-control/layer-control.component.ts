@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import {CsLayer} from "../../../../typings";
+import {CsLayer} from '../../../../typings';
 
 @Component({
   selector: 'app-layer-control',
@@ -22,8 +22,14 @@ export class LayerControlComponent implements OnInit {
     this.toggleLayer.emit();
   }
 
-  onShowInfo(layer: CsLayer) {
+  onShowInfo(evt: MouseEvent, layer: CsLayer) {
+    evt.preventDefault();
     this.showInfo.emit(layer);
+
+    if (!layer.visible) {
+      layer.visible = true;
+      this.toggleLayer.emit();
+    }
   }
 
 }

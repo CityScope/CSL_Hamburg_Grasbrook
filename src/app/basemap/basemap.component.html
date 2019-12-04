@@ -2,12 +2,12 @@
   <div class="basemap" id="basemap"></div>
 
   <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
-    <!--<app-legend [layer]="mapKeyLayer" [visible]="mapKeyVisible" (close)="mapKeyVisible = false"></app-legend>-->
+    <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>
 
     <app-layer-control
       [layers]="layers"
       (toggleLayer)="toggleLayer()"
-      (showInfo)="showMapKey($event)"
+      (showInfo)="showMapLegend($event)"
     >
     </app-layer-control>
   </div>

@@ -40,8 +40,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
     mapCanvas;
     style;
-    mapKeyLayer: CsLayer;
-    mapKeyVisible: boolean;
+    mapLegendLayer: CsLayer;
+    mapLegendVisible: boolean;
     layers: CsLayer[] = [];
     intervalMap = {};
     selectedCellColor = '#00FF00';
@@ -235,8 +235,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     showMapLegend(layer: CsLayer) {
         // Activate the potential legend for the layer
-        this.mapKeyLayer = layer;
-        this.mapKeyVisible = true;
+        this.mapLegendLayer = layer;
+        this.mapLegendVisible = true;
     }
 
     /*
@@ -307,7 +307,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         let gridLayer: GeoJSONSource = this.map.getSource(
             this.editableGridLayer
         ) as GeoJSONSource;
-        let currentSource = gridLayer['_data'];
+        let currentSource = gridLayer ? gridLayer['_data'] : null;
+
         return {gridLayer, currentSource};
     }
 
@@ -318,37 +319,40 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     };
 
     private showFeaturesSelected(selectedFeature: any[]) {
-        let {gridLayer, currentSource} = this.getGridSource();
-        for (let clickedFeature of selectedFeature) {
-            for (let feature of currentSource['features']) {
-                if (feature.properties['id'] === clickedFeature.properties['id']) {
-                    if (selectedFeature.length <= 1 && feature.properties['color'] === this.selectedCellColor) {
-                        // deselect features on single click only, not with rectangle selection
-                        feature.properties['color'] = feature.properties['initial-color'];
-                        feature.properties['isSelected'] = false;
-                        // remove this cell from array
-                        for (var i = this.selectedFeatures.length - 1; i >= 0; i--) {
-                            if (
-                                this.selectedFeatures[i] === clickedFeature.properties['id']
-                            ) {
-                                this.selectedFeatures.splice(i, 1);
+        const {gridLayer, currentSource} = this.getGridSource();
+
+        if (gridLayer && currentSource) {
+            for (const clickedFeature of selectedFeature) {
+                for (const feature of currentSource['features']) {
+                    if (feature.properties['id'] === clickedFeature.properties['id']) {
+                        if (selectedFeature.length <= 1 && feature.properties['color'] === this.selectedCellColor) {
+                            // deselect features on single click only, not with rectangle selection
+                            feature.properties['color'] = feature.properties['initial-color'];
+                            feature.properties['isSelected'] = false;
+                            // remove this cell from array
+                            for (let i = this.selectedFeatures.length - 1; i >= 0; i--) {
+                                if (
+                                    this.selectedFeatures[i] === clickedFeature.properties['id']
+                                ) {
+                                    this.selectedFeatures.splice(i, 1);
+                                }
                             }
+                        } else {    // select additional features
+                            feature.properties['initial-color'] = feature.properties['color'];
+                            feature.properties['isSelected'] = true;
+                            feature.properties['color'] = this.selectedCellColor;
+                            this.selectedFeatures.push(clickedFeature.properties['id']);
+                            this.showEditMenu();
                         }
-                    } else {    // select additional features
-                        feature.properties['initial-color'] = feature.properties['color'];
-                        feature.properties['isSelected'] = true;
-                        feature.properties['color'] = this.selectedCellColor;
-                        this.selectedFeatures.push(clickedFeature.properties['id']);
-                        this.showEditMenu();
                     }
                 }
+                gridLayer.setData(currentSource);
             }
-            gridLayer.setData(currentSource);
+            this.isNewSelectionDifferentType(selectedFeature);
         }
-        this.isNewSelectionDifferentType(selectedFeature);
     }
 
-    private getFeatureById(id: Number) {
+    private getFeatureById(id: number) {
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource['features']) {
             if (feature['id'] === id) {
@@ -565,33 +569,35 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         console.log("update field",field);
 
         if (field === "grid") {
-            let {gridLayer, currentSource} = this.getGridSource();
-            for (let feature of currentSource['features']) {
-                if(this.cityIOService.table_data["grid"].length <= feature["id"]) break;
-                if(this.cityIOService.table_data["grid"][feature["id"]] == null) break;
+            const {gridLayer, currentSource} = this.getGridSource();
+            if (gridLayer && currentSource) {
+                for (const feature of currentSource['features']) {
+                    if (this.cityIOService.table_data["grid"].length <= feature["id"]) break;
+                    if (this.cityIOService.table_data["grid"][feature["id"]] == null) break;
 
-                let typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
-                let typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
+                    const typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
+                    const typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
 
-                GridCell.fillFeatureByCityIOType(feature, typeDict);
+                    GridCell.fillFeatureByCityIOType(feature, typeDict);
 
-                // Color change has to be done here again!?
-                if (feature.properties['changedTypeColor']) {
-                    feature.properties['color'] = feature.properties['changedTypeColor'];
-                    delete feature.properties['changedTypeColor'];
-                } else {
-                    feature.properties['color'] = feature.properties['initial-color'];
-                    delete feature.properties['changedTypeColor'];
+                    // Color change has to be done here again!?
+                    if (feature.properties['changedTypeColor']) {
+                        feature.properties['color'] = feature.properties['changedTypeColor'];
+                        delete feature.properties['changedTypeColor'];
+                    } else {
+                        feature.properties['color'] = feature.properties['initial-color'];
+                        delete feature.properties['changedTypeColor'];
+                    }
+                    if (feature.properties['type'] !== 0) {
+                        feature.properties['height'] = 0;
+                    }
+
+                    feature.properties['isSelected'] = false;
                 }
-                if (feature.properties['type'] !== 0) {
-                    feature.properties['height'] = 0;
-                }
-
-                feature.properties['isSelected'] = false;
+                gridLayer.setData(currentSource);
             }
-            gridLayer.setData(currentSource);
-        }
-        this.toggleLayerLoading(field);
+            this.toggleLayerLoading(field);
+            }
     }
 
     toggleLayerLoading(changedField) {

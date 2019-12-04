@@ -1,5 +1,5 @@
-import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter } from '@angular/core';
-import {CsLayer} from "../../../../typings";
+import { Component, OnInit, ViewEncapsulation, Input, Output, EventEmitter, SimpleChanges } from '@angular/core';
+import {CsLayer, Legend} from "../../../../typings";
 
 @Component({
   selector: 'app-legend',
@@ -12,9 +12,17 @@ export class LegendComponent implements OnInit {
   @Input() visible: boolean;
   @Output() close: EventEmitter<{}> = new EventEmitter();
 
+  legend: Legend;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.layer.currentValue) {
+      this.legend = changes.layer.currentValue.legend ? changes.layer.currentValue.legend : null;
+    }
   }
 
   onClose() {

@@ -1,30 +1,56 @@
 .legend {
   padding: 10px;
-  margin: 15px;
-  background-color: rgba(255, 255, 255, 0.9);
-  border: 1px solid gray;
-  border-radius: 10px;
-}
+  margin: 5px;
+  background-color: rgba(255, 255, 255, 0.8);
+  border-radius: 4px;
+  max-width: 320px;
 
-.legend .heading {
-  font-size: 130%;
-  font-weight: bold;
-}
+  .close {
+    cursor: pointer;
+    i {
+      vertical-align: middle;
+    }
+  }
 
-.legend .nowrap {
-  white-space: nowrap;
-}
+  .heading {
+    font-size: 130%;
+    font-weight: bold;
+  }
+  
+  .nowrap {
+    white-space: nowrap;
+  }
 
-.legend a {
-  font-size: 90%;
-}
+  .legend-container {
 
-.legend-row {
-  display: flex;
-  font-size: 90%;
-}
+    label {
+      font-size: 80%;
+    }
 
-.legend-box {
-  width: 20px;
-  height: 20px;
+    small {
+      display: block;
+      font-size: 60%;
+    }
+
+    table.legend-table {
+
+      td {
+        padding: 5px;
+
+        &.color-field {
+
+          span {
+            width:1.5em;
+            height:1.5em;
+            display:inline-block;
+            margin-right: 5px;
+  
+            &.circle {
+              border-radius: 0.75em;
+            }
+          }
+        }
+      }
+    }
+  }
 }

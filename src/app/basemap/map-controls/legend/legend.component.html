@@ -1,9 +1,47 @@
 <div *ngIf="layer" [hidden]="!visible" class="legend">
-  <span class="nowrap"><span class="heading" i18n>Legend</span> <a href="#" (click)="onClose()" i18n>close</a></span>
-  <!--TODO: If showing legends is necessary extend the layer interface and otherwise delete-->
-  <!--<div>{{ layer.displayName }}:</div>-->
-  <!--<div *ngIf="layer.legendUrl"><img src="{{ layer.legendUrl }}" /></div>-->
-  <!--<div *ngIf="layer.legendHtml" [innerHTML]="layer.legendHtml | safeHtml"></div>-->
-  <!--<div *ngIf="!layer.legendUrl && !layer.legendHtml" i18n>Legend not available</div>-->
-  <!--<div *ngIf="layer.meta">{{ layer.meta }}</div>-->
+  <span class="nowrap">
+    <span class="heading" i18n>
+      Legend
+    </span>
+    <span 
+      (click)="onClose()" i18n
+      class="close">
+      <i
+        class="material-icons menu-icons white"
+        matTooltipPosition="right"
+        matTooltip="Close Legend">
+        close
+      </i>
+    </span>
+  </span>
+  <div>{{ layer.displayName }}:</div>
+  <div class="legend-container">
+    <ng-container
+      *ngIf="legend.url || legend.html || legend.styleValues; else noLegend">
+        <label *ngIf="legend.description">{{ legend.description }}</label>
+        <div *ngIf="legend.url"><img src="{{ legend.url }}" /></div>
+        <div *ngIf="legend.html" [innerHTML]="legend.html"></div>
+        <table *ngIf="legend.styleValues" class="legend-table">
+          <tr *ngFor="let value of legend.styleValues; let i = index">
+            <td class="color-field">
+              <span 
+                [class]="legend.type"
+                [style.background-color]="value.color" >
+              </span>
+            </td>
+            <td>{{value.label}}</td>
+          </tr>
+        </table>
+        <ng-container *ngIf="legend.credits.length; else creditString">
+          <small *ngFor="let string of legend.credits">{{string}}</small>
+        </ng-container>
+
+        <ng-template #creditString>
+            <small>{{string}}</small>
+        </ng-template>
+    </ng-container>
+    <ng-template #noLegend>
+        <div i18n>Legend not available</div>
+    </ng-template>
+  </div>
 </div>

@@ -11,11 +11,27 @@ declare interface CsLayer extends mapboxgl.Layer {
   displayName: string;
   addOnMapInitialisation: boolean;
   showInLayerList: boolean;
-  isLoading:boolean;
+  isLoading: boolean;
+  legend: Legend;
 
   sourceType: string;
   hasReloadInterval: boolean;
   reloadUrl: string;
+}
+
+declare interface Legend {
+  styleField: string,
+  styleValues: LegendValue[],
+  description: string,
+  credits: string | string[],
+  html: string,
+  url: string
+}
+
+declare interface LegendValue {
+  styleFieldValue: string | number | [number, number], // string Value, numerical Value or interval
+  color: string,
+  label: string
 }
 
 declare interface Config {

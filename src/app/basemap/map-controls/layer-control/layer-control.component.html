@@ -14,21 +14,20 @@
       >
     </a>
   </span>
-    <ul *ngIf="!collapsed">
+    <ul *ngIf="!collapsed" class="layer-list">
         <li *ngFor="let layer of layers">
             <label>
-                <i
+                <i *ngIf="layer.legend"
                         class="icon-info material-icons menu-icons white"
-                        (click)="onShowInfo(layer)"
+                        (click)="onShowInfo($event, layer)"
                         matTooltipPosition="right"
                         matTooltip="Legend could be displayed on click"
-                >info</i
-                >&nbsp;
+                >info</i>
                 <input
                         type="checkbox"
                         [checked]="layer.visible"
                         (change)="onToggleLayer(layer)"/>
-                {{ layer.displayName }} </label>&nbsp;
+                {{ layer.displayName }} </label>
 
             <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
             </mat-spinner>

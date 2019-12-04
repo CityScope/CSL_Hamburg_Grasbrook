@@ -11,18 +11,15 @@
   white-space: nowrap;
 }
 
-.layer-control a {
-  font-size: 90%;
-}
-
 .layer-control ul,
 .layer-control label {
   margin: 0;
+  line-height: 2em;
+  position: relative;
 }
 
 .layer-control li {
   list-style: none;
-  line-height: 175%;
   user-select: none;
 }
 
@@ -32,6 +29,19 @@
   font-size: 15px;
   margin-left: 5px;
   padding-top: 2px;
+}
+
+.layer-control .layer-list {
+  margin-top: 10px;
+  padding-right: 20px;
+  padding-inline-start: 20px;
+}
+
+.layer-control .layer-list .icon-info {
+  position: absolute;
+  top: 0.15em;
+  left: -20px;
+  margin: 0;
 }
 
 .collapse-button {
