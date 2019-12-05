@@ -85,6 +85,30 @@
       },
       "paint": {}
     },
+    
+    {
+      "id": "walkability",
+      "displayName": "Walkability",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill-extrusion",
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
+      },      
+      "paint": {
+        "fill-extrusion-height": 0.2,
+        "fill-extrusion-base": 0.2,
+        "fill-extrusion-opacity": 0.8,
+        
+        "fill-extrusion-color": {
+          "property": "walktime",
+          "stops": [[0, "green"], [500, "yellow"], [2000, "red"]]
+        }
+      }
+    },
     {
       "id": "noise_result",
       "displayName": "Noise HCU",
