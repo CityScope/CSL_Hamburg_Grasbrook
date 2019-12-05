@@ -8,7 +8,7 @@ import {LngLat, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {GeoJSONSource} from "mapbox-gl";
 import {ConfigurationService} from "../services/configuration.service";
 import {LayerLoaderService} from "../services/layer-loader.service";
-import { CityIOService } from "../services/cityio.service";
+import {CityIOService} from "../services/cityio.service";
 import {AuthenticationService} from "../services/authentication.service";
 import {MatBottomSheet, MatDialog} from "@angular/material";
 import {ExitEditorDialog} from "../menus/exit-editor/exit-editor-dialog";
@@ -73,17 +73,16 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     selectedGridCell: GridCell;
     menuOutput: GridCell;
 
-    constructor(
-        private cityIOService: CityIOService,
-        private layerLoader: LayerLoaderService,
-        private config: ConfigurationService,
-        private authenticationService: AuthenticationService,
-        private alertService: AlertService,
-        private _bottomSheet: MatBottomSheet,
-        private localStorageService: LocalStorageService,
-        public dialog: MatDialog,
-        private router: Router,
-        private zone: NgZone) {
+    constructor(private cityIOService: CityIOService,
+                private layerLoader: LayerLoaderService,
+                private config: ConfigurationService,
+                private authenticationService: AuthenticationService,
+                private alertService: AlertService,
+                private _bottomSheet: MatBottomSheet,
+                private localStorageService: LocalStorageService,
+                public dialog: MatDialog,
+                private router: Router,
+                private zone: NgZone) {
         // get the acess token
         // mapboxgl.accessToken = environment.mapbox.accessToken;
         (mapboxgl as typeof mapboxgl).accessToken = environment.mapbox.accessToken;
@@ -135,12 +134,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         this.map.boxZoom.disable();
 
-        let first =true;
+        let first = true;
 
         this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
-            if(first) {
+            if (first) {
                 this.updateFromCityIO('grid')
             }
         });
@@ -267,7 +266,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.mapCanvas.addEventListener('mousedown', this.mouseDown, true);
 
         this.map.on('dragstart', this.removePopUp);
-        this.map.on('zoomstart',  this.removePopUp);
+        this.map.on('zoomstart', this.removePopUp);
     }
 
     private removeGridInteraction() {
@@ -276,8 +275,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         // keyboard event
         this.mapCanvas.removeEventListener('keydown', this.keyStrokeOnMap);
 
-        this.map.off('dragstart',  this.removePopUp);
-        this.map.off('zoomstart',  this.removePopUp);
+        this.map.off('dragstart', this.removePopUp);
+        this.map.off('zoomstart', this.removePopUp);
     }
 
     //
@@ -566,7 +565,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     async updateFromCityIO(field) {
-        console.log("update field",field);
+        console.log("update field", field);
 
         if (field === "grid") {
             const {gridLayer, currentSource} = this.getGridSource();
@@ -596,8 +595,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 }
                 gridLayer.setData(currentSource);
             }
-            this.toggleLayerLoading(field);
-            }
+        }
+        this.toggleLayerLoading(field);
     }
 
     toggleLayerLoading(changedField) {
@@ -643,8 +642,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.isEditMenu = false;
     }
 
-    updateCityIOgridCell(feature){
-        if( !this.cityIOService.table_data) { return }
+    updateCityIOgridCell(feature) {
+        if (!this.cityIOService.table_data) {
+            return
+        }
         // get properties of changed features
         let typeDefinition = GridCell.featureToTypemap(feature);
 
@@ -654,7 +655,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             // TODO: this is a really bad way to compare two objects!
             const a = JSON.stringify(typeDefinition).split("").sort().join();
             const b = JSON.stringify(e).split("").sort().join();
-            return a==b
+            return a == b
         });
         if (typeint === -1) {
             // new type
@@ -662,10 +663,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             header["mapping"]["type"][typeint] = typeDefinition;
             this.cityIOService.pushCityIOdata("header", header);
         }
-        
-        let id = feature["id"]
-        console.log("write cell",id,"value",typeint)
-        this.cityIOService.pending_changes[id]= [typeint, 0]   // remember change
+
+        let id = feature["id"];
+        console.log("write cell", id, "value", typeint);
+        this.cityIOService.pending_changes[id] = [typeint, 0]   // remember change
     }
 
     clickMenuClose = e => {
@@ -736,7 +737,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             description = description + '<span style="width: 100%; float: left">' + gridCellKey + ': ' + gridCell[gridCellKey] + ' </span>';
         }
 
-        
+
         this.popUp.setLngLat(e.lngLat)
             .setHTML(description)
             .addTo(this.map);
