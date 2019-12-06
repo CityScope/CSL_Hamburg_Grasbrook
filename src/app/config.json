@@ -105,7 +105,7 @@
         
         "fill-extrusion-color": {
           "property": "walktime",
-          "stops": [[0, "green"], [5, "yellow"], [15, "red"]]
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
         }
       },
       
@@ -115,17 +115,17 @@
         "styleValues": [{
             "styleFieldValue": 0,
             "color": "green",
-            "label": "0 minutes"
+            "label": "< 5 minutes"
           },
           {
-            "styleFieldValue": 4,
-            "color": "yellow",
-            "label": "> 5 minutes"
+            "styleFieldValue": 5,
+            "color": "rgb(245, 206, 15)",
+            "label": "5 minutes"
           },
           {
-            "styleFieldValue": 15,
+            "styleFieldValue": 6,
             "color": "red",
-            "label": "> 15 minutes"
+            "label": ">= 6 minutes"
           }
         ],
         "description": "A visualization of walking time (in minutes) needed to reach the closest school."
