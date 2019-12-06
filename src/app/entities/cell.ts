@@ -21,10 +21,10 @@ export class GridCell {
             if (property !== 'id') {
                 if (property == 'height') {
                     if(featureProps['height']==0){
-                        gridCell.bld_numLevels = 1
+                        gridCell.bld_numLevels = 1;
                     }
                     else {
-                        gridCell.bld_numLevels = featureProps['height']
+                        gridCell.bld_numLevels = GridCell.bld_height_to_lvls(featureProps['height']);
                     }
                 } else {
                     gridCell[property] = featureProps[property];
@@ -55,6 +55,15 @@ export class GridCell {
         return null;
     }
 
+    static bld_lvl_to_height(levels)
+    {
+        return 4 + (levels - 1) * 2.6;
+    }
+    static bld_height_to_lvls(height)
+    {
+        return Math.floor((height - 4) / 2.6) + 1;
+    }
+
     public static featureToTypemap(feature)
     {
         let typeDefinition = {}
@@ -64,7 +73,7 @@ export class GridCell {
         {
             case BuildingType.building:
                 typeDefinition["type"] = this.string_of_enum(BuildingType,properties["type"])
-                typeDefinition["bld_numLevels"] = properties['height']
+                typeDefinition["bld_numLevels"] = GridCell.bld_height_to_lvls(properties['height']);
                 typeDefinition["bld_useGround"] = this.string_of_obj(BuildingUse, properties["bld_useGround"])
                 typeDefinition["bld_useUpper"] = this.string_of_obj(BuildingUse, properties["bld_useUpper"])
                 break;
@@ -90,7 +99,7 @@ export class GridCell {
     public static fillFeatureByGridCell(feature, gridCell: GridCell) {
         for (let gridCellKey of Object.keys(gridCell)) {
             if (gridCellKey === 'bld_numLevels') {
-                feature.properties['height'] = gridCell[gridCellKey];
+                feature.properties['height'] = GridCell.bld_lvl_to_height(gridCell[gridCellKey]);
             } else if (gridCellKey === 'type') {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
@@ -134,7 +143,7 @@ export class GridCell {
     public static fillFeatureByCityIOType(feature, typeDict) {
         for (let gridCellKey of Object.keys(typeDict)) {
             if (gridCellKey === 'bld_numLevels') {
-                feature.properties['height'] = typeDict[gridCellKey];
+                feature.properties['height'] = GridCell.bld_lvl_to_height(typeDict[gridCellKey]);
             } else if (gridCellKey === 'type') {
                 feature.properties[gridCellKey] = BuildingType[typeDict[gridCellKey]];
                 if(typeDict[gridCellKey]=="empty"){
