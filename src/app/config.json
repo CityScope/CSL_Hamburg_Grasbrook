@@ -53,7 +53,7 @@
       "id": "access",
       "showInLayerList": true,
       "isLoading": false,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": false
     },
     {
       "id": "trips-deckgl",
@@ -84,6 +84,147 @@
         "tileSize": 512
       },
       "paint": {}
+    },
+    {
+      "id": "present_buildings",
+      "displayName": "present_buildings",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill-extrusion",
+      "source": {
+        "type": "geojson",
+        "data": "assets/layers_json/present_buildings_wgs84.geojson"
+      },
+      "paint": {
+        "fill-extrusion-height": 0.2,
+        "fill-extrusion-base": 0.2,
+        "fill-extrusion-opacity": 0.8,
+        "fill-extrusion-color": [
+          "match", ["get", "id"],
+          1, "#CEE4CC",
+          2, "#E2F2BF",
+          3, "#F3C683",
+          4, "#E87E4D",
+          5, "#CD463E",
+          6, "#A11A4D",
+          "white"
+        ]
+      },
+      "legend": {
+        "type": "circle",
+        "styleField": "id",
+        "styleValues": [
+          {
+            "styleFieldValue": 1,
+            "color": "#CEE4CC",
+            "label": "Deutsches Hafenmuseum"
+          },
+          {
+            "styleFieldValue": 2,
+            "color": "#E2F2BF",
+            "label": "Fahrzeuglager"
+          },
+          {
+            "styleFieldValue": 3,
+            "color": "#F3C683",
+            "label": "Bestandsbau"
+          },
+          {
+            "styleFieldValue": 4,
+            "color": "#E87E4D",
+            "label": "Bestandsbau1"
+          },
+          {
+            "styleFieldValue": 5,
+            "color": "#CD463E",
+            "label": "Liegeplatz Peking"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "#A11A4D",
+            "label": "U-Bahn Trassierung"
+          }
+        ],
+        "description": "..."
+      }
+    },
+    {
+      "id": "restrictions",
+      "displayName": "restrictions",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "line",
+      "source": {
+        "type": "geojson",
+        "data": "assets/layers_json/restrictions_wgs84.geojson"
+      },
+      "paint": {
+        "line-width": 5,
+        "line-opacity": 0.8,
+        "line-color": [
+          "match", ["get", "id"],
+          1, "#CEE4CC",
+          2, "#E2F2BF",
+          3, "#E2F2BF",
+          4, "#E87E4D",
+          5, "#E87E4D",
+          6, "#A11A4D",
+          7, "#F3C683",
+          8, "#BA3C5F",
+          9, "#BA3C5F",
+          10, "#CD463E",
+          11, "#CD463E",
+          12, "#CD463E",
+          13, "#CD463E",
+          "white"
+        ]
+      },
+      "legend": {
+        "type": "circle",
+        "styleField": "id",
+        "styleValues": [
+          {
+            "styleFieldValue": 1,
+            "color": "#CEE4CC",
+            "label": "Anschlussbereich"
+          },
+          {
+            "styleFieldValue": 2,
+            "color": "#E2F2BF",
+            "label": "Sachsenbrücke"
+          },
+          {
+            "styleFieldValue": 4,
+            "color": "#E87E4D",
+            "label": "Hansabrücke"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "#A11A4D",
+            "label": "Zufahrt O'Swaldkai"
+          },
+          {
+            "styleFieldValue": 7,
+            "color": "#F3C683",
+            "label": "Brücke Moldauhafen"
+          },
+          {
+            "styleFieldValue": 8,
+            "color": "#BA3C5F",
+            "label": "Trassierung Brücke"
+          },
+          {
+            "styleFieldValue": 10,
+            "color": "#CD463E",
+            "label": "Trassierungsfreihaltung U-Bahn"
+          }
+        ],
+        "description": "Restriktionshinweise"
+      }
     },
     
     {
