@@ -43,7 +43,7 @@ export class LayerLoaderService {
         layers[layers.indexOf(layer)] = this.castCSLayer(
           accessLayer,
           layer.id,
-          true
+          false
         );
       }
     }

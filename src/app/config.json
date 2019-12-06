@@ -87,7 +87,7 @@
     },
     {
       "id": "present_buildings",
-      "displayName": "present_buildings",
+      "displayName": "Existing building stock",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -106,7 +106,7 @@
           1, "#CEE4CC",
           2, "#E2F2BF",
           3, "#F3C683",
-          4, "#E87E4D",
+          4, "#F3C683",
           5, "#CD463E",
           6, "#A11A4D",
           "white"
@@ -132,11 +132,6 @@
             "label": "Bestandsbau"
           },
           {
-            "styleFieldValue": 4,
-            "color": "#E87E4D",
-            "label": "Bestandsbau1"
-          },
-          {
             "styleFieldValue": 5,
             "color": "#CD463E",
             "label": "Liegeplatz Peking"
@@ -147,12 +142,12 @@
             "label": "U-Bahn Trassierung"
           }
         ],
-        "description": "..."
+        "description": "Zu erhaltener Bestandsbau"
       }
     },
     {
       "id": "restrictions",
-      "displayName": "restrictions",
+      "displayName": "Restrictions",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -210,7 +205,7 @@
           {
             "styleFieldValue": 7,
             "color": "#F3C683",
-            "label": "Brücke Moldauhafen"
+            "label": "Westliche Grenze Brücke Moldauhafen"
           },
           {
             "styleFieldValue": 8,
