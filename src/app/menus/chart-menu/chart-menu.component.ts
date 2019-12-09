@@ -77,6 +77,7 @@ export class ChartMenuComponent implements OnInit {
     updateChart() {
         console.log("dings")
         d3.selectAll("svg > *").remove();
+        d3.selectAll(".d3-tip").remove();
 
         // chart plot area
         this.chart = this.svg.append('g')
