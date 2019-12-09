@@ -33,7 +33,7 @@ export class EditMenuComponent implements OnInit {
 
     onChangeSetCellType(event: any) {
         const idx = Number.parseInt(event);
-        if (idx > -1 && idx < 3) {
+        if (idx > -1 && idx <= 3) {
             this.cell.type = event;
         }
     }
@@ -56,7 +56,7 @@ export class EditMenuComponent implements OnInit {
 
     onCancel() {
         this.isDismissed = true;
-        this.dismissMenu.emit(null);
+        this.dismissMenu.emit(this.currentCell)
     }
 
     onSave() {
