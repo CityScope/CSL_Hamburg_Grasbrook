@@ -20,7 +20,7 @@ import {AppComponent} from "../app.component";
 import {AlertService} from "../services/alert.service";
 import {LocalStorageService} from "../services/local-storage.service";
 import {RestoreMessage} from "../menus/restore-message/restore-message";
-import {GridCell} from "../entities/cell";
+import {GridCell, BuildingType} from "../entities/cell";
 
 
 @NgModule({
@@ -337,7 +337,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                                 }
                             }
                         } else {    // select additional features
-                            feature.properties['initial-color'] = feature.properties['color'];
+                            if (feature.properties['color'] !== this.selectedCellColor) {
+                                // don't overwrite stored previous type
+                                feature.properties['initial-color'] = feature.properties['color'];
+                            }
                             feature.properties['isSelected'] = true;
                             feature.properties['color'] = this.selectedCellColor;
                             this.selectedFeatures.push(clickedFeature.properties['id']);
@@ -566,6 +569,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     async updateFromCityIO(field) {
         console.log("update field", field);
+        this.toggleLayerLoading(field);
 
         if (field === "grid") {
             const {gridLayer, currentSource} = this.getGridSource();
@@ -596,7 +600,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 gridLayer.setData(currentSource);
             }
         }
-        this.toggleLayerLoading(field);
     }
 
     toggleLayerLoading(changedField) {
@@ -634,11 +637,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     private hideMenu(menuOutput: GridCell) {
-        if (menuOutput) {
-            this.menuOutput = menuOutput;
-            // this.handleMenuOutput(menuOutput);
-            this.clickMenuClose(null);
-        }
+        this.menuOutput = menuOutput;
+        this.clickMenuClose(menuOutput);
         this.isEditMenu = false;
     }
 
@@ -675,23 +675,26 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         let {gridLayer, currentSource} = this.getGridSource();
         for (let feature of currentSource['features']) {
             if (this.selectedFeatures.indexOf(feature['id']) > -1) {
-                GridCell.fillFeatureByGridCell(feature, this.menuOutput);
+                if (this.menuOutput) {
+                    GridCell.fillFeatureByGridCell(feature, this.menuOutput);
 
-                // Color change has to be done here again!?
-                if (feature.properties['changedTypeColor']) {
-                    feature.properties['color'] = feature.properties['changedTypeColor'];
-                    delete feature.properties['changedTypeColor'];
+                    // Color change has to be done here again!?
+                    if (feature.properties['changedTypeColor']) {
+                        feature.properties['color'] = feature.properties['changedTypeColor'];
+                        delete feature.properties['changedTypeColor'];
+                    } else {
+                        feature.properties['color'] = feature.properties['initial-color'];
+                        delete feature.properties['changedTypeColor'];
+                    }
+                    if (feature.properties['type'] !== BuildingType.building) {
+                        feature.properties['height'] = 0;
+                    }
+
+                    this.updateCityIOgridCell(feature);
                 } else {
                     feature.properties['color'] = feature.properties['initial-color'];
-                    delete feature.properties['changedTypeColor'];
                 }
-                if (feature.properties['type'] !== 0) {
-                    feature.properties['height'] = 0;
-                }
-
                 feature.properties["isSelected"] = false;
-
-                this.updateCityIOgridCell(feature);
             }
         }
         gridLayer.setData(currentSource);

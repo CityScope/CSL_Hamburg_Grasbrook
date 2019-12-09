@@ -56,7 +56,7 @@ export class EditMenuComponent implements OnInit {
 
     onCancel() {
         this.isDismissed = true;
-        this.dismissMenu.emit(this.currentCell)
+        this.dismissMenu.emit(null);
     }
 
     onSave() {

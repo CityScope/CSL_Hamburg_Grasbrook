@@ -181,7 +181,7 @@ export class GridCell {
     }
 }
 
-enum BuildingType {
+export enum BuildingType {
     building,
     street,
     open_space,
