@@ -157,7 +157,7 @@ export class GridCell {
                     let color = BuildingUse[typeDict[gridCellKey]];
                     feature.properties['changedTypeColor'] = color;
                 } else if(typeDict['bld_useGround'] == null) { 
-                    console.warn("no bld_useGround and no bld_useUpper -> this should not happen! in cell", feature.properties["id"])
+                    console.warn("no bld_useGround and no bld_useUpper -> this should not happen! in cell", feature["id"])
                     feature.properties['changedTypeColor'] = "#aaaaaa"
                 } else {
                     // might be a 1-storey building
@@ -167,7 +167,7 @@ export class GridCell {
                 if (typeDict[gridCellKey] != null) {
                     feature.properties['bld_useGround'] = GridCell.int_of_enum(BuildingUse, typeDict[gridCellKey]);
                 } else {
-                    console.warn("user should not be allowed to set bld_useGround to null! in cell", feature.properties["id"])
+                    console.warn("user should not be allowed to set bld_useGround to null! in cell", feature["id"])
                     feature.properties['changedTypeColor'] = "#aaaaaa"
                 }
             } else if (gridCellKey === "os_type") {

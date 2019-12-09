@@ -323,7 +323,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (gridLayer && currentSource) {
             for (const clickedFeature of selectedFeature) {
                 for (const feature of currentSource['features']) {
-                    if (feature.properties['id'] === clickedFeature.properties['id']) {
+                    if (feature['id'] === clickedFeature['id']) {
                         if (selectedFeature.length <= 1 && feature.properties['color'] === this.selectedCellColor) {
                             // deselect features on single click only, not with rectangle selection
                             feature.properties['color'] = feature.properties['initial-color'];
@@ -331,7 +331,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                             // remove this cell from array
                             for (let i = this.selectedFeatures.length - 1; i >= 0; i--) {
                                 if (
-                                    this.selectedFeatures[i] === clickedFeature.properties['id']
+                                    this.selectedFeatures[i] === clickedFeature['id']
                                 ) {
                                     this.selectedFeatures.splice(i, 1);
                                 }
@@ -343,7 +343,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                             }
                             feature.properties['isSelected'] = true;
                             feature.properties['color'] = this.selectedCellColor;
-                            this.selectedFeatures.push(clickedFeature.properties['id']);
+                            this.selectedFeatures.push(clickedFeature['id']);
                             this.showEditMenu();
                         }
                     }
