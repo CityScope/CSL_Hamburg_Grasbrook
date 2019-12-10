@@ -33,7 +33,7 @@
               "./node_modules/mapbox-gl/dist/mapbox-gl.css"
             ],
             "scripts": [
-              "./node_modules/maptastic/dist/maptastic.min.js"
+              "./node_modules/maptastic/dist/maptastic.js"
             ],
             "es5BrowserSupport": true
           },
