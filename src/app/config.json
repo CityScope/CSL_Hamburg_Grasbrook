@@ -201,10 +201,9 @@
         "description": "Restriktionshinweise"
       }
     },
-    
     {
-      "id": "walkability",
-      "displayName": "Walkability",
+      "id": "walkability_school",
+      "displayName": "Walkability to schools",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -220,14 +219,59 @@
         "fill-extrusion-opacity": 0.8,
         
         "fill-extrusion-color": {
-          "property": "walktime",
+          "property": "educational",
           "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
         }
       },
       
       "legend": {
         "type": "circle",
-        "styleField": "walktime",
+        "styleField": "educational",
+        "styleValues": [{
+            "styleFieldValue": 0,
+            "color": "green",
+            "label": "< 5 minutes"
+          },
+          {
+            "styleFieldValue": 5,
+            "color": "rgb(245, 206, 15)",
+            "label": "5 minutes"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "red",
+            "label": ">= 6 minutes"
+          }
+        ],
+        "description": "A visualization of walking time (in minutes) needed to reach the closest school."
+      }
+    },
+    {
+      "id": "walkability_culture",
+      "displayName": "Walkability to cultural institutions",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill-extrusion",
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
+      },      
+      "paint": {
+        "fill-extrusion-height": 0.1,
+        "fill-extrusion-base": 0.1,
+        "fill-extrusion-opacity": 0.8,
+        
+        "fill-extrusion-color": {
+          "property": "culture",
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
+        }
+      },
+      
+      "legend": {
+        "type": "circle",
+        "styleField": "culture",
         "styleValues": [{
             "styleFieldValue": 0,
             "color": "green",
