@@ -21,6 +21,7 @@ import {AlertService} from "../services/alert.service";
 import {LocalStorageService} from "../services/local-storage.service";
 import {RestoreMessage} from "../menus/restore-message/restore-message";
 import {GridCell, BuildingType} from "../entities/cell";
+import {ResetGridDialog} from "../menus/reset-grid/reset-grid-dialog";
 
 
 @NgModule({
@@ -508,6 +509,18 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 this.isShowChart = !this.isShowChart;
                 break;
             }
+            case 'closeAndLogout': {
+                this.closeAndLogout();
+                break;
+            }
+            case 'saveCurrent': {
+                this.saveCurrentChanges();
+                break;
+            }
+            case 'resetGrid': {
+                this.openResetGridDialog();
+                break;
+            }
         }
     }
 
@@ -554,7 +567,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             this.authenticationService.currentUserValue &&
             this.localStorageService.getGrid()
         ) {
-            this.openDialog();
+            this.openExitDialog();
         } else {
             this.exitEditor();
         }
@@ -572,33 +585,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.toggleLayerLoading(field);
 
         if (field === "grid") {
-            const {gridLayer, currentSource} = this.getGridSource();
-            if (gridLayer && currentSource) {
-                for (const feature of currentSource['features']) {
-                    if (this.cityIOService.table_data["grid"].length <= feature["id"]) break;
-                    if (this.cityIOService.table_data["grid"][feature["id"]] == null) break;
-
-                    const typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
-                    const typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
-
-                    GridCell.fillFeatureByCityIOType(feature, typeDict);
-
-                    // Color change has to be done here again!?
-                    if (feature.properties['changedTypeColor']) {
-                        feature.properties['color'] = feature.properties['changedTypeColor'];
-                        delete feature.properties['changedTypeColor'];
-                    } else {
-                        feature.properties['color'] = feature.properties['initial-color'];
-                        delete feature.properties['changedTypeColor'];
-                    }
-                    if (feature.properties['type'] !== 0) {
-                        feature.properties['height'] = 0;
-                    }
-
-                    feature.properties['isSelected'] = false;
-                }
-                gridLayer.setData(currentSource);
-            }
+            this.setGridFromCityIOData();
         }
     }
 
@@ -613,6 +600,36 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 layer.isLoading = toggle;
 
             }
+        }
+    }
+
+    setGridFromCityIOData() {
+        const {gridLayer, currentSource} = this.getGridSource();
+        if (gridLayer && currentSource) {
+            for (const feature of currentSource['features']) {
+                if (this.cityIOService.table_data["grid"].length <= feature["id"]) break;
+                if (this.cityIOService.table_data["grid"][feature["id"]] == null) break;
+
+                const typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
+                const typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
+
+                GridCell.fillFeatureByCityIOType(feature, typeDict);
+
+                // Color change has to be done here again!?
+                if (feature.properties['changedTypeColor']) {
+                    feature.properties['color'] = feature.properties['changedTypeColor'];
+                    delete feature.properties['changedTypeColor'];
+                } else {
+                    feature.properties['color'] = feature.properties['initial-color'];
+                    delete feature.properties['changedTypeColor'];
+                }
+                if (feature.properties['type'] !== 0) {
+                    feature.properties['height'] = 0;
+                }
+
+                feature.properties['isSelected'] = false;
+            }
+            gridLayer.setData(currentSource);
         }
     }
 
@@ -757,7 +774,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
      *   On exit actions
      */
 
-    openDialog(): void {
+    openExitDialog(): void {
         const dialogRef = this.dialog.open(ExitEditorDialog, {
             width: '250px',
             autoFocus: false
@@ -775,5 +792,22 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         this.localStorageService.removeGrid();
         this.authenticationService.logout();
         this.router.navigate(['']);
+    }
+
+    /*
+     *   On reset grid
+     */
+
+    openResetGridDialog(): void {
+        const dialogRef = this.dialog.open(ResetGridDialog, {
+            width: '350px',
+            autoFocus: false
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.setGridFromCityIOData();
+            }
+        });
     }
 }

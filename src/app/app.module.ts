@@ -41,6 +41,8 @@ import {RestoreMessage} from "./menus/restore-message/restore-message";
 import {EditMenuComponent} from "./menus/edit-menu/edit-menu.component";
 import {LoginDialog} from "./menus/login-menu/login.dialog";
 import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
+import { FileSettingComponent } from './basemap/map-controls/file-setting/file-setting.component';
+import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
 
 @NgModule({
     declarations: [
@@ -51,10 +53,12 @@ import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
         LegendComponent,
         LayerControlComponent,
         ExitEditorDialog,
+        ResetGridDialog,
         LoginDialog,
         EditMenuComponent,
         ChartMenuComponent,
-        RestoreMessage
+        RestoreMessage,
+        FileSettingComponent
     ],
     imports: [
         BrowserModule,
@@ -90,7 +94,7 @@ import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
         // provider used to create fake backend
         fakeBackendProvider
     ],
-    entryComponents: [ExitEditorDialog, LoginDialog, RestoreMessage],
+    entryComponents: [ExitEditorDialog, ResetGridDialog, LoginDialog, RestoreMessage],
     bootstrap: [AppComponent]
 })
 export class AppModule implements OnInit {
