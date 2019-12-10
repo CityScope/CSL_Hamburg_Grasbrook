@@ -220,7 +220,8 @@
         
         "fill-extrusion-color": {
           "property": "educational",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "default": "red"
         }
       },
       
@@ -265,7 +266,8 @@
         
         "fill-extrusion-color": {
           "property": "culture",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "default": "red"
         }
       },
       
