@@ -215,8 +215,8 @@
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
       },      
       "paint": {
-        "fill-extrusion-height": 0.2,
-        "fill-extrusion-base": 0.2,
+        "fill-extrusion-height": 0.1,
+        "fill-extrusion-base": 0.1,
         "fill-extrusion-opacity": 0.8,
         
         "fill-extrusion-color": {
@@ -259,11 +259,9 @@
         "type": "geojson",
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/noise_result"
       },
-      
-      
       "paint": {
         "fill-extrusion-height": 0.2,
-        "fill-extrusion-base": 0.2,
+        "fill-extrusion-base": 0.25,
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": [
           "match", ["get", "idiso"],
