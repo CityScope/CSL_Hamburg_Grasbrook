@@ -35,7 +35,7 @@ export class LayerLoaderService {
         let gridLayer = GridLayer.createGridLayer(layer.id);
         layers[layers.indexOf(layer)] = this.castCSLayer(
           gridLayer,
-          layer.id,
+          "Design area",
           true
         );
       } else if (layer.id === "access") {

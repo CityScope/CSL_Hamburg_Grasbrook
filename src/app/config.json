@@ -39,7 +39,7 @@
         ],
         "fill-extrusion-opacity": 0.8
       },
-      "showInLayerList": true,
+      "showInLayerList": false,
       "isLoading": false,
       "addOnMapInitialisation": false
     },
@@ -50,29 +50,9 @@
       "addOnMapInitialisation": true
     },
     {
-      "id": "access",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "trips-deckgl",
-      "type": "circle",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "gama-deckgl",
-      "type": "circle",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
       "id": "noisehh",
       "displayName": "Noise",
-      "showInLayerList": true,
+      "showInLayerList": false,
       "isLoading": false,
       "metadata": "",
       "type": "raster",
@@ -269,7 +249,7 @@
     },
     {
       "id": "noise_result",
-      "displayName": "Noise HCU",
+      "displayName": "Traffic noise levels",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
