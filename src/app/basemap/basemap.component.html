@@ -1,0 +1,57 @@
+<div id="map-container" class="map-container">
+  <div class="basemap" id="basemap"></div>
+
+  <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
+    <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>
+
+    <app-layer-control
+      [layers]="layers"
+      (toggleLayer)="toggleLayer()"
+      (showInfo)="showMapLegend($event)"
+    >
+    </app-layer-control>
+  </div>
+
+  <div
+    (click)="closeAndLogout()"
+    class="modal-container-left container-right-top map-control-element"
+  >
+    <i
+      class="material-icons menu-icons white"
+      matTooltipPosition="right"
+      matTooltip="Log out and go to main menu"
+      >close</i
+    >
+  </div>
+
+  <div
+    class="modal-container-left container-right-top map-control-element save"
+    (click)="saveCurrentChanges()"
+  >
+    <i
+      class="material-icons menu-icons white"
+      matTooltipPosition="right"
+      matTooltip="Run analyses"
+      >blur_linear</i
+    >
+  </div>
+
+  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+
+  <app-edit-menu
+    *ngIf="isEditMenu"
+    [currentCell]="selectedGridCell"
+    style="position: absolute"
+    [style.top.px]="sliderTop"
+    [style.left.px]="sliderLeft"
+    (menuOutput)="handleMenuOutput($event)"
+    (dismissMenu)="hideMenu($event)"
+  >
+  </app-edit-menu>
+
+  <div *ngIf="isShowMenu" class="modal-container-left container-left-top">
+    <app-map-setting
+      (mapSettings)="mapSettingsListener($event)"
+    ></app-map-setting>
+  </div>
+</div>

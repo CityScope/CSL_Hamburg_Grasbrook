@@ -1,0 +1,36 @@
+<div class="layer-control map-control-element">
+  <span class=" nowrap">
+    <span class="heading">Layers</span>&nbsp;
+    <a
+            class="collapse-button"
+            (click)="collapsed = !collapsed"
+            href="javascript:void(0)"
+    >
+      <i *ngIf="collapsed" class="icon-info material-icons menu-icons white"
+      >expand_less</i
+      >
+      <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white"
+      >expand_more</i
+      >
+    </a>
+  </span>
+    <ul *ngIf="!collapsed" class="layer-list">
+        <li *ngFor="let layer of layers">
+            <label>
+                <i *ngIf="layer.legend"
+                        class="icon-info material-icons menu-icons white"
+                        (click)="onShowInfo($event, layer)"
+                        matTooltipPosition="right"
+                        matTooltip="Legend could be displayed on click"
+                >info</i>
+                <input
+                        type="checkbox"
+                        [checked]="layer.visible"
+                        (change)="onToggleLayer(layer)"/>
+                {{ layer.displayName }} </label>
+
+            <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
+            </mat-spinner>
+        </li>
+    </ul>
+</div>

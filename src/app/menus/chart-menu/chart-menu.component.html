@@ -1,0 +1,7 @@
+<div id="chart-menu">
+    <div class="title">Gross Floor Area (GFA) [m²]</div>
+    <div class="d3-chart" #chart></div>
+    <div *ngIf="isLoading" class="footer">Currently loading new data
+        <mat-spinner [diameter]="15"></mat-spinner>
+    </div>
+</div>
