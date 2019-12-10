@@ -13,6 +13,7 @@ export class CityIOService {
   tableName = "grasbrook_test";
   url = `${this.baseUrl}${this.tableName}`;
 
+  public last_grid_hash = "abs"
   table_data: any = {}; // can be accessed by other components, this will always be up to date
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
@@ -24,6 +25,13 @@ export class CityIOService {
   constructor(private http: HttpClient) {
     this.updateData('header').subscribe();
     this.updateData('grid', false).subscribe();
+    this.http.get(this.url+"/meta/hashes/grid").pipe(
+      tap(data => {
+        this.lastHashes['grid'] = data; // update grid hash once
+      }),
+      catchError(this.handleError('getHashes'))
+    ).subscribe();
+
     this.update = interval(10000);
     this.update.subscribe(() => {
       this.fetchCityIOdata().subscribe();
