@@ -43,6 +43,7 @@ import {LoginDialog} from "./menus/login-menu/login.dialog";
 import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
 import { FileSettingComponent } from './basemap/map-controls/file-setting/file-setting.component';
 import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
+import { FeatureTooltipComponent } from './basemap/feature-tooltip/feature-tooltip.component';
 
 @NgModule({
     declarations: [
@@ -58,7 +59,8 @@ import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
         EditMenuComponent,
         ChartMenuComponent,
         RestoreMessage,
-        FileSettingComponent
+        FileSettingComponent,
+        FeatureTooltipComponent
     ],
     imports: [
         BrowserModule,

@@ -53,12 +53,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     pitch: number;
     bearing: number;
 
-
+    // UI
+    clientXY: {x: number, y: number} = {x: 0, y: 0};
     popUp: mapboxgl.Popup;
+    hoverInfoLayers: string[] = ['present_buildings', 'restrictions'];
+    hoverInfoFeature: any;
+    hoverInfoDelay: any;
 
     initialExtrusionHeight: any = null;
     isShowMenu = true;
     isShowChart = false;
+    isShowHoverInfo = false;
 
     // Multiple element selection
     start;
@@ -145,9 +150,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             }
         });
 
-        this.map.on('mousedown', event => {
-            // this.cityio.mapPosition.next(event.point);
-        });
+        this.hoverInfoLayers.forEach(layer => {
+            this.map.on('mouseenter', layer, this.showHoverInfo.bind(this));
+            this.map.on('mousemove', layer, this.moveHoverInfo.bind(this));
+            this.map.on('mouseleave', layer, this.hideHoverInfo.bind(this));
+        }, this);
 
         if (this.config.isShowPopUp) {
             this.map.on('mouseenter', this.editableGridLayer, this.initPopup);
@@ -738,6 +745,27 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     //     gridLayer.setData(currentSource);
     // }
 
+    showHoverInfo(e) {
+        if (e.features) {
+            this.hoverInfoFeature = e.features[0];
+            this.clientXY = e.point;
+            this.hoverInfoDelay = setTimeout(() => {
+                this.isShowHoverInfo = true;
+            }, 500);
+        }
+    }
+
+    moveHoverInfo(e) {
+        if (e.features) {
+            this.clientXY = e.point;
+        }
+    }
+
+    hideHoverInfo() {
+        clearTimeout(this.hoverInfoDelay);
+        this.isShowHoverInfo = false;
+    }
+
     // PopUp
 
     private createPopUp() {
@@ -767,6 +795,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (this.popUp) {
             this.popUp.remove();
             this.popUp = null;
+        }
+        if (this.isShowHoverInfo) {
+            this.hideHoverInfo();
         }
     };
 
