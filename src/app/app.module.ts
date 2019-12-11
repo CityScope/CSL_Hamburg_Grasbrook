@@ -59,7 +59,6 @@ import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
         ChartMenuComponent,
         RestoreMessage,
         FileSettingComponent,
-        FeatureTooltipComponent
     ],
     imports: [
         BrowserModule,

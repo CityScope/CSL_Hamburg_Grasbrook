@@ -56,9 +56,12 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     // UI
     clientXY: {x: number, y: number} = {x: 0, y: 0};
     popUp: mapboxgl.Popup;
-    hoverInfoLayers: string[] = ['present_buildings', 'restrictions'];
     hoverInfoFeature: any;
     hoverInfoDelay: any;
+    hoverInfoLayers: string[] = [
+        'present_buildings',
+        'restrictions'
+    ];
 
     initialExtrusionHeight: any = null;
     isShowMenu = true;
