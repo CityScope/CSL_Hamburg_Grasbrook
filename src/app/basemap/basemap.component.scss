@@ -49,3 +49,39 @@
 ng::deep .popUpContent {
   font-size: 8px;
 }
+
+@media screen and (min-width: 580px) {
+  app-edit-menu {
+    left: 10%;
+  }
+}
+
+@media screen and (min-height: 430px) {
+  app-edit-menu {
+    top: 10%;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  app-edit-menu {
+    left: 25%;
+  }
+}
+
+@media screen and (min-height: 520px) {
+  app-edit-menu {
+    top: 25%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  app-edit-menu {
+    left: 40%;
+  }
+}
+
+@media screen and (min-height: 650px) {
+  app-edit-menu {
+    top: 40%;
+  }
+}

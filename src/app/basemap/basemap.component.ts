@@ -66,8 +66,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     box;
 
     //Edit menu
-    sliderTop = 200;
-    sliderLeft = 200;
     isEditMenu = false;
     editableGridLayer = 'grid';
     selectedFeatures = [];
