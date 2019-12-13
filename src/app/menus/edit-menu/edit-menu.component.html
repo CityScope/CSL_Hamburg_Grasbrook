@@ -58,13 +58,15 @@
 
             <section class="input-holder">
                 <mat-form-field class="form-field">
-                    <input matInput [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes">
+                    <input matInput [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"
+                    (change)="onChangeLanes($event)">
                 </mat-form-field>
             </section>
 
             <section class="radio-holder">
                 <label>Speed limit</label>
-                <mat-radio-group [(ngModel)]="cell.str_speed">
+                <mat-radio-group [(ngModel)]="cell.str_speed"
+                                [disabled]="speedLimitDisabled">
                     <mat-radio-button [value]="7">7</mat-radio-button>
                     <mat-radio-button [value]="30">30</mat-radio-button>
                     <mat-radio-button [value]="50">50</mat-radio-button>
@@ -81,7 +83,8 @@
 
             <section class="radio-holder">
                 <label>Stairs</label>
-                <mat-radio-group [(ngModel)]="cell.str_stairs">
+                <mat-radio-group [(ngModel)]="cell.str_stairs"
+                                [disabled]="!speedLimitDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -89,7 +92,8 @@
 
             <section class="radio-holder">
                 <label>Pedestrian ramp</label>
-                <mat-radio-group [(ngModel)]="cell.str_ramp">
+                <mat-radio-group [(ngModel)]="cell.str_ramp"
+                                [disabled]="!speedLimitDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -97,7 +101,8 @@
 
             <section class="radio-holder">
                 <label>Elevator</label>
-                <mat-radio-group [(ngModel)]="cell.str_elevator">
+                <mat-radio-group [(ngModel)]="cell.str_elevator"
+                                [disabled]="!speedLimitDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false" [checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
