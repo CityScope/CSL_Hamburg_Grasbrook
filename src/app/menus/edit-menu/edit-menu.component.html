@@ -58,7 +58,7 @@
 
             <section class="input-holder">
                 <mat-form-field class="form-field">
-                    <input matInput [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"
+                    <input matInput min=0 [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"
                     (change)="onChangeLanes($event)">
                 </mat-form-field>
             </section>
