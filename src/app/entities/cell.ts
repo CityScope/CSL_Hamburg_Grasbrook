@@ -104,6 +104,7 @@ export class GridCell {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
                 if (gridCell[gridCellKey] === 0) {
+                    // building
                     if (gridCell.bld_useUpper == null) {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useGround]];
                     }
@@ -111,19 +112,21 @@ export class GridCell {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
                     }
                 } else if (gridCell[gridCellKey] === 1) {
-                    if (GridCell["str_numLanes"] === 0) {
+                    if (gridCell["str_numLanes"] === 0) {
                         // promenade
-                        color = "#48A377"
+                        color = '#48A377'
                     } else {
                         // street
                         color = '#333333';
                     }
                     delete feature.properties["height"];
                 } else if (gridCell[gridCellKey] === 2) {
+                    // open space
                     color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
                     delete feature.properties["height"];
-                }   else { //type == 3 -> empty
-                    color = "#aaaaaa";
+                }   else {
+                    //type == 3 -> empty
+                    color = '#aaaaaa';
                     delete feature.properties["height"];
                 }
                 feature.properties['changedTypeColor'] = color;
