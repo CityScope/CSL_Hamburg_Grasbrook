@@ -2,7 +2,7 @@ export class GridCell {
 
     type = BuildingType.empty;
 
-    str_speed = 50;
+    str_speed = 30;
     str_numLanes = 0;
     str_bike = true;
     str_stairs = false;
@@ -198,7 +198,7 @@ enum BuildingUse {
 
 enum OpenSpaceType {
     green_space = "#69F0AE",
-    promenade = "#48A377",
+    promenade = "#AFF7D3",
     athletic_field = "#AFF7D3",
     playground = "#AFF7D3",
     daycare_playground = "#AFF7D3",

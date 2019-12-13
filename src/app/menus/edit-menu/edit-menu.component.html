@@ -25,9 +25,9 @@
                             #selectGroundUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
-                    <mat-option [value]="2">Office</mat-option>
-                    <mat-option [value]="3">Educational</mat-option>
-                    <mat-option [value]="4">Culture - Sports - Community</mat-option>
+                    <!-- <mat-option [value]="2">Office</mat-option> -->
+                    <mat-option [value]="3">Elementary school</mat-option>
+                    <mat-option [value]="4">Community center</mat-option>
                 </mat-select>
                 <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
@@ -42,19 +42,19 @@
                             #selectUpperUse>
                     <mat-option [value]="0">Residential</mat-option>
                     <mat-option [value]="1">Commercial</mat-option>
-                    <mat-option [value]="2">Office</mat-option>
-                    <mat-option [value]="3">Educational</mat-option>
-                    <mat-option [value]="4">Culture - Sports - Community</mat-option>
+                    <!-- <mat-option [value]="2">Office</mat-option> -->
+                    <mat-option [value]="3">Elementary school</mat-option>
+                    <mat-option [value]="4">Community center</mat-option>
                 </mat-select>
                 <mat-error>Please select a building use!</mat-error>
             </mat-form-field>
         </mat-tab>
         <mat-tab label="Tab Street">
             <ng-template mat-tab-label>
-                <mat-icon matTooltip="Street">directions_car</mat-icon>
+                <mat-icon matTooltip="Street">directions_walk</mat-icon>
             </ng-template>
 
-            <div class="category_header">Street</div>
+            <div class="category_header">Street | Promenade</div>
 
             <section class="input-holder">
                 <mat-form-field class="form-field">
@@ -114,13 +114,13 @@
                 <mat-label>Open space type</mat-label>
                 <mat-select [(ngModel)]="cell.os_type" required #selectOSType>
                     <mat-option [value]="0">Green space</mat-option>
-                    <mat-option [value]="1">Promenade</mat-option>
+                    <mat-option [value]="1">Plaza</mat-option>
                     <mat-option [value]="2">Athletic field</mat-option>
-                    <mat-option [value]="3">Playground</mat-option>
-                    <mat-option [value]="4">Daycare (Kita) playground</mat-option>
-                    <mat-option [value]="5">Schoolyard</mat-option>
+                    <!-- <mat-option [value]="3">Playground</mat-option>
+                    <mat-option [value]="4">Daycare (Kita) playground</mat-option> -->
+                    <!-- <mat-option [value]="5">Schoolyard</mat-option>
                     <mat-option [value]="6">Exhibition space</mat-option>
-                    <mat-option [value]="7">Recycling center</mat-option>
+                    <mat-option [value]="7">Recycling center</mat-option> -->
                     <mat-option [value]="8">Water</mat-option>
                 </mat-select>
                 <mat-error>Please select a type!</mat-error>
