@@ -206,10 +206,11 @@ export enum BuildingType {
 
 enum BuildingUse {
     residential = "#FF6E40",
-    commercial = "#FF5252",
-    office = "#FF4081",
+    commercial = "#FF4081",
+    office = "#000000",
     educational = "#40C4FF",
     culture = "#7C4DFF",
+    grocery = "#FF5252",
 }
 
 enum OpenSpaceType {
