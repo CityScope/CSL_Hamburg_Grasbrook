@@ -60,6 +60,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     isShowMenu = true;
     isShowChart = false;
 
+    gridInitialised = false; // checks whether we got a first successful grid update
+
     // Multiple element selection
     start;
     current;
@@ -90,13 +92,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         console.log('init map');
         this.initializeMap([10.0143909533867, 53.53128461384861]);
-
-        // if (this.cityio.table_data == null) {
-        //   console.log('null cityIO');
-        //   this.cityio.fetchCityIOdata().subscribe(data => {
-        //     this.initializeMap(data);
-        //   });
-        // }
         this.cityIOService.gridChangeListener.push(this.updateFromCityIO.bind(this));
     }
 
@@ -133,14 +128,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         this.map.boxZoom.disable();
 
-        let first = true;
-
         this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
-            if (first) {
-                this.updateFromCityIO('grid')
-            }
         });
 
         this.map.on('mousedown', event => {
@@ -582,7 +572,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         console.log("update field", field);
         this.toggleLayerLoading(field);
 
-        if (field === "grid") {
+        if (field === "grid" || ! this.gridInitialised) {
             this.setGridFromCityIOData();
         }
     }
@@ -602,6 +592,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     setGridFromCityIOData() {
+        if (!(this.cityIOService.table_data.grid && this.cityIOService.table_data.header)) {
+            this.alertService.error('Loading', 'Please wait a few seconds for the initial update...', 3000);
+            return;
+        }
         const {gridLayer, currentSource} = this.getGridSource();
         if (gridLayer && currentSource) {
             for (const feature of currentSource['features']) {
@@ -628,6 +622,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 feature.properties['isSelected'] = false;
             }
             gridLayer.setData(currentSource);
+            this.gridInitialised = true;
         }
     }
 

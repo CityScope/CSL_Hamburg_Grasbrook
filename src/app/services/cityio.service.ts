@@ -10,7 +10,7 @@ import { catchError, tap } from "rxjs/operators";
 export class CityIOService {
   baseUrl = "https://cityio.media.mit.edu/api/table/";
   updateUrl = "https://cityio.media.mit.edu/api/table/update/";
-  tableName = "grasbrook_test";
+  tableName = JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0 ? JSON.parse(localStorage.getItem("currentUser"))['tables'][0] : "grasbrook_test";
   url = `${this.baseUrl}${this.tableName}`;
 
   public last_grid_hash = "abs"
@@ -24,7 +24,7 @@ export class CityIOService {
 
   constructor(private http: HttpClient) {
     this.updateData('header').subscribe();
-    this.updateData('grid', false).subscribe();
+    this.updateData('grid').subscribe();
     this.http.get(this.url+"/meta/hashes/grid").pipe(
       tap(data => {
         this.lastHashes['grid'] = data; // update grid hash once
