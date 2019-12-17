@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable, OnDestroy} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {interval, of, Observable, Subscription} from "rxjs";
 import * as rxjs from "rxjs/index";
@@ -7,7 +7,7 @@ import {catchError, tap} from "rxjs/operators";
 @Injectable({
     providedIn: "root"
 })
-export class CityIOService {
+export class CityIOService implements OnDestroy {
     baseUrl = "https://cityio.media.mit.edu/api/table/";
     updateUrl = "https://cityio.media.mit.edu/api/table/update/";
 
@@ -186,7 +186,7 @@ export class CityIOService {
     }
 
     /**
-     * Called when component is destro
+     * Called when component is destroy
      */
     ngOnDestroy() {
         this.reset();

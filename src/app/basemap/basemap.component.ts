@@ -35,7 +35,8 @@ export class AppModule {
 @Component({
     selector: 'app-basemap',
     templateUrl: './basemap.component.html',
-    styleUrls: ['./basemap.component.scss']
+    styleUrls: ['./basemap.component.scss'],
+    providers: [CityIOService, AuthenticationService, LocalStorageService]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
@@ -790,7 +791,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private exitEditor() {
         this.localStorageService.removeGrid();
         this.authenticationService.logout();
-        this.cityIOService.reset();
         this.router.navigate(['']);
     }
 
@@ -809,5 +809,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 this.setGridFromCityIOData();
             }
         });
+    }
+
+
+    /*
+    *   Do possible routines when component is destroyed
+    */
+
+    ngOnDestroy() {
     }
 }
