@@ -790,6 +790,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     private exitEditor() {
         this.localStorageService.removeGrid();
         this.authenticationService.logout();
+        this.cityIOService.reset();
         this.router.navigate(['']);
     }
 
