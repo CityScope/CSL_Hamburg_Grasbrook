@@ -128,10 +128,16 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
         this.map.boxZoom.disable();
 
+        // this.layers = []
+        // this.config = new ConfigurationService()
+        // this.layerLoader = new LayerLoaderService(this.config)
+
         this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
         });
+
+        this.cityIOService.init(); // reinitialise with potentially new table name
 
         this.map.on('mousedown', event => {
             // this.cityio.mapPosition.next(event.point);

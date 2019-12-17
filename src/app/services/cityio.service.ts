@@ -10,10 +10,7 @@ import { catchError, tap } from "rxjs/operators";
 export class CityIOService {
   baseUrl = "https://cityio.media.mit.edu/api/table/";
   updateUrl = "https://cityio.media.mit.edu/api/table/update/";
-  tableName = JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0 ? JSON.parse(localStorage.getItem("currentUser"))['tables'][0] : "grasbrook_test";
-  url = `${this.baseUrl}${this.tableName}`;
 
-  public last_grid_hash = "abs"
   table_data: any = {}; // can be accessed by other components, this will always be up to date
   update: Observable<number>;
   public mapPosition = new rxjs.BehaviorSubject({});
@@ -23,9 +20,13 @@ export class CityIOService {
   lastHashes = {};
 
   constructor(private http: HttpClient) {
+    this.init()
+  }
+
+  init() {
     this.updateData('header').subscribe();
     this.updateData('grid').subscribe();
-    this.http.get(this.url+"/meta/hashes/grid").pipe(
+    this.http.get(this.getGetUrl()+"/meta/hashes/grid").pipe(
       tap(data => {
         this.lastHashes['grid'] = data; // update grid hash once
       }),
@@ -38,12 +39,24 @@ export class CityIOService {
     });
   }
 
+  getTableName() {
+    if (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser'))['tables'].length === 1) {
+      return JSON.parse(localStorage.getItem('currentUser'))['tables'][0]
+    } else {
+      return 'grasbrook_test';
+    }
+  }
+
+  getGetUrl() {
+    return `${this.baseUrl}${this.getTableName()}`;
+  }
+
   /**
    * fetches cityio hashes and fetch data for changed fields
    * @param result - Observable<any> containing cityio table data
    */
   fetchCityIOdata(): Observable<any> {
-    return this.http.get(this.url+"/meta/hashes").pipe(
+    return this.http.get(this.getGetUrl() + "/meta/hashes").pipe(
       tap(data => {
         for(let key in data) {
           if(this.lastHashes[key] !== data[key]) {
@@ -67,7 +80,7 @@ export class CityIOService {
    * @param field the endpoint to fetch data from (e.g. "grid")
    */
   updateData(field: string, fireEvent = true): Observable<any> {
-    return this.http.get(this.url + '/' + field).pipe(
+    return this.http.get(this.getGetUrl() + '/' + field).pipe(
       tap(data => {
         this.table_data[field] = data;
         if (fireEvent) {
@@ -79,7 +92,7 @@ export class CityIOService {
   }
 
   updateModuleGridHash(field : string): Observable<any> {
-    return this.http.get(this.url + '/' + field + '/grid_hash').pipe(
+    return this.http.get(this.getGetUrl() + '/' + field + '/grid_hash').pipe(
       tap(data => {
         this.table_data[field] = {grid_hash: data};
         this.onGridChange(field);
@@ -119,8 +132,8 @@ export class CityIOService {
    */
   pushCityIOdata(field, data) {
     const postData = data;
-    const url = this.updateUrl + this.tableName + "/" + field;
-    console.log("pushing to ",url);
+    const url = this.updateUrl + this.getTableName() + "/" + field;
+    console.log("pushing to ", url);
     this.http.post(url, postData).subscribe(
       (response) => console.log(response),
       (error) => console.log(error)
