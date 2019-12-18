@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 .app-container {
   height: 100%;
   width: 100%;
@@ -30,25 +32,44 @@
   left: 5px;
 }
 
-.container-left-top {
+app-map-setting {
   position: absolute;
   top: 30px;
   left: 5px;
 }
 
-.container-right-top {
+app-file-setting {
   position: absolute;
   top: 30px;
   right: 5px;
 }
 
-.container-right-top.save {
+app-file-setting.save {
   top: 69px;
 }
 
 ng::deep .popUpContent {
   font-size: 8px;
 }
+
+
+/*
+    Responsive Design
+*/
+
+
+@media screen and (max-width: $screen-sm-width) {
+  app-file-setting {
+    top: 5px !important;
+  }
+
+  app-map-setting {
+    right: 5px !important;
+    left: auto;
+    top: 117px;
+  }
+}
+
 
 @media screen and (min-width: 580px) {
   app-edit-menu {
