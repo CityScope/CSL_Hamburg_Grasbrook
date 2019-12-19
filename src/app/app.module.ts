@@ -43,11 +43,13 @@ import {LoginDialog} from "./menus/login-menu/login.dialog";
 import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
 import { FileSettingComponent } from './basemap/map-controls/file-setting/file-setting.component';
 import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
+import { BasemapTestComponent } from './basemap-test/basemap-test.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BasemapComponent,
+        BasemapTestComponent,
         HomeComponent,
         MapSettingComponent,
         LegendComponent,
