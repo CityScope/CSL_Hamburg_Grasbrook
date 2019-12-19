@@ -128,7 +128,17 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             zoom: this.zoom,
             bearing: this.bearing,
             pitch: this.pitch,
-            center: this.center
+            center: this.center,
+            transformRequest: (url, resourceType)=> {
+                let currentUser = this.authenticationService.currentUserValue;
+                if (currentUser && currentUser.token && resourceType == 'Source' && url.startsWith('https://cityio')) {
+                    return {
+                        url: url,
+                        headers: {'Authorization': `Bearer ${currentUser.token}`}
+                    }
+                }
+
+            }
         });
 
         this.map.boxZoom.disable();
