@@ -15,6 +15,7 @@ export class FileSettingComponent implements OnInit {
   }
 
   closeAndLogout() {
+    localStorage.removeItem('currentUser');
     this.mapSettings.emit(['closeAndLogout' , true]);
   }
 

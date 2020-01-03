@@ -1,3 +1,4 @@
+@import "../../../variables.scss";
 
 .d3-tip {
   background-color: rgba(255, 255, 255, 1);
@@ -39,7 +40,7 @@
   }
 
   .bar {
-    fill: rgba(255, 255, 255, 0.8);
+    fill: $menu-background;
   }
 
   .footer {

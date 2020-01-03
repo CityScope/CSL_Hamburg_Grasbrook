@@ -68,11 +68,20 @@
 
     .row {
       margin: 0 !important;
+      flex-wrap: nowrap;
     }
 
     button {
       background: white;
       border: 1px solid lightgray;
     }
+  }
+}
+
+@media screen and (max-width: 580px) {
+  #cell-menu {
+    position: fixed;
+    width: 100%;
+    z-index: 1;
   }
 }

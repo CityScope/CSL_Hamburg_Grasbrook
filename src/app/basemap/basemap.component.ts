@@ -35,7 +35,8 @@ export class AppModule {
 @Component({
     selector: 'app-basemap',
     templateUrl: './basemap.component.html',
-    styleUrls: ['./basemap.component.scss']
+    styleUrls: ['./basemap.component.scss'],
+    providers: [CityIOService, AuthenticationService, LocalStorageService]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
@@ -68,14 +69,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     isShowChart = false;
     isShowHoverInfo = false;
 
+    gridInitialised = false; // checks whether we got a first successful grid update
+
     // Multiple element selection
     start;
     current;
     box;
 
     //Edit menu
-    sliderTop = 200;
-    sliderLeft = 200;
     isEditMenu = false;
     editableGridLayer = 'grid';
     selectedFeatures = [];
@@ -100,13 +101,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     ngOnInit() {
         console.log('init map');
         this.initializeMap([10.0143909533867, 53.53128461384861]);
-
-        // if (this.cityio.table_data == null) {
-        //   console.log('null cityIO');
-        //   this.cityio.fetchCityIOdata().subscribe(data => {
-        //     this.initializeMap(data);
-        //   });
-        // }
         this.cityIOService.gridChangeListener.push(this.updateFromCityIO.bind(this));
     }
 
@@ -138,20 +132,31 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             zoom: this.zoom,
             bearing: this.bearing,
             pitch: this.pitch,
-            center: this.center
+            center: this.center,
+            transformRequest: (url, resourceType)=> {
+                let currentUser = this.authenticationService.currentUserValue;
+                if (currentUser && currentUser.token && resourceType == 'Source' && url.startsWith('https://cityio')) {
+                    return {
+                        url: url,
+                        headers: {'Authorization': `Bearer ${currentUser.token}`}
+                    }
+                }
+
+            }
         });
 
         this.map.boxZoom.disable();
 
-        let first = true;
+        // this.layers = []
+        // this.config = new ConfigurationService()
+        // this.layerLoader = new LayerLoaderService(this.config)
 
         this.map.on('load', event => {
             this.mapCanvas = this.map.getCanvasContainer();
             this.updateMapLayers(event);
-            if (first) {
-                this.updateFromCityIO('grid')
-            }
         });
+
+        this.cityIOService.init(); // reinitialise with potentially new table name
 
         this.hoverInfoLayers.forEach(layer => {
             this.map.on('mouseenter', layer, this.showHoverInfo.bind(this));
@@ -594,7 +599,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         console.log("update field", field);
         this.toggleLayerLoading(field);
 
-        if (field === "grid") {
+        if (field === "grid" || ! this.gridInitialised) {
             this.setGridFromCityIOData();
         }
     }
@@ -614,6 +619,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     setGridFromCityIOData() {
+        if (!(this.cityIOService.table_data.grid && this.cityIOService.table_data.header)) {
+            this.alertService.error('Loading', 'Please wait a few seconds for the initial update...', 3000);
+            return;
+        }
         const {gridLayer, currentSource} = this.getGridSource();
         if (gridLayer && currentSource) {
             for (const feature of currentSource['features']) {
@@ -640,6 +649,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 feature.properties['isSelected'] = false;
             }
             gridLayer.setData(currentSource);
+            this.gridInitialised = true;
         }
     }
 
@@ -843,5 +853,13 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 this.setGridFromCityIOData();
             }
         });
+    }
+
+
+    /*
+    *   Do possible routines when component is destroyed
+    */
+
+    ngOnDestroy() {
     }
 }

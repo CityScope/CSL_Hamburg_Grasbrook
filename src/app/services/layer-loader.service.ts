@@ -5,6 +5,7 @@ import { TripsDeckGlLayer } from "../layers/trips.deck-gl.layer";
 import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
 import { AccessLayer } from "../layers/access.layer";
+import {GeoJSONSourceRaw} from "mapbox-gl/"
 
 @Injectable({
   providedIn: "root"
@@ -45,6 +46,22 @@ export class LayerLoaderService {
           layer.id,
           false
         );
+      } else {
+        let source = layer.source
+        console.log(source)
+        if((source as mapboxgl.Source).type === "geojson") {
+          let data = (source as GeoJSONSourceRaw).data
+          console.log(data)
+          if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
+            // if (!(layer.id in this.urls)) {
+              // this.urls[layer.id] = data;
+            // }
+            (source as mapboxgl.GeoJSONSourceRaw).data = (data as string).replace('grasbrook_test', JSON.parse(localStorage.getItem('currentUser'))['tables'][0]);
+          }
+          // else {
+          //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
+          // }
+        }
       }
     }
     return layers;

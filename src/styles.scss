@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css?family=Press+Start+2P|Roboto+Condensed");
+@import "variables.scss";
 
 body {
   margin: 0px;
@@ -8,7 +9,7 @@ body {
 
 .map-control-element {
   margin: 5px;
-  background-color: rgba(255, 255, 255, 0.8);
+  background-color: $menu-background;
   border-radius: 4px;
   font-size: 12px;
   line-height: 1vw;

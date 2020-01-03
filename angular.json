@@ -28,6 +28,7 @@
             ],
             "styles": [
               "src/styles.scss",
+              "src/variables.scss",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/mapbox-gl/dist/mapbox-gl.css"
@@ -90,6 +91,7 @@
             "karmaConfig": "src/karma.conf.js",
             "styles": [
               "src/styles.scss",
+              "src/variables.scss",
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
               "./node_modules/bootstrap/dist/css/bootstrap.css",
               "./node_modules/mapbox-gl/dist/mapbox-gl.css"

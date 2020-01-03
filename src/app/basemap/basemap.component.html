@@ -1,6 +1,14 @@
 <div id="map-container" class="map-container">
   <div class="basemap" id="basemap"></div>
 
+
+  <app-map-setting *ngIf="isShowMenu"
+            (mapSettings)="mapSettingsListener($event)"
+    ></app-map-setting>
+
+
+  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+
   <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
     <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>
 
@@ -12,15 +20,9 @@
     </app-layer-control>
   </div>
 
-
-  <div *ngIf="isShowMenu" class="modal-container-right container-right-top">
-    <app-file-setting
-            (mapSettings)="mapSettingsListener($event)"
+    <app-file-setting *ngIf="isShowMenu"
+                      (mapSettings)="mapSettingsListener($event)"
     ></app-file-setting>
-  </div>
-
-
-  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
 
   <app-edit-menu
     *ngIf="isEditMenu"
