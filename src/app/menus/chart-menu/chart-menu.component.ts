@@ -39,9 +39,8 @@ export class ChartMenuComponent implements OnInit {
             {"gfa": "Residential", "area": 0, "target": 300000}
         ];
         this.stormwaterData = [
-                {"gfa": "white", "m³": 0, "target": 12},
-                {"gfa": "grey", "m³": 0, "target": 15},
-                {"gfa": "black", "m³": 0, "target": 20}
+                {"stormwater": "white", "m³": 0},
+                {"stormwater": "grey", "m³": 0},
             ];
 
         this.getDataFromCityIO();
@@ -76,8 +75,8 @@ export class ChartMenuComponent implements OnInit {
         let cityIoStormwater = this.cityIoService.table_data["stormwater"];
         if (cityIoStormwater) {
             this.stormwaterData = [
-                {"stormwater": "white", "area": cityIoStormwater['white'], "target": 0},
-                {"stormwater": "grey", "area": cityIoStormwater['grey'], "target": 0},
+                {"stormwater": "white", "area": cityIoStormwater['white']},
+                {"stormwater": "grey", "area": cityIoStormwater['grey']},
             ];
 
         }
@@ -116,14 +115,20 @@ export class ChartMenuComponent implements OnInit {
             .attr('class', 'd3-tip')
             .offset([-10, 0])
             .html(function(d) {
-                return "<strong>Current:</strong> <span style='color:black'>" + d.area + "</span> <br />" +
-                        "<strong>Target:</strong> <span style='color:red'>" + d.target + "</span>";
+                let text = "<strong>Current:</strong> <span style='color:black'>" + d.area + "</span> <br />";
+                if (d.target) {
+                    text = text + "<strong>Target:</strong> <span style='color:red'>" + d.target + "</span>";
+                }
+                return text;
             });
 
         this.svg.call(tip);
 
         // Scale the range of the data in the domains
         x.domain([0, d3.max(this.data, function (d) {
+            if (!d.target) {
+                return d.area;
+            }
             return d.area > d.target ? d.area : d.target;
         })]);
 

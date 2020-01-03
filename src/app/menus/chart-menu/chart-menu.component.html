@@ -1,5 +1,6 @@
 <div id="chart-menu">
-    <div class="title">Gross Floor Area (GFA) [m²]</div>
+    <div *ngIf="chartToShow === 'kpi_gfa'" class="title">Gross Floor Area (GFA) [m²]</div>
+    <div *ngIf="chartToShow === 'stormwater'" class="title">Stormwater [m³]</div>
     <div class="d3-chart" #chart></div>
     <div *ngIf="isLoading" class="footer">Currently loading new data
         <mat-spinner [diameter]="15"></mat-spinner>
