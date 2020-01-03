@@ -7,7 +7,7 @@
     ></app-map-setting>
 
 
-  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+  <app-chart-menu *ngIf="isShowMenu && isShowChart" [chartToShow]="chartToShow"></app-chart-menu>
 
   <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
     <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>

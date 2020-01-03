@@ -33,8 +33,9 @@ export class MapSettingComponent implements OnInit {
     this.mapSettings.emit(['fitToGrid' , true]);
   }
 
-  showChart() {
-    this.mapSettings.emit(['isShowChart' , true]);
+  showChart(chartName) {
+    // this.mapSettings.emit(['isShowChart' , true]);
+    this.mapSettings.emit(['chartToShow', chartName]);
   }
 
 }
