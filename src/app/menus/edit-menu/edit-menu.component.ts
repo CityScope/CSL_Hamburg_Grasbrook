@@ -54,7 +54,7 @@ export class EditMenuComponent implements OnInit {
         }
     }
 
-    onChangeLanes(laneCount) {
+    onChangeLanes(laneCount: number) {
         if (laneCount === 0) {
             this.speedLimitDisabled = true;
             this.cell.str_speed = 7;
