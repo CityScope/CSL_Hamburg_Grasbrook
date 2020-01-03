@@ -2,7 +2,6 @@ import {Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsul
 import * as d3 from 'd3';
 import d3Tip from "d3-tip"
 import {CityIOService} from "../../services/cityio.service";
-import {CsLayer} from '../../../typings';
 
 
 @Component({
