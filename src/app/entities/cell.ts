@@ -2,7 +2,7 @@ export class GridCell {
 
     type = BuildingType.empty;
 
-    str_speed = 50;
+    str_speed = 30;
     str_numLanes = 0;
     str_bike = true;
     str_stairs = false;
@@ -104,6 +104,7 @@ export class GridCell {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
                 let color = "";
                 if (gridCell[gridCellKey] === 0) {
+                    // building
                     if (gridCell.bld_useUpper == null) {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useGround]];
                     }
@@ -111,13 +112,21 @@ export class GridCell {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
                     }
                 } else if (gridCell[gridCellKey] === 1) {
-                    color = '#333333';
+                    if (gridCell["str_numLanes"] === 0) {
+                        // promenade
+                        color = '#48A377';
+                    } else {
+                        // street
+                        color = '#333333';
+                    }
                     delete feature.properties["height"];
                 } else if (gridCell[gridCellKey] === 2) {
+                    // open space
                     color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
                     delete feature.properties["height"];
-                }   else { //type == 3 -> empty
-                    color = "#aaaaaa";
+                }   else {
+                    //type == 3 -> empty
+                    color = '#aaaaaa';
                     delete feature.properties["height"];
                 }
                 feature.properties['changedTypeColor'] = color;
@@ -150,6 +159,13 @@ export class GridCell {
                     feature.properties['changedTypeColor'] = "#aaaaaa"
                 } else if(typeDict[gridCellKey]=="street") {
                     feature.properties['changedTypeColor'] = "#333333"
+                    if (typeDict["str_numLanes"] === 0) {
+                        // promenade
+                        feature.properties['changedTypeColor'] = "#48A377"
+                    } else {
+                        // street
+                        feature.properties['changedTypeColor'] = "#333333"
+                    }
                 } 
             } else if (gridCellKey === "bld_useUpper") {
                 if (typeDict[gridCellKey] != null) {
@@ -191,14 +207,15 @@ export enum BuildingType {
 enum BuildingUse {
     residential = "#FF6E40",
     commercial = "#FF5252",
-    office = "#FF4081",
+    office = "#000000",
     educational = "#40C4FF",
     culture = "#7C4DFF",
+    grocery = "#FF4081",
 }
 
 enum OpenSpaceType {
     green_space = "#69F0AE",
-    promenade = "#48A377",
+    promenade = "#AFF7D3",
     athletic_field = "#AFF7D3",
     playground = "#AFF7D3",
     daycare_playground = "#AFF7D3",

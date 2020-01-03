@@ -18,6 +18,7 @@ export class EditMenuComponent implements OnInit {
     cell: GridCell = new GridCell();
     isDismissed = false;
     sliderDisabled = true;
+    speedLimitDisabled = true;
 
     constructor() {
     }
@@ -25,8 +26,14 @@ export class EditMenuComponent implements OnInit {
     ngOnInit() {
         if (this.currentCell) {
             this.cell = Object.assign({}, this.currentCell);
-            if(this.cell.bld_numLevels > 1) {
+            if (this.cell.bld_numLevels > 1) {
                 this.sliderDisabled = false;
+            }
+            if (this.cell.str_numLanes > 0) {
+                this.speedLimitDisabled = false;
+                this.cell.str_ramp = false;
+                this.cell.str_stairs = false;
+                this.cell.str_elevator = false;
             }
         }
     }
@@ -39,13 +46,25 @@ export class EditMenuComponent implements OnInit {
     }
 
     onChangeSlider(event: any) {
-        if(event.value === 1) {
+        if (event.value === 1) {
             this.sliderDisabled = true;
-            this.cell.bld_useUpper = null
-        }
-        else {
+            this.cell.bld_useUpper = null;
+        } else {
             this.sliderDisabled = false;
         }
+    }
+
+    onChangeLanes(laneCount: number) {
+        if (laneCount === 0) {
+            this.speedLimitDisabled = true;
+            this.cell.str_speed = 7;
+        } else {
+            this.speedLimitDisabled = false;
+            this.cell.str_ramp = false;
+            this.cell.str_stairs = false;
+            this.cell.str_elevator = false;
+        }
+
     }
 
     // Button actions
