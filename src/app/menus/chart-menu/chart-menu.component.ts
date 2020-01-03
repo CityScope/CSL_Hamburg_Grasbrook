@@ -11,7 +11,11 @@ import {CsLayer} from '../../../typings';
     styleUrls: ['./chart-menu.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
-export class ChartMenuComponent implements OnInit {
+
+export class ChartMenuComponent implements OnInit, OnChanges {
+
+    constructor(private cityIoService: CityIOService) {
+    }
 
     @ViewChild('chart', {static: true})
     chartContainer: ElementRef;
@@ -26,7 +30,8 @@ export class ChartMenuComponent implements OnInit {
     private svg: any;
     private isLoading = false;
 
-    constructor(private cityIoService: CityIOService) {
+    ngOnChanges() {
+        this.updateChart();
     }
 
     ngOnInit() {
@@ -44,7 +49,6 @@ export class ChartMenuComponent implements OnInit {
             ];
 
         this.getDataFromCityIO();
-        this.setDataForChart();
         this.cityIoService.gridChangeListener.push(this.updateFromCityIO.bind(this));
         this.createChart();
         this.updateChart();
@@ -61,7 +65,7 @@ export class ChartMenuComponent implements OnInit {
             this.updateChart();
             this.isLoading = false;
         }
-     }
+    }
 
     getDataFromCityIO() {
         let cityIoGFA = this.cityIoService.table_data["kpi_gfa"];
@@ -94,7 +98,7 @@ export class ChartMenuComponent implements OnInit {
     }
 
     updateChart() {
-        console.log("dings")
+        this.setDataForChart()
         d3.selectAll("svg > *").remove();
         d3.selectAll(".d3-tip").remove();
 

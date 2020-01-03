@@ -522,6 +522,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 break;
             }
             case 'chartToShow': {
+                // toggle off
                 if (this.chartToShow === menuOutput[1] && this.isShowChart === true) {
                     this.isShowChart = false;
                 } else {
