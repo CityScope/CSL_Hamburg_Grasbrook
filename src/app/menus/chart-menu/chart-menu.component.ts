@@ -35,9 +35,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     ngOnInit() {
-        // does not work on switching --> force collapsing?
-        console.log('chart to show in chart menu component', this.chartToShow);
-
+        // placeholder results
         this.gfaData = [
             {"gfa": "Other", "value": 0, "target": 30000},
             {"gfa": "Commercial", "value": 0, "target": 550000},
@@ -139,8 +137,6 @@ export class ChartMenuComponent implements OnInit, OnChanges {
             })]);
 
             y.domain(this.data.map(function(d) {
-                console.log("hier");
-                console.log(d);
                 return d.subresult;
             }));
 
