@@ -2,7 +2,7 @@ import {AfterViewInit, Component, OnInit, NgZone} from "@angular/core";
 import {environment} from "../../environments/environment";
 import {interval} from "rxjs";
 import * as mapboxgl from "mapbox-gl";
-import * as maptastic from "maptastic/dist/maptastic.min.js";
+import {Maptastic} from "maptastic";
 import {CsLayer} from "../../typings";
 import {LngLat, LngLatBoundsLike, LngLatLike} from "mapbox-gl";
 import {GeoJSONSource} from "mapbox-gl";
@@ -569,7 +569,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     toggleMaptasticMode() {
-        maptastic('basemap');
+        Maptastic('basemap');
     }
 
     private toggleMenu() {
