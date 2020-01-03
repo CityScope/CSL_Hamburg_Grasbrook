@@ -102,6 +102,8 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         console.log('init map');
         this.initializeMap([10.0143909533867, 53.53128461384861]);
         this.cityIOService.gridChangeListener.push(this.updateFromCityIO.bind(this));
+
+        alert("Please not that the Grasbrook CityScope is a novel and ongoing research project. Scientific validity of results cannot be guaranteed");
     }
 
     ngAfterViewInit() {
