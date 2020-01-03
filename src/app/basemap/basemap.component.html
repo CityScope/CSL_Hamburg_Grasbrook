@@ -35,4 +35,19 @@
   >
   </app-edit-menu>
 
+  <div *ngIf="isShowMenu" class="modal-container-left container-left-top">
+    <app-map-setting
+      (mapSettings)="mapSettingsListener($event)"
+    ></app-map-setting>
+  </div>
+
+  <div #featureHoverTooltip
+    class="feature-hover-tooltip"
+    [hidden]="!isShowHoverInfo"
+    [style.top.px]="clientXY.y - 35"
+    [style.left.px]="clientXY.x + 25">
+    <ng-container *ngIf="hoverInfoFeature">
+        <small>{{hoverInfoFeature.properties.name}}</small>
+    </ng-container>
+  </div>
 </div>

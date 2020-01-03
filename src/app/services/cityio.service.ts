@@ -45,7 +45,7 @@ export class CityIOService implements OnDestroy {
 
     getTableName() {
         if (localStorage.getItem('currentUser') && JSON.parse(localStorage.getItem('currentUser'))['tables'].length === 1) {
-            return JSON.parse(localStorage.getItem('currentUser'))['tables'][0]
+            return JSON.parse(localStorage.getItem('currentUser'))['tables'][0];
         } else {
             return 'grasbrook_test';
         }
@@ -110,7 +110,7 @@ export class CityIOService implements OnDestroy {
             return;
         }
         for (let changeListener of this.gridChangeListener) {
-            changeListener(field)
+            changeListener(field);
         }
     }
 
@@ -126,7 +126,7 @@ export class CityIOService implements OnDestroy {
         }
 
         this.pushCityIOdata("grid", this.table_data["grid"]);
-        this.pending_changes = {}
+        this.pending_changes = {};
     }
 
     /**

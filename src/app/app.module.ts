@@ -58,7 +58,7 @@ import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
         EditMenuComponent,
         ChartMenuComponent,
         RestoreMessage,
-        FileSettingComponent
+        FileSettingComponent,
     ],
     imports: [
         BrowserModule,
