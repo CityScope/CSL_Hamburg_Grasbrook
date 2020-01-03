@@ -114,7 +114,7 @@ export class GridCell {
                 } else if (gridCell[gridCellKey] === 1) {
                     if (gridCell["str_numLanes"] === 0) {
                         // promenade
-                        color = '#48A377'
+                        color = '#48A377';
                     } else {
                         // street
                         color = '#333333';
