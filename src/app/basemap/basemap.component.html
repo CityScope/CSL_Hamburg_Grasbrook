@@ -1,6 +1,14 @@
 <div id="map-container" class="map-container">
   <div class="basemap" id="basemap"></div>
 
+
+  <app-map-setting *ngIf="isShowMenu"
+            (mapSettings)="mapSettingsListener($event)"
+    ></app-map-setting>
+
+
+  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+
   <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
     <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>
 
@@ -12,31 +20,9 @@
     </app-layer-control>
   </div>
 
-  <div
-    (click)="closeAndLogout()"
-    class="modal-container-left container-right-top map-control-element"
-  >
-    <i
-      class="material-icons menu-icons white"
-      matTooltipPosition="right"
-      matTooltip="Log out and go to main menu"
-      >close</i
-    >
-  </div>
-
-  <div
-    class="modal-container-left container-right-top map-control-element save"
-    (click)="saveCurrentChanges()"
-  >
-    <i
-      class="material-icons menu-icons white"
-      matTooltipPosition="right"
-      matTooltip="Save current changes"
-      >save</i
-    >
-  </div>
-
-  <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
+    <app-file-setting *ngIf="isShowMenu"
+                      (mapSettings)="mapSettingsListener($event)"
+    ></app-file-setting>
 
   <app-edit-menu
     *ngIf="isEditMenu"
@@ -53,5 +39,15 @@
     <app-map-setting
       (mapSettings)="mapSettingsListener($event)"
     ></app-map-setting>
+  </div>
+
+  <div #featureHoverTooltip
+    class="feature-hover-tooltip"
+    [hidden]="!isShowHoverInfo"
+    [style.top.px]="clientXY.y - 35"
+    [style.left.px]="clientXY.x + 25">
+    <ng-container *ngIf="hoverInfoFeature">
+        <small>{{hoverInfoFeature.properties.name}}</small>
+    </ng-container>
   </div>
 </div>

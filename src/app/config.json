@@ -39,7 +39,7 @@
         ],
         "fill-extrusion-opacity": 0.8
       },
-      "showInLayerList": true,
+      "showInLayerList": false,
       "isLoading": false,
       "addOnMapInitialisation": false
     },
@@ -50,29 +50,9 @@
       "addOnMapInitialisation": true
     },
     {
-      "id": "access",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "trips-deckgl",
-      "type": "circle",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
-      "id": "gama-deckgl",
-      "type": "circle",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false
-    },
-    {
       "id": "noisehh",
       "displayName": "Noise",
-      "showInLayerList": true,
+      "showInLayerList": false,
       "isLoading": false,
       "metadata": "",
       "type": "raster",
@@ -221,10 +201,9 @@
         "description": "Restriktionshinweise"
       }
     },
-    
     {
-      "id": "walkability",
-      "displayName": "Walkability",
+      "id": "walkability_school",
+      "displayName": "Walkability to schools",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -235,19 +214,20 @@
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
       },      
       "paint": {
-        "fill-extrusion-height": 0.2,
-        "fill-extrusion-base": 0.2,
+        "fill-extrusion-height": 0.1,
+        "fill-extrusion-base": 0.1,
         "fill-extrusion-opacity": 0.8,
         
         "fill-extrusion-color": {
-          "property": "walktime",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]]
+          "property": "educational",
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "default": "red"
         }
       },
       
       "legend": {
         "type": "circle",
-        "styleField": "walktime",
+        "styleField": "educational",
         "styleValues": [{
             "styleFieldValue": 0,
             "color": "green",
@@ -268,8 +248,100 @@
       }
     },
     {
+      "id": "walkability_culture",
+      "displayName": "Walkability to cultural institutions",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill-extrusion",
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
+      },      
+      "paint": {
+        "fill-extrusion-height": 0.1,
+        "fill-extrusion-base": 0.1,
+        "fill-extrusion-opacity": 0.8,
+        
+        "fill-extrusion-color": {
+          "property": "culture",
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "default": "red"
+        }
+      },
+      
+      "legend": {
+        "type": "circle",
+        "styleField": "culture",
+        "styleValues": [{
+            "styleFieldValue": 0,
+            "color": "green",
+            "label": "< 5 minutes"
+          },
+          {
+            "styleFieldValue": 5,
+            "color": "rgb(245, 206, 15)",
+            "label": "5 minutes"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "red",
+            "label": ">= 6 minutes"
+          }
+        ],
+        "description": "A visualization of walking time (in minutes) needed to reach the closest school."
+      }
+    },
+    {
+      "id": "walkability_grocery",
+      "displayName": "Walkability to grocery stores",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill-extrusion",
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
+      },      
+      "paint": {
+        "fill-extrusion-height": 0.1,
+        "fill-extrusion-base": 0.1,
+        "fill-extrusion-opacity": 0.8,
+        
+        "fill-extrusion-color": {
+          "property": "grocery",
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "default": "red"
+        }
+      },
+      
+      "legend": {
+        "type": "circle",
+        "styleField": "grocery",
+        "styleValues": [{
+            "styleFieldValue": 0,
+            "color": "green",
+            "label": "< 5 minutes"
+          },
+          {
+            "styleFieldValue": 5,
+            "color": "rgb(245, 206, 15)",
+            "label": "5 minutes"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "red",
+            "label": ">= 6 minutes"
+          }
+        ],
+        "description": "A visualization of walking time (in minutes) needed to reach the closest grocery store."
+      }
+    },
+    {
       "id": "noise_result",
-      "displayName": "Noise HCU",
+      "displayName": "Traffic noise levels",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -279,11 +351,9 @@
         "type": "geojson",
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/noise_result"
       },
-      
-      
       "paint": {
         "fill-extrusion-height": 0.2,
-        "fill-extrusion-base": 0.2,
+        "fill-extrusion-base": 0.25,
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": [
           "match", ["get", "idiso"],

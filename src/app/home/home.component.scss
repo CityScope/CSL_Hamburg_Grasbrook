@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 #splash-image {
   background-image: url(/assets/images/gb-splash.jpg);
 
@@ -100,4 +102,32 @@
   ::ng-deep.login-dialog {
     background-color: rgba(255,255,255, 0.9) !important;
   }
+
+  /*
+    Responsiveness
+  */
+
+  @media screen and (max-width: $screen-sm-width) {
+    .content {
+      padding-top: 60px;
+    }
+
+    .first-header {
+      font-size: 15pt;
+    }
+
+    .second-header {
+      font-size: 70pt;
+    }
+
+    .menu {
+      margin-left: 5px;
+      a {
+        font-size: 20pt;
+        border: 1px solid;
+        padding: 10px !important;
+      }
+    }
+  }
+
 }

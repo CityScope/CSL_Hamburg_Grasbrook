@@ -1,3 +1,5 @@
+@import "../../variables.scss";
+
 .app-container {
   height: 100%;
   width: 100%;
@@ -30,22 +32,86 @@
   left: 5px;
 }
 
-.container-left-top {
+app-map-setting {
   position: absolute;
   top: 30px;
   left: 5px;
 }
 
-.container-right-top {
+app-file-setting {
   position: absolute;
   top: 30px;
   right: 5px;
 }
 
-.container-right-top.save {
+app-file-setting.save {
   top: 69px;
 }
 
 ng::deep .popUpContent {
   font-size: 8px;
+}
+
+.feature-hover-tooltip {
+  border-radius: 4px;
+  padding: 5px;
+  position: fixed;
+  color: white;
+  background: rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+}
+
+
+/*
+    Responsive Design
+*/
+
+
+@media screen and (max-width: $screen-sm-width) {
+  app-file-setting {
+    top: 5px !important;
+  }
+
+  app-map-setting {
+    right: 5px !important;
+    left: auto;
+    top: 117px;
+  }
+}
+
+
+@media screen and (min-width: 580px) {
+  app-edit-menu {
+    left: 10%;
+  }
+}
+
+@media screen and (min-height: 430px) {
+  app-edit-menu {
+    top: 10%;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  app-edit-menu {
+    left: 25%;
+  }
+}
+
+@media screen and (min-height: 520px) {
+  app-edit-menu {
+    top: 25%;
+  }
+}
+
+@media screen and (min-width: 1000px) {
+  app-edit-menu {
+    left: 40%;
+  }
+}
+
+@media screen and (min-height: 650px) {
+  app-edit-menu {
+    top: 40%;
+  }
 }
