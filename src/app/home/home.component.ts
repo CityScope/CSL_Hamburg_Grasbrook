@@ -17,7 +17,7 @@ export class HomeComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.loginStatus = this.authenticationService.currentUserValue ? true : false;
+        this.loginStatus = localStorage.currentUser;
     }
 
     logout() {
