@@ -150,6 +150,26 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 .data(this.data)
                 .enter();
 
+            // add the target lines
+            eSel.append("path")
+                .style("stroke-width", 1)
+                .style("stroke", function(d) {
+                    if (!isNaN(d.target)) {
+                        return "red";
+                    }
+                    // no target - hide the line by setting it to same color as menu background
+                   return "rgba(0, 0, 0, 0.5)";
+                })
+                .attr("d", function(d) {
+                    let isTarget = isNaN(d.target);
+                    let xVal = isTarget ? d.value : d.target;
+                    //TODO: how to access the margins here ...
+                    const marginLeft = 80 + 3;
+                    let rv = "M" + (x(xVal) + marginLeft) + "," + y(d.subresult);
+                    rv += "L" + (x(xVal) + marginLeft) + "," + (y(d.subresult) + y.bandwidth());
+                    return rv;
+                });
+
             eSel.append("rect")
                 .attr("class", "bar")
                 .attr("width", function(d) {
@@ -164,18 +184,6 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                     tip.show(d, this);
                 })
                 .on("mouseout", d => tip.hide(d));
-
-            // add the target lines
-            eSel.append("path")
-                .style("stroke", "red")
-                .style("stroke-width", 1)
-                .attr("d", function(d) {
-                    //TODO: how to access the margins here ...
-                    const marginLeft = 80 + 3;
-                    let rv = "M" + (x(d.target) + marginLeft) + "," + y(d.subresult);
-                    rv += "L" + (x(d.target) + marginLeft) + "," + (y(d.subresult) + y.bandwidth());
-                    return rv;
-                });
 
             // add the x Axis
             this.svg.append("g")
