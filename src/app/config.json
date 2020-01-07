@@ -7,7 +7,7 @@
   "gridZoom": 16.3,
   "gridBearing": 34.8,
   "gridPitch": 0,
-  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true",
+  "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true&optimize=true",
   "layers": [
     {
       "id": "3d Buildings",
