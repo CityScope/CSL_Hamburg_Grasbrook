@@ -6,18 +6,23 @@ import {LoginDialog} from "../menus/login-menu/login.dialog";
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
-    styleUrls: ['./home.component.scss']
+    styleUrls: ['./home.component.scss'],
+    providers: [AuthenticationService]
 })
 export class HomeComponent implements OnInit {
 
     private loginStatus: boolean;
+    private locationsSubscription;
+
 
     constructor(private authenticationService: AuthenticationService,
                 public dialog: MatDialog) {
     }
 
     ngOnInit() {
-        this.loginStatus = localStorage.currentUser;
+        this.locationsSubscription = this.authenticationService.currentUser.subscribe({
+            next: user => this.loginStatus =  user != null
+        });
     }
 
     logout() {
