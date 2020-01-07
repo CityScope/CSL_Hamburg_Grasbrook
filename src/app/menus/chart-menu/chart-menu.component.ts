@@ -65,19 +65,25 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     getDataFromCityIO() {
-        let cityIoGFA = this.cityIoService.table_data["kpi_gfa"];
+
+        const cityIoGFA = this.cityIoService.table_data["kpi_gfa"];
         if (cityIoGFA) {
+            const specialResult = Number(cityIoGFA['special_expected']);
+            const commerceResult = Number(cityIoGFA['commerce_expected']);
+            const residentialResult = Number(cityIoGFA['living_expected']);
             this.gfaData = [
-                {"subresult": "Other", "value": cityIoGFA['special'], "target": cityIoGFA['special_expected']},
-                {"subresult": "Commercial", "value": cityIoGFA['commerce'], "target": cityIoGFA['commerce_expected']},
-                {"subresult": "Residential", "value": cityIoGFA['living'], "target": cityIoGFA['living_expected']}
+                {"subresult": "Other", "value": (typeof specialResult === 'number') ? specialResult : 0, "target": cityIoGFA['special_expected']},
+                {"subresult": "Commercial", "value": (typeof commerceResult === 'number') ? commerceResult : 0, "target": cityIoGFA['commerce_expected']},
+                {"subresult": "Residential", "value": (typeof residentialResult === 'number') ? residentialResult : 0, "target": cityIoGFA['living_expected']}
             ];
         }
-        let cityIoStormwater = this.cityIoService.table_data["stormwater"];
+        const cityIoStormwater = this.cityIoService.table_data["stormwater"];
         if (cityIoStormwater) {
+            const whiteResult = Number(cityIoStormwater['white']);
+            const greyResult = Number(cityIoStormwater['grey']);
             this.stormwaterData = [
-                {"subresult": "white", "value": cityIoStormwater['white']},
-                {"subresult": "grey", "value": cityIoStormwater['grey']},
+                {"subresult": "white", "value": (typeof whiteResult === 'number') ? whiteResult : 0},
+                {"subresult": "grey", "value": (typeof greyResult === 'number') ? greyResult : 0},
             ];
 
         }
