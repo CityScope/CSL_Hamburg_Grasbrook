@@ -1,7 +1,7 @@
 import {Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import * as d3 from 'd3';
-import d3Tip from "d3-tip"
-import {CityIOService} from "../../services/cityio.service";
+import d3Tip from 'd3-tip';
+import {CityIOService} from '../../services/cityio.service';
 
 
 @Component({
@@ -36,13 +36,13 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     ngOnInit() {
         // placeholder results
         this.gfaData = [
-            {"gfa": "Other", "value": 0, "target": 30000},
-            {"gfa": "Commercial", "value": 0, "target": 550000},
-            {"gfa": "Residential", "value": 0, "target": 300000}
+            {'gfa': 'Other', 'value': 0, 'target': 30000},
+            {'gfa': 'Commercial', 'value': 0, 'target': 550000},
+            {'gfa': 'Residential', 'value': 0, 'target': 300000}
         ];
         this.stormwaterData = [
-            {"stormwater": "white", "value": 0},
-            {"stormwater": "grey", "value": 0},
+            {'stormwater': 'white', 'value': 0},
+            {'stormwater': 'grey', 'value': 0},
         ];
 
         this.getDataFromCityIO();
@@ -52,7 +52,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     async updateFromCityIO(field) {
-        if(this.cityIoService.checkHashes(false).indexOf(this.chartToShow) >= 0) {
+        if (this.cityIoService.checkHashes(false).indexOf(this.chartToShow) >= 0) {
             // kpi_gfa is not up to date
             this.isLoading = true;
         }
@@ -65,19 +65,19 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     getDataFromCityIO() {
-        let cityIoGFA = this.cityIoService.table_data["kpi_gfa"];
+        let cityIoGFA = this.cityIoService.table_data['kpi_gfa'];
         if (cityIoGFA) {
             this.gfaData = [
-                {"subresult": "Other", "value": cityIoGFA['special'], "target": cityIoGFA['special_expected']},
-                {"subresult": "Commercial", "value": cityIoGFA['commerce'], "target": cityIoGFA['commerce_expected']},
-                {"subresult": "Residential", "value": cityIoGFA['living'], "target": cityIoGFA['living_expected']}
+                {'subresult': 'Other', 'value': cityIoGFA['special'], 'target': cityIoGFA['special_expected']},
+                {'subresult': 'Commercial', 'value': cityIoGFA['commerce'], 'target': cityIoGFA['commerce_expected']},
+                {'subresult': 'Residential', 'value': cityIoGFA['living'], 'target': cityIoGFA['living_expected']}
             ];
         }
-        let cityIoStormwater = this.cityIoService.table_data["stormwater"];
+        let cityIoStormwater = this.cityIoService.table_data['stormwater'];
         if (cityIoStormwater) {
             this.stormwaterData = [
-                {"subresult": "white", "value": cityIoStormwater['white']},
-                {"subresult": "grey", "value": cityIoStormwater['grey']},
+                {'subresult': 'white', 'value': cityIoStormwater['white']},
+                {'subresult': 'grey', 'value': cityIoStormwater['grey']},
             ];
 
         }
@@ -95,9 +95,9 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     updateChart() {
-        this.setDataForChart()
-        d3.selectAll("svg > *").remove();
-        d3.selectAll(".d3-tip").remove();
+        this.setDataForChart();
+        d3.selectAll('svg > *').remove();
+        d3.selectAll('.d3-tip').remove();
 
         if (this.svg) {
 
@@ -118,9 +118,9 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html(function(d) {
-                    let text = "<strong>Current:</strong> <span style='color:black'>" + d.value + "</span> <br />";
+                    let text = '<strong>Current:</strong> <span style=\'color:black\'>' + d.value + '</span> <br />';
                     if (d.target) {
-                        text = text + "<strong>Target:</strong> <span style='color:red'>" + d.target + "</span>";
+                        text = text + '<strong>Target:</strong> <span style=\'color:red\'>' + d.target + '</span>';
                     }
                     return text;
                 });
@@ -140,55 +140,49 @@ export class ChartMenuComponent implements OnInit, OnChanges {
             }));
 
             // append the rectangles for the bar chart
-            let eSel = this.svg.selectAll(".bar")
+            let eSel = this.svg.selectAll('.bar')
                 .data(this.data)
                 .enter();
 
-            // add the target lines
-            eSel.append("path")
-                .style("stroke-width", 1)
-                .style("stroke", function(d) {
-                    if (!isNaN(d.target)) {
-                        return "red";
-                    }
-                    // no target - hide the line by setting it to same color as menu background
-                   return "rgba(0, 0, 0, 0.5)";
-                })
-                .attr("d", function(d) {
-                    let isTarget = isNaN(d.target);
-                    let xVal = isTarget ? d.value : d.target;
-                    //TODO: how to access the margins here ...
-                    const marginLeft = 80 + 3;
-                    let rv = "M" + (x(xVal) + marginLeft) + "," + y(d.subresult);
-                    rv += "L" + (x(xVal) + marginLeft) + "," + (y(d.subresult) + y.bandwidth());
-                    return rv;
-                });
-
-            eSel.append("rect")
-                .attr("class", "bar")
-                .attr("width", function(d) {
+            eSel.append('rect')
+                .attr('class', 'bar')
+                .attr('width', function(d) {
                     return x(d.value);
                 })
-                .attr("y", function(d) {
+                .attr('y', function(d) {
                     return y(d.subresult);
                 })
-                .attr("height", y.bandwidth())
-                .attr("transform", "translate(" + (this.margin.left + 3) + ",0)")
+                .attr('height', y.bandwidth())
+                .attr('transform', 'translate(' + (this.margin.left + 3) + ',0)')
                 .on('mouseover', function(d) {
                     tip.show(d, this);
                 })
-                .on("mouseout", d => tip.hide(d));
+                .on('mouseout', d => tip.hide(d));
+
+            if (this.chartToShow !== 'stormwater') {
+                // add the target lines
+                eSel.append('path')
+                    .style('stroke-width', 1)
+                    .style('stroke', 'red')
+                    .attr('d', function(d) {
+                        //TODO: how to access the margins here ...
+                        const marginLeft = 80 + 3;
+                        let rv = 'M' + (x(d.target) + marginLeft) + ',' + y(d.subresult);
+                        rv += 'L' + (x(d.target) + marginLeft) + ',' + (y(d.subresult) + y.bandwidth());
+                        return rv;
+                    });
+            }
 
             // add the x Axis
-            this.svg.append("g")
+            this.svg.append('g')
                 .attr('class', 'axis axis-x')
-                .attr("transform", "translate(" + this.margin.left + "," + this.height + ")")
+                .attr('transform', 'translate(' + this.margin.left + ',' + this.height + ')')
                 .call(d3.axisBottom(x));
 
             // add the y Axis
-            this.svg.append("g")
+            this.svg.append('g')
                 .attr('class', 'axis axis-y')
-                .attr("transform", "translate(" + this.margin.left + ",0)")
+                .attr('transform', 'translate(' + this.margin.left + ',0)')
                 .call(d3.axisLeft(y));
         }
     }
