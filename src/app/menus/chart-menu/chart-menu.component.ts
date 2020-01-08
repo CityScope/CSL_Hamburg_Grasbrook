@@ -28,6 +28,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     private height: number;
     private svg: any;
     private isLoading = false;
+    private chartHasTargets = false;
 
     ngOnChanges() {
         this.updateChart();
@@ -159,7 +160,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 })
                 .on('mouseout', d => tip.hide(d));
 
-            if (this.chartToShow !== 'stormwater') {
+            if (this.chartHasTargets) {
                 // add the target lines
                 eSel.append('path')
                     .style('stroke-width', 1)
@@ -190,10 +191,12 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     private setDataForChart() {
         if (this.chartToShow === 'kpi_gfa') {
             this.data = this.gfaData;
+            this.chartHasTargets = true;
             return;
         }
         if (this.chartToShow === 'stormwater') {
             this.data = this.stormwaterData;
+            this.chartHasTargets = false;
             return;
         }
         console.log('unknown chart requested:', this.chartToShow);
