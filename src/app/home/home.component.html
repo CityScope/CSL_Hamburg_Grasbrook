@@ -10,7 +10,7 @@
 
     <div class="menu" id="menu">
       <ng-container *ngIf="loginStatus; else loggedOut">
-          <a [routerLink]="['map']">Editor</a>
+          <a [routerLink]="['/map']">Editor</a>
           <a class="logout" (click)="logout()">Logout</a>
       </ng-container>
       <ng-template #loggedOut>
