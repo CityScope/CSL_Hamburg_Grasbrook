@@ -355,42 +355,25 @@ export class BasemapComponent implements OnInit, AfterViewInit {
             for (const clickedFeature of selectedFeature) {
                 for (const feature of currentSource["features"]) {
                     if (feature["id"] === clickedFeature["id"]) {
-                        if (
-                            selectedFeature.length <= 1 &&
-                            feature.properties["color"] ===
-                                this.selectedCellColor
-                        ) {
+                        if (selectedFeature.length <= 1 && feature.properties["color"] === this.selectedCellColor) {
                             // deselect features on single click only, not with rectangle selection
                             feature.properties["color"] =
                                 feature.properties["initial-color"];
                             feature.properties["isSelected"] = false;
                             // remove this cell from array
-                            for (
-                                let i = this.selectedFeatures.length - 1;
-                                i >= 0;
-                                i--
-                            ) {
-                                if (
-                                    this.selectedFeatures[i] ===
-                                    clickedFeature["id"]
-                                ) {
+                            for (let i = this.selectedFeatures.length - 1; i >= 0; i--) {
+                                if (this.selectedFeatures[i] === clickedFeature["id"]) {
                                     this.selectedFeatures.splice(i, 1);
                                 }
                             }
                         } else {
                             // select additional features
-                            if (
-                                feature.properties["color"] !==
-                                this.selectedCellColor
-                            ) {
+                            if (feature.properties["color"] !== this.selectedCellColor) {
                                 // don't overwrite stored previous type
-                                feature.properties["initial-color"] =
-                                    feature.properties["color"];
+                                feature.properties["initial-color"] = feature.properties["color"];
                             }
                             feature.properties["isSelected"] = true;
-                            feature.properties[
-                                "color"
-                            ] = this.selectedCellColor;
+                            feature.properties["color"] = this.selectedCellColor;
                             this.selectedFeatures.push(clickedFeature["id"]);
                             this.showEditMenu();
                         }
@@ -775,12 +758,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
                     // Color change has to be done here again!?
                     if (feature.properties["changedTypeColor"]) {
-                        feature.properties["color"] =
-                            feature.properties["changedTypeColor"];
+                        feature.properties["color"] = feature.properties["changedTypeColor"];
                         delete feature.properties["changedTypeColor"];
                     } else {
-                        feature.properties["color"] =
-                            feature.properties["initial-color"];
+                        feature.properties["color"] = feature.properties["initial-color"];
                         delete feature.properties["changedTypeColor"];
                     }
                     if (feature.properties["type"] !== BuildingType.building) {
@@ -789,8 +770,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
                     this.updateCityIOgridCell(feature);
                 } else {
-                    feature.properties["color"] =
-                        feature.properties["initial-color"];
+                    feature.properties["color"] = feature.properties["initial-color"];
                 }
                 feature.properties["isSelected"] = false;
             }

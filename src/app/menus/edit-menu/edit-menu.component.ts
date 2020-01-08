@@ -69,28 +69,23 @@ export class EditMenuComponent implements OnInit {
 
     // Button actions
 
-    // onPreview() {
-    //     this.menuOutput.emit(this.cell);
-    // }
-
     onCancel() {
         this.isDismissed = true;
-        this.dismissMenu.emit(this.currentCell)
+        this.dismissMenu.emit(null);
     }
 
     onSave() {
-        console.log(this.cell)
         if (this.cell.type === 0 && this.cell.bld_useGround == null) {
-            this.selectGU.open()
-            this.selectGU.close()
+            this.selectGU.open();
+            this.selectGU.close();
             return;
         } else if (this.cell.type === 0 && this.cell.bld_numLevels > 1 && this.cell.bld_useUpper == null) {
-            this.selectUU.open()
-            this.selectUU.close()
+            this.selectUU.open();
+            this.selectUU.close();
             return;
         } else if (this.cell.type === 2 && this.cell.os_type == null) {
-            this.selectOST.open()
-            this.selectOST.close()
+            this.selectOST.open();
+            this.selectOST.close();
             return;
         }
         this.isDismissed = true;
