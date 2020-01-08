@@ -34,7 +34,7 @@ export class AppModule {}
     selector: "app-basemap",
     templateUrl: "./basemap.component.html",
     styleUrls: ["./basemap.component.scss"],
-    providers: [CityIOService, AuthenticationService, LocalStorageService]
+    providers: [CityIOService, LocalStorageService]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
