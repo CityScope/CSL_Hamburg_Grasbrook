@@ -44,12 +44,14 @@ import {ChartMenuComponent} from "./menus/chart-menu/chart-menu.component";
 import { FileSettingComponent } from './basemap/map-controls/file-setting/file-setting.component';
 import {ResetGridDialog} from "./menus/reset-grid/reset-grid-dialog";
 import {AuthenticationService} from "./services/authentication.service";
+import {ImprintComponent} from './imprint/imprint.component';
 
 @NgModule({
     declarations: [
         AppComponent,
         BasemapComponent,
         HomeComponent,
+        ImprintComponent,
         MapSettingComponent,
         LegendComponent,
         LayerControlComponent,
