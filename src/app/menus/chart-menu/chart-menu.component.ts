@@ -96,7 +96,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     updateChart() {
-        this.setDataForChart();
+        this.setDetailsForChart();
         d3.selectAll('svg > *').remove();
         d3.selectAll('.d3-tip').remove();
 
@@ -188,15 +188,17 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         }
     }
 
-    private setDataForChart() {
+    private setDetailsForChart() {
         if (this.chartToShow === 'kpi_gfa') {
             this.data = this.gfaData;
             this.chartHasTargets = true;
+            this.margin.left = 80;
             return;
         }
         if (this.chartToShow === 'stormwater') {
             this.data = this.stormwaterData;
             this.chartHasTargets = false;
+            this.margin.left = 40;
             return;
         }
         console.log('unknown chart requested:', this.chartToShow);
