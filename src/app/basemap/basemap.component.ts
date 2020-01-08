@@ -104,7 +104,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         );
 
         alert(
-            "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+            "This online platform has been developed for the participants of the Grasbrook competition. \n" +
+            "The platform provides a coarse and near-real-time assessment of urban design qualities such as noise and walkability for a rasterized version of the competition area. " +
+            "The tool focusses on providing rapid analyses of urban design iterations based on a simplified input. Results provided do not substitute in-depth analyses. \n" +
+            "The platform and its analysis modules are currently in the testing phases and are subject to ongoing development. \n" +
+            "Scientific validity of the results cannot be guaranteed in the testing phases."
         );
     }
 
