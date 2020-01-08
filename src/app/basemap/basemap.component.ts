@@ -649,10 +649,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     toggleLayerLoading(changedField) {
-        const toggle = changedField === "grid";
+        const toggle = changedField === 'grid';
+        console.log(this.cityIOService.checkHashes(!toggle))
         for (const field of this.cityIOService.checkHashes(!toggle)) {
-            const layer = this.layers.find(x => x.id === field);
-            if (layer) {
+            for (const layer of this.layers.filter(x => x.id.indexOf(field) !== -1)) {
                 if (layer.isLoading) {
                     this.resetDataUrl(layer as CsLayer);
                 }
@@ -662,12 +662,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     setGridFromCityIOData() {
-        if (
-            !(
-                this.cityIOService.table_data.grid &&
-                this.cityIOService.table_data.header
-            )
-        ) {
+        if (!(this.cityIOService.table_data.grid && this.cityIOService.table_data.header)) {
             this.alertService.error(
                 "Loading",
                 "Please wait a few seconds for the initial update...",
@@ -678,22 +673,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         const { gridLayer, currentSource } = this.getGridSource();
         if (gridLayer && currentSource) {
             for (const feature of currentSource["features"]) {
-                if (
-                    this.cityIOService.table_data["grid"].length <=
-                    feature["id"]
-                )
+                if (this.cityIOService.table_data["grid"].length <= feature["id"]) {
                     break;
-                if (
-                    this.cityIOService.table_data["grid"][feature["id"]] == null
-                )
+                }
+                if (this.cityIOService.table_data["grid"][feature["id"]] == null) {
                     break;
-
-                const typeint = this.cityIOService.table_data["grid"][
-                    feature["id"]
-                ][0];
-                const typeDict = this.cityIOService.table_data["header"][
-                    "mapping"
-                ]["type"][typeint];
+                }
+                const typeint = this.cityIOService.table_data["grid"][feature["id"]][0];
+                const typeDict = this.cityIOService.table_data["header"]["mapping"]["type"][typeint];
 
                 GridCell.fillFeatureByCityIOType(feature, typeDict);
 

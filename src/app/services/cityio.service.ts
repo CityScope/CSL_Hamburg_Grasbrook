@@ -65,7 +65,8 @@ export class CityIOService implements OnDestroy {
                 for (let key in data) {
                     if (this.lastHashes[key] !== data[key]) {
                         // data changed!
-                        if (key === 'noise_result') {
+                        if (key === 'noise_result' || key === 'walkability') {
+                            // TODO: find a way not to use static strings here
                             // this should be done for all simulation modules, that depend on grid and are used as layers in the front end
                             this.updateModuleGridHash(key).subscribe(); // only download state of similation module result, not geodata
                         } else {
