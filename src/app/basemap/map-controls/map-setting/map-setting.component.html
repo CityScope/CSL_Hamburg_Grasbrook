@@ -21,9 +21,16 @@
        matTooltipPosition="right" matTooltip="Fit to grid">zoom_out_map</i>
   </div>
 
-  <div (click)="showChart()" class="map-settings-button toggle-mode-button map-control-element">
+  <!-- chart names as module result fields in cityIO -->
+  <div (click)="showChart('kpi_gfa')" class="map-settings-button toggle-mode-button map-control-element">
     <i class="material-icons menu-icons white"
        matTooltipPosition="right" matTooltip="Show GFA">bar_chart</i>
+  </div>
+  <!-- chart names as module result fields in cityIO -->
+  <!-- todo choose icon -->
+  <div (click)="showChart('stormwater')" class="map-settings-button toggle-mode-button map-control-element">
+    <i class="material-icons menu-icons white"
+       matTooltipPosition="right" matTooltip="Show Stormwater Results">opacity</i>
   </div>
 
 </div>

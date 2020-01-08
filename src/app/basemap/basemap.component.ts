@@ -62,6 +62,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     initialExtrusionHeight: any = null;
     isShowMenu = true;
     isShowChart = false;
+    chartToShow = null;
     isShowHoverInfo = false;
 
     gridInitialised = false; // checks whether we got a first successful grid update
@@ -557,8 +558,14 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 this.zoomToBounds();
                 break;
             }
-            case "isShowChart": {
-                this.isShowChart = !this.isShowChart;
+            case "chartToShow": {
+                // toggle off
+                if (this.chartToShow === menuOutput[1] && this.isShowChart === true) {
+                    this.isShowChart = false;
+                } else {
+                    this.chartToShow = menuOutput[1];
+                    this.isShowChart = true;
+                }
                 break;
             }
             case "closeAndLogout": {
