@@ -8,8 +8,7 @@
 
 
   <app-chart-menu *ngIf="isShowMenu && isShowChart"></app-chart-menu>
-
-  <div *ngIf="isShowMenu" class="modal-container container-left-bottom">
+  <div *ngIf="isShowMenu" class="modal-container container-left-bottom" style="z-index: 2">
     <app-legend [layer]="mapLegendLayer" [visible]="mapLegendVisible" (close)="mapLegendVisible = false"></app-legend>
 
     <app-layer-control

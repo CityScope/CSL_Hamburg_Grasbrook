@@ -412,7 +412,7 @@
             "label": "> 75 dB"
           }
         ],
-        "description": "A visualization of noise from roads and train tracks around the Grasbrook",
+        "description": "A visualization of noise from main roads and train tracks surrounding the Grasbrook. The result shown is a isophone map of the day–evening–night noise levels calculated based on the prospective traffic. The utilized method is a 2D analysis.",
         "credits": [
           "Visualization: Beate Tomio, coloringnoise.com",
           "Based on IFSTTAR Noisemap, noise-planet.org"
