@@ -93,8 +93,15 @@
   }
 
   .imprint-link {
-    margin-left: 0;
-    margin-top: 50px;
+    position: fixed;
+    right: 40px;
+    bottom: 50px;
+
+    a {
+      border: none;
+      color:lightgrey;
+      font-size: 80%;
+    }
   }
 
   .loginout {
@@ -131,6 +138,17 @@
         font-size: 20pt;
         border: 1px solid;
         padding: 10px !important;
+      }
+    }
+    .imprint-link {
+      position: fixed;
+      right: 40px;
+      bottom: 50px;
+
+      a {
+        border: none;
+        color:lightgrey;
+        font-size: 12px;
       }
     }
   }
