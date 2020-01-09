@@ -50,24 +50,8 @@
       "addOnMapInitialisation": true
     },
     {
-      "id": "noisehh",
-      "displayName": "Noise",
-      "showInLayerList": false,
-      "isLoading": false,
-      "metadata": "",
-      "type": "raster",
-      "source": {
-        "type": "raster",
-        "tiles": [
-          "https://geodienste.hamburg.de/HH_WMS_Strassenverkehr?format=image/png&service=WMS&version=1.3.0&STYLES=&bbox={bbox-epsg-3857}&request=GetMap&crs=EPSG:3857&transparent=true&width=512&height=512&layers=strassenverkehr_tag_abend_nacht_2017"
-        ],
-        "tileSize": 512
-      },
-      "paint": {}
-    },
-    {
-      "id": "present_buildings",
-      "displayName": "Existing building stock",
+      "id": "restrictions",
+      "displayName": "Restrictions",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -75,7 +59,7 @@
       "type": "fill-extrusion",
       "source": {
         "type": "geojson",
-        "data": "assets/layers_json/present_buildings_wgs84.geojson"
+        "data": "assets/layers_json/restrictions_boundaryline.geojson"
       },
       "paint": {
         "fill-extrusion-height": 0.2,
@@ -83,12 +67,29 @@
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": [
           "match", ["get", "id"],
-          1, "#CEE4CC",
-          2, "#E2F2BF",
-          3, "#F3C683",
+          1, "#008b8f",
+          2, "#724FB4",
+          3, "#E87E4D",
           4, "#F3C683",
-          5, "#CD463E",
-          6, "#A11A4D",
+          5, "#F3C683",
+          6, "#724F64",
+          7, "#7fc5c7",
+          8, "#7fc5c7",
+          9, "#7fc5c7",
+          10, "#7fc5c7",
+          11, "#372E33",
+          12, "#372E33",
+          13, "#595741",
+          14, "#2F4136",
+          15, "#2F4136",
+          16, "#3E5245",
+          17, "#496955",
+          18, "#2B322E",
+          19, "#2B322E",
+          20, "#45453B",
+          21, "#A11A4D",
+          22, "#A11A4D",
+          23, "#CD463E",
           "white"
         ]
       },
@@ -98,104 +99,73 @@
         "styleValues": [
           {
             "styleFieldValue": 1,
-            "color": "#CEE4CC",
-            "label": "Deutsches Hafenmuseum"
+            "color": "#008b8f",
+            "label": "U-Bahn Trassierung"
           },
           {
             "styleFieldValue": 2,
-            "color": "#E2F2BF",
-            "label": "Fahrzeuglager"
+            "color": "#724FB4",
+            "label": "Deutsches Hafenmuseum"
           },
           {
             "styleFieldValue": 3,
+            "color": "#E87E4D",
+            "label": "Fahrzeuglager"
+          },
+          {
+            "styleFieldValue": 4,
             "color": "#F3C683",
             "label": "Bestandsbau"
           },
           {
-            "styleFieldValue": 5,
-            "color": "#CD463E",
+            "styleFieldValue": 6,
+            "color": "#724F64",
             "label": "Liegeplatz Peking"
           },
           {
-            "styleFieldValue": 6,
-            "color": "#A11A4D",
-            "label": "U-Bahn Trassierung"
-          }
-        ],
-        "description": "Zu erhaltener Bestandsbau"
-      }
-    },
-    {
-      "id": "restrictions",
-      "displayName": "Restrictions",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false,
-      "metadata": "",
-      "type": "line",
-      "source": {
-        "type": "geojson",
-        "data": "assets/layers_json/restrictions_wgs84.geojson"
-      },
-      "paint": {
-        "line-width": 5,
-        "line-opacity": 0.8,
-        "line-color": [
-          "match", ["get", "id"],
-          1, "#CEE4CC",
-          2, "#E2F2BF",
-          3, "#E2F2BF",
-          4, "#E87E4D",
-          5, "#E87E4D",
-          6, "#A11A4D",
-          7, "#F3C683",
-          8, "#BA3C5F",
-          9, "#BA3C5F",
-          10, "#CD463E",
-          11, "#CD463E",
-          12, "#CD463E",
-          13, "#CD463E",
-          "white"
-        ]
-      },
-      "legend": {
-        "type": "circle",
-        "styleField": "id",
-        "styleValues": [
-          {
-            "styleFieldValue": 1,
-            "color": "#CEE4CC",
-            "label": "Anschlussbereich"
+            "styleFieldValue": 7,
+            "color": "#7fc5c7",
+            "label": "Trassierungsfreihaltung U-Bahn"
           },
           {
-            "styleFieldValue": 2,
-            "color": "#E2F2BF",
-            "label": "Sachsenbrücke"
-          },
-          {
-            "styleFieldValue": 4,
-            "color": "#E87E4D",
+            "styleFieldValue": 11,
+            "color": "#372E33",
             "label": "Hansabrücke"
           },
           {
-            "styleFieldValue": 6,
-            "color": "#A11A4D",
-            "label": "Zufahrt O'Swaldkai"
-          },
-          {
-            "styleFieldValue": 7,
-            "color": "#F3C683",
+            "styleFieldValue": 13,
+            "color": "#595741",
             "label": "Westliche Grenze Brücke Moldauhafen"
           },
           {
-            "styleFieldValue": 8,
-            "color": "#BA3C5F",
-            "label": "Trassierung Brücke"
+            "styleFieldValue": 14,
+            "color": "#2F4136",
+            "label": "Potentielle Elbbrücke"
           },
           {
-            "styleFieldValue": 10,
+            "styleFieldValue": 16,
+            "color": "#3E5245",
+            "label": "Zufahrt O'Swaldkai"
+          },
+          {
+            "styleFieldValue": 17,
+            "color": "#496955",
+            "label": "Anschlussbereich"
+          },
+          {
+            "styleFieldValue": 18,
+            "color": "#2B322E",
+            "label": "Sachsenbrücke"
+          },
+          {
+            "styleFieldValue": 21,
+            "color": "#A11A4D",
+            "label": "Tschechische Republik"
+          },
+          {
+            "styleFieldValue": 23,
             "color": "#CD463E",
-            "label": "Trassierungsfreihaltung U-Bahn"
+            "label": "Projektgebiet"
           }
         ],
         "description": "Restriktionshinweise"
