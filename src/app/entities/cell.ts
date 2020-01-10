@@ -216,7 +216,7 @@ enum BuildingUse {
 enum OpenSpaceType {
     green_space = "#69F0AE",
     promenade = "#AFF7D3",
-    athletic_field = "#AFF7D3",
+    athletic_field = "#a5d6a7",
     playground = "#AFF7D3",
     daycare_playground = "#AFF7D3",
     schoolyard = "#AFF7D3",
