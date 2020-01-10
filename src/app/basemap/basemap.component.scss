@@ -67,7 +67,7 @@ ng::deep .popUpContent {
 */
 
 
-@media screen and (max-width: $screen-sm-width) {
+@media screen and (max-width: $screen-sm-width), (max-height: $screen-menu-change-height) {
   app-file-setting {
     top: 5px !important;
   }
