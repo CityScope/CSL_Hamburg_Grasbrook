@@ -158,6 +158,11 @@
             "label": "Sachsenbrücke"
           },
           {
+            "styleFieldValue": 20,
+            "color": "#45453B",
+            "label": "Anleger"
+          },
+          {
             "styleFieldValue": 21,
             "color": "#A11A4D",
             "label": "Tschechische Republik"
