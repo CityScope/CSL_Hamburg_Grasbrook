@@ -2,6 +2,7 @@ import {Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsul
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import {CityIOService} from '../../services/cityio.service';
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
 
 
 @Component({
@@ -69,17 +70,51 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         let cityIoGFA = this.cityIoService.table_data['kpi_gfa'];
         if (cityIoGFA) {
             this.gfaData = [
-                {'subresult': 'Other', 'value': cityIoGFA['special'], 'target': cityIoGFA['special_expected']},
-                {'subresult': 'Commercial', 'value': cityIoGFA['commerce'], 'target': cityIoGFA['commerce_expected']},
-                {'subresult': 'Residential', 'value': cityIoGFA['living'], 'target': cityIoGFA['living_expected']}
+                {
+                    'subresult': 'Other',
+                    'target': cityIoGFA['special_expected'],
+                    value: {
+                        Total: cityIoGFA['special']
+                    },
+                },
+                {
+                    'subresult': 'Commercial',
+                    'target': cityIoGFA['commerce_expected'],
+                    value: {
+                        Total: cityIoGFA['commerce']
+                    },
+                },
+                {
+                    'subresult': 'Residential',
+                    'target': cityIoGFA['living_expected'],
+                    value: {
+                        Total: cityIoGFA['living']
+                    },
+                }
             ];
         }
         let cityIoStormwater = this.cityIoService.table_data['stormwater'];
         if (cityIoStormwater) {
+            // this.stormwaterData = [
+            //     {'subresult': 'Street/Promenade', value: cityIoStormwater['street_total']},
+            //     {'subresult': 'Buildings', value: cityIoStormwater['building_total']},
+            //     {'subresult': 'Open Space', value: cityIoStormwater['open_total']}
+            // ];
             this.stormwaterData = [
-                {subresult: 'Street/Promenade', value: cityIoStormwater['street_total']},
-                {subresult: 'Buildings', value: cityIoStormwater['building_total']},
-                {subresult: 'Green space/Plaza/Athletic fields', value: cityIoStormwater['open_total']},
+                {subresult: 'Street/Promenade', value: {
+                    Total: cityIoStormwater['street_total'],
+                    Promenade: cityIoStormwater['promenade'],
+                    Street: cityIoStormwater['street']
+                }},
+                {subresult: 'Buildings', value: {
+                    Total: cityIoStormwater['building_total']
+                }},
+                {subresult: 'Open Space', value: {
+                    Total: cityIoStormwater['open_total'],
+                    Plaza: cityIoStormwater['open_space/promenade'],
+                    'Green Space': cityIoStormwater['open_space/green_space'],
+                    'Athletic Field': cityIoStormwater['open_space/athletic_field']
+                }},
             ];
 
         }
@@ -118,10 +153,12 @@ export class ChartMenuComponent implements OnInit, OnChanges {
             const x = d3.scaleLinear()
                 .range([0, this.width])
                 .domain([0, d3.max(this.data, (d) => {
+                    const _max = d3.max(Object.values(d.value));
+
                     if (!d.target) {
-                        return d.value;
+                        return _max;
                     }
-                    return d.value > d.target ? d.value : d.target;
+                    return _max > d.target ? _max : d.target;
                 })]);
 
             // add the x Axis
@@ -156,10 +193,18 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
                 .html((d) => {
-                    let text = '<strong>Current:</strong> <span style=\'color:black\'>' + d.value + '</span> <br />';
-                    if (d.target) {
-                        text = text + '<strong>Target:</strong> <span style=\'color:red\'>' + d.target + '</span>';
+                    let text = `<strong>${d[0]}: </strong> <span style=\'color:black\'>${d[1]}</span> <br />`;
+
+                    // Add total value for comparison, if stacked chart
+                    if (d[0] !== 'Total') {
+                        text += '<strong>Total: </strong> <span style=\'color:black\'>' + d[2] + '</span> <br />';
                     }
+
+                    // Add target value for comparison if exists
+                    if (d[3]) {
+                        text = text + '<strong>Target: </strong> <span style=\'color:red\'>' + d[3] + '</span>';
+                    }
+
                     return text;
                 });
 
@@ -170,16 +215,29 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 .data(this.data)
                 .enter();
 
-            eSel.append('rect')
+            eSel.append('g')
+                .attr('transform', (d) => `translate(${this.margin.left + offsetLeft + 3}, ${y(d.subresult)})`)
+                .selectAll('rect')
+                .data(d => Object.entries(d.value).map(val => {
+                    // add total and target value to the entries array for comparison in tooltip
+                    val.push(d.value.Total);
+                    if (d.target) {
+                        val.push(d.target);
+                    }
+                    return val;
+                }))
+                .enter()
+                .append('rect')
                 .attr('class', 'bar')
-                .attr('width', function(d) {
-                    return x(d.value);
-                })
-                .attr('y', function(d) {
-                    return y(d.subresult);
-                })
+                .attr('width', (d) => x(d[1]))
                 .attr('height', y.bandwidth())
-                .attr('transform', 'translate(' + (this.margin.left + offsetLeft + 3) + ',0)')
+                .attr('x', (d, i, n) => {
+                    if (i > 1) {
+                        return parseFloat(n[i - 1].getAttribute('width')) + parseFloat(n[i - 1].getAttribute('x'));
+                    }
+                    return 0;
+                })
+                .attr('fill', this.getBarColor)
                 .on('mouseover', function(d) {
                     tip.show(d, this);
                 })
@@ -200,17 +258,31 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         }
     }
 
+    // TO DO: unelegant - get colors from general cell type mapping
+    private getBarColor(d, i, n, step = 30) {
+        // color for 'total' value
+        if (i === 0) {
+            if (n.length > 1) {
+                // hide if chart is stacked
+                return 'rgba(0, 0, 0, 0)';
+            } else {
+                // color with value of step 0 if no other bars exist
+                return 'rgba(240, 240, 255, 0.8)';
+            }
+        } else {
+            return `rgba(${240 + step - (step * i)}, ${240 + (2 * step) - (step * 2 * i)}, 255, 0.8)`;
+        }
+    }
+
     private setDetailsForChart() {
         if (this.chartToShow === 'kpi_gfa') {
             this.data = this.gfaData;
             this.chartHasTargets = true;
-            // this.margin.left = 80;
             return;
         }
         if (this.chartToShow === 'stormwater') {
             this.data = this.stormwaterData;
             this.chartHasTargets = false;
-            // this.margin.left = 40;
             return;
         }
         console.log('unknown chart requested:', this.chartToShow);

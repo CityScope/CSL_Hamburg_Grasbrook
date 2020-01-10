@@ -184,7 +184,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         }
 
         this.map.on("error", event => {
-            // console.log(event);
+            console.log(event);
         });
     }
 
