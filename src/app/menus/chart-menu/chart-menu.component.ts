@@ -77,9 +77,9 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         let cityIoStormwater = this.cityIoService.table_data['stormwater'];
         if (cityIoStormwater) {
             this.stormwaterData = [
-                {subresult: 'Street/Promenade', value: cityIoStormwater['street']},
-                {subresult: 'Buildings', value: cityIoStormwater['building']},
-                {subresult: 'Green space/Plaza/Athletic fields', value: cityIoStormwater['open']},
+                {subresult: 'Street/Promenade', value: cityIoStormwater['street_total']},
+                {subresult: 'Buildings', value: cityIoStormwater['building_total']},
+                {subresult: 'Green space/Plaza/Athletic fields', value: cityIoStormwater['open_total']},
             ];
 
         }
