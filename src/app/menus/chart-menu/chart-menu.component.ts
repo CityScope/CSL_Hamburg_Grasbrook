@@ -177,7 +177,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 .selectAll('text')
                 .call((s) => {
                     s.nodes().forEach(tick => {
-                        const tickWidth = tick.textLength.baseVal.value;
+                        const tickWidth = tick.getBoundingClientRect().width;
 
                         offsetLeft = tickWidth > offsetLeft ? tickWidth : offsetLeft;
                     });
