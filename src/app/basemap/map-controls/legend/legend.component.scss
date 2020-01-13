@@ -6,6 +6,8 @@
   background-color: $menu-background;
   border-radius: 4px;
   max-width: 260px;
+  max-height: calc(100vh - 250px);
+  overflow: auto;
 
   .close {
     cursor: pointer;
