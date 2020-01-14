@@ -51,5 +51,11 @@
     text-align: left;
     font-size: 11px;
     margin-left: 15px;
+
+    #spinner {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
   }
 }
