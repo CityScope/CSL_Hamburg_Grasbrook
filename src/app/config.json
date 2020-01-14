@@ -56,16 +56,14 @@
       "isLoading": false,
       "addOnMapInitialisation": false,
       "metadata": "",
-      "type": "fill-extrusion",
+      "type": "fill",
       "source": {
         "type": "geojson",
         "data": "assets/layers_json/restrictions_boundaryline.geojson"
       },
       "paint": {
-        "fill-extrusion-height": 0.2,
-        "fill-extrusion-base": 0.2,
-        "fill-extrusion-opacity": 0.8,
-        "fill-extrusion-color": [
+        "fill-opacity": 0.8,
+        "fill-color": [
           "match", ["get", "id"],
           1, "#008b8f",
           2, "#724FB4",
