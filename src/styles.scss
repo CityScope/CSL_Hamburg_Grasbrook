@@ -24,3 +24,7 @@ body {
 ::ng-deep .error-snackbar {
   background-color: red !important;
 }
+
+.mat-snack-bar-container {
+  max-width: none !important;
+}
