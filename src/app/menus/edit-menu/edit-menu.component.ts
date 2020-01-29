@@ -19,6 +19,9 @@ export class EditMenuComponent implements OnInit {
     isDismissed = false;
     sliderDisabled = true;
     speedLimitDisabled = true;
+    pedestrianDisabled = false;
+
+    streettype = 'promenade';
 
     constructor() {
     }
@@ -30,10 +33,18 @@ export class EditMenuComponent implements OnInit {
                 this.sliderDisabled = false;
             }
             if (this.cell.str_numLanes > 0) {
-                this.speedLimitDisabled = false;
+                this.pedestrianDisabled = true;
                 this.cell.str_ramp = false;
                 this.cell.str_stairs = false;
                 this.cell.str_elevator = false;
+
+                if (this.cell.str_speed === 7) {
+                    this.streettype = 'pedestrian';
+                } else if (this.cell.str_speed === 30) {
+                    this.streettype = 'bike';
+                } else {
+                    this.streettype = 'car';
+                }
             }
         }
     }
@@ -65,6 +76,50 @@ export class EditMenuComponent implements OnInit {
             this.cell.str_elevator = false;
         }
 
+    }
+
+    onChangeStrType(value: number) {
+        console.log('str type', value);
+        switch (String(value)) {
+            case 'promenade':
+                this.speedLimitDisabled = true;
+                this.pedestrianDisabled = false;
+                this.cell.str_numLanes = 0;
+                this.cell.str_speed = 0;
+                this.cell.str_bike = true;
+                break;
+            case 'pedestrian':
+                this.speedLimitDisabled = false;
+                this.pedestrianDisabled = true;
+                this.cell.str_numLanes = 1;
+                this.cell.str_speed = 7;
+                this.cell.str_bike = true;
+                this.cell.str_ramp = false;
+                this.cell.str_stairs = false;
+                this.cell.str_elevator = false;
+                break;
+            case 'bike':
+                this.speedLimitDisabled = false;
+                this.pedestrianDisabled = true;
+                this.cell.str_numLanes = 1;
+                this.cell.str_speed = 30;
+                this.cell.str_bike = true;
+                this.cell.str_ramp = false;
+                this.cell.str_stairs = false;
+                this.cell.str_elevator = false;
+                break;
+            case 'car':
+                this.speedLimitDisabled = false;
+                this.pedestrianDisabled = true;
+                this.cell.str_numLanes = 2;
+                this.cell.str_speed = 50;
+                this.cell.str_bike = false;
+                this.cell.str_ramp = false;
+                this.cell.str_stairs = false;
+                this.cell.str_elevator = false;
+                break;
+        }
+        console.log(this.cell)
     }
 
     // Button actions

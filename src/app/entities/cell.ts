@@ -2,7 +2,7 @@ export class GridCell {
 
     type = BuildingType.empty;
 
-    str_speed = 30;
+    str_speed = 0;
     str_numLanes = 0;
     str_bike = true;
     str_stairs = false;

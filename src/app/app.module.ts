@@ -22,7 +22,8 @@ import {
     MatOptionModule,
     MatSelectModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
+    MatButtonToggleModule
 } from "@angular/material";
 
 import {HomeComponent} from "./home/home.component";
@@ -85,6 +86,7 @@ import {ImprintComponent} from './imprint/imprint.component';
         FormsModule,
         MatBottomSheetModule,
         MatListModule,
+        MatButtonToggleModule,
         ReactiveFormsModule
     ],
     exports: [MatSnackBarModule],

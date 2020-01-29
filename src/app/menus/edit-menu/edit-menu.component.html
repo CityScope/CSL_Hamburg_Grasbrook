@@ -58,17 +58,46 @@
 
             <div class="category_header">Street | Promenade</div>
 
-            <section class="input-holder">
+            <!-- <section class="input-holder">
                 <mat-form-field class="form-field">
-                    <input matInput min=0 [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"
-                    (change)="onChangeLanes(cell.str_numLanes)">
-                </mat-form-field>
-            </section>
+                    <input matInput min=0 [(ngModel)]="cell.str_numLanes" type="number" placeholder="Number of car lanes"> -->
+                    <!-- (change)="onChangeLanes(cell.str_numLanes)"> -->
+                <!-- </mat-form-field>
+            </section> -->
+
+            <!-- <section class="icon-radio-holder">
+                <label>street type</label>
+                <mat-radio-group [(ngModel)]="cell.str_numLanes"
+                                [disabled]="false"> -->
+                    <!-- <mat-radio-button [value]="0"><img #strtypeicon src="assets\images\icons_grasbrook_streets_promenade.svg" alt="alttext" height="30px"/>\xe1\x9a\x80</mat-radio-button>
+                    <mat-radio-button [value]="1"><img #strtypeicon src="assets\images\icons_grasbrook_streets_bike.svg" alt="alttext" height="30px"/> </mat-radio-button>
+                    <mat-radio-button [value]="2"><img #strtypeicon src="assets\images\icons_grasbrook_streets_car.svg" alt="alttext" height="30px"/>  </mat-radio-button> -->
+                    <!-- <mat-radio-button #but1 [value]="0"> </mat-radio-button>
+                    <mat-radio-button #but2 [value]="1">O</mat-radio-button>
+                    <mat-radio-button #but3 [value]="2">.</mat-radio-button>
+                </mat-radio-group>
+            </section> -->
+
+            <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="streettype" (change)="onChangeStrType(streettype)">
+                <mat-button-toggle value="promenade" aria-label="Promenade">
+                    <img #strtypeicon src="assets\images\icons_grasbrook_streets_promenade.svg" alt="Promenade" height="30px"/>
+                </mat-button-toggle>
+                <mat-button-toggle value="pedestrian" aria-label="Spielstraße">
+                    <img #strtypeicon src="assets\images\icons_grasbrook_streets_pedestrian.svg" alt="Spielstraße" height="30px"/>
+                </mat-button-toggle>
+                <mat-button-toggle value="bike" aria-label="Fahrradstraße">
+                    <img #strtypeicon src="assets\images\icons_grasbrook_streets_bike.svg" alt="Fahrradstraße" height="30px"/>
+                </mat-button-toggle>
+                <mat-button-toggle value="car" aria-label="Straße">
+                    <img #strtypeicon src="assets\images\icons_grasbrook_streets_car.svg" alt="Straße" height="30px"/>
+                </mat-button-toggle>
+            </mat-button-toggle-group>
 
             <section class="radio-holder">
                 <label>Speed limit</label>
                 <mat-radio-group [(ngModel)]="cell.str_speed"
-                                [disabled]="speedLimitDisabled">
+                                [disabled]="true">
+                    <mat-radio-button [value]="0">0</mat-radio-button>
                     <mat-radio-button [value]="7">7</mat-radio-button>
                     <mat-radio-button [value]="30">30</mat-radio-button>
                     <mat-radio-button [value]="50">50</mat-radio-button>
@@ -77,7 +106,8 @@
 
             <section class="radio-holder">
                 <label>Bicycles allowed</label>
-                <mat-radio-group [(ngModel)]="cell.str_bike">
+                <mat-radio-group [(ngModel)]="cell.str_bike"
+                                    [disabled]="true">
                     <mat-radio-button [value]="true"[checked]='true'>Yes</mat-radio-button>
                     <mat-radio-button [value]="false">No</mat-radio-button>
                 </mat-radio-group>
@@ -86,7 +116,7 @@
             <section class="radio-holder">
                 <label>Stairs</label>
                 <mat-radio-group [(ngModel)]="cell.str_stairs"
-                                [disabled]="!speedLimitDisabled">
+                                [disabled]="pedestrianDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -95,7 +125,7 @@
             <section class="radio-holder">
                 <label>Pedestrian ramp</label>
                 <mat-radio-group [(ngModel)]="cell.str_ramp"
-                                [disabled]="!speedLimitDisabled">
+                                [disabled]="pedestrianDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false"[checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
@@ -104,7 +134,7 @@
             <section class="radio-holder">
                 <label>Elevator</label>
                 <mat-radio-group [(ngModel)]="cell.str_elevator"
-                                [disabled]="!speedLimitDisabled">
+                                [disabled]="pedestrianDisabled">
                     <mat-radio-button [value]="true">Yes</mat-radio-button>
                     <mat-radio-button [value]="false" [checked]='true'>No</mat-radio-button>
                 </mat-radio-group>
