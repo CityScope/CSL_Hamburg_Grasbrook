@@ -201,7 +201,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                     }
 
                     // Add target value for comparison if exists
-                    if (d[3]) {
+                    if (this.chartHasTargets) {
                         text = text + '<strong>Target: </strong> <span style=\'color:red\'>' + d[3] + '</span>';
                     }
 
