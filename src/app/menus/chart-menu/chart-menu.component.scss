@@ -17,17 +17,22 @@
   top: 35px;
   left: 70px;
   padding-bottom: 5px;
-  max-width: 310px;
 
   .d3-chart {
-    width: 100%;
-    height: 100%;
+    // width: 100%;
+    // height: 100%;
   }
 
   .title {
     color: white;
     padding: 10px;
     font-weight: bold;
+  }
+
+  .info {
+    color: lightgrey;
+    padding: 10px;
+    font-size: 9px;
   }
 
   .d3-chart .axis path,
@@ -39,10 +44,6 @@
     fill: white;
   }
 
-  .bar {
-    fill: $menu-background;
-  }
-
   .footer {
     color: red;
     width: 100%;
@@ -50,5 +51,11 @@
     text-align: left;
     font-size: 11px;
     margin-left: 15px;
+
+    #spinner {
+      position: absolute;
+      right: 10px;
+      bottom: 10px;
+    }
   }
 }

@@ -2,6 +2,7 @@ import {Component, OnInit, OnChanges, ViewChild, ElementRef, Input, ViewEncapsul
 import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import {CityIOService} from '../../services/cityio.service';
+import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     private data: Array<any>;
     private gfaData: Array<any>;
     private stormwaterData: Array<any>;
-    private margin: any = {top: 20, bottom: 20, left: 80, right: 20};
+    private margin: any = {top: 20, bottom: 20, left: 20, right: 20};
     private chart: any;
     private width: number;
     private height: number;
@@ -69,16 +70,51 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         let cityIoGFA = this.cityIoService.table_data['kpi_gfa'];
         if (cityIoGFA) {
             this.gfaData = [
-                {'subresult': 'Other', 'value': cityIoGFA['special'], 'target': cityIoGFA['special_expected']},
-                {'subresult': 'Commercial', 'value': cityIoGFA['commerce'], 'target': cityIoGFA['commerce_expected']},
-                {'subresult': 'Residential', 'value': cityIoGFA['living'], 'target': cityIoGFA['living_expected']}
+                {
+                    'subresult': 'Other',
+                    'target': cityIoGFA['special_expected'],
+                    value: {
+                        Total: cityIoGFA['special']
+                    },
+                },
+                {
+                    'subresult': 'Commercial',
+                    'target': cityIoGFA['commerce_expected'],
+                    value: {
+                        Total: cityIoGFA['commerce']
+                    },
+                },
+                {
+                    'subresult': 'Residential',
+                    'target': cityIoGFA['living_expected'],
+                    value: {
+                        Total: cityIoGFA['living']
+                    },
+                }
             ];
         }
         let cityIoStormwater = this.cityIoService.table_data['stormwater'];
         if (cityIoStormwater) {
+            // this.stormwaterData = [
+            //     {'subresult': 'Street/Promenade', value: cityIoStormwater['street_total']},
+            //     {'subresult': 'Buildings', value: cityIoStormwater['building_total']},
+            //     {'subresult': 'Open Space', value: cityIoStormwater['open_total']}
+            // ];
             this.stormwaterData = [
-                {'subresult': 'white', 'value': cityIoStormwater['white']},
-                {'subresult': 'grey', 'value': cityIoStormwater['grey']},
+                {subresult: 'Street/Promenade', value: {
+                    Total: cityIoStormwater['street_total'],
+                    Promenade: cityIoStormwater['promenade'],
+                    Street: cityIoStormwater['street']
+                }},
+                {subresult: 'Buildings', value: {
+                    Total: cityIoStormwater['building_total']
+                }},
+                {subresult: 'Open Space', value: {
+                    Total: cityIoStormwater['open_total'],
+                    Plaza: cityIoStormwater['open_space/promenade'],
+                    'Green Space': cityIoStormwater['open_space/green_space'],
+                    'Athletic Field': cityIoStormwater['open_space/athletic_field']
+                }},
             ];
 
         }
@@ -91,7 +127,6 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         this.height = 200 - this.margin.top - this.margin.bottom;
 
         this.svg = d3.select(element).append('svg')
-            .attr('width', element.offsetWidth)
             .attr('height', element.offsetHeight);
     }
 
@@ -101,60 +136,108 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         d3.selectAll('.d3-tip').remove();
 
         if (this.svg) {
+            let offsetLeft = 0;
 
             // chart plot value
             this.chart = this.svg.append('g')
                 .attr('class', 'bars')
                 .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
 
-            let y = d3.scaleBand()
+            const y = d3.scaleBand()
                 .range([this.height, 0])
-                .padding(0.1);
+                .padding(0.1)
+                .domain(this.data.map((d) => {
+                    return d.subresult;
+                }));
 
-            let x = d3.scaleLinear()
-                .range([0, this.width]);
+            const x = d3.scaleLinear()
+                .range([0, this.width])
+                .domain([0, d3.max(this.data, (d) => {
+                    const _max = d3.max(Object.values(d.value));
+
+                    if (!d.target) {
+                        return _max;
+                    }
+                    return _max > d.target ? _max : d.target;
+                })]);
+
+            // add the x Axis
+            const xAxis = this.svg.append('g')
+                .attr('class', 'axis axis-x')
+                .attr('transform', 'translate(' + this.margin.left + ',' + this.height + ')')
+                .call(d3.axisBottom(x));
+
+            // add the y Axis
+            const yAxis = this.svg.append('g')
+                .attr('class', 'axis axis-y')
+                .call(d3.axisLeft(y));
+
+            // translate y-Axes according to label width
+            yAxis.selectAll('.tick')
+                .selectAll('text')
+                .call((s) => {
+                    s.nodes().forEach(tick => {
+                        const tickWidth = tick.getBoundingClientRect().width;
+
+                        offsetLeft = tickWidth > offsetLeft ? tickWidth : offsetLeft;
+                    });
+                });
+
+            yAxis.attr('transform', 'translate(' + (this.margin.left + offsetLeft) + ',0)');
+
+            // Adjust the svg total width
+            this.svg.attr('width', this.width + this.margin.left + this.margin.right + offsetLeft);
 
             // Tooltip for chart
-            let tip = d3Tip()
+            const tip = d3Tip()
                 .attr('class', 'd3-tip')
                 .offset([-10, 0])
-                .html(function(d) {
-                    let text = '<strong>Current:</strong> <span style=\'color:black\'>' + d.value + '</span> <br />';
-                    if (d.target) {
-                        text = text + '<strong>Target:</strong> <span style=\'color:red\'>' + d.target + '</span>';
+                .html((d) => {
+                    let text = `<strong>${d[0]}: </strong> <span style=\'color:black\'>${d[1]}</span> <br />`;
+
+                    // Add total value for comparison, if stacked chart
+                    if (d[0] !== 'Total') {
+                        text += '<strong>Total: </strong> <span style=\'color:black\'>' + d[2] + '</span> <br />';
                     }
+
+                    // Add target value for comparison if exists
+                    if (this.chartHasTargets) {
+                        text = text + '<strong>Target: </strong> <span style=\'color:red\'>' + d[3] + '</span>';
+                    }
+
                     return text;
                 });
 
             this.svg.call(tip);
-
-            // Scale the range of the data in the domains
-            x.domain([0, d3.max(this.data, function(d) {
-                if (!d.target) {
-                    return d.value;
-                }
-                return d.value > d.target ? d.value : d.target;
-            })]);
-
-            y.domain(this.data.map(function(d) {
-                return d.subresult;
-            }));
 
             // append the rectangles for the bar chart
             let eSel = this.svg.selectAll('.bar')
                 .data(this.data)
                 .enter();
 
-            eSel.append('rect')
+            eSel.append('g')
+                .attr('transform', (d) => `translate(${this.margin.left + offsetLeft + 3}, ${y(d.subresult)})`)
+                .selectAll('rect')
+                .data(d => Object.entries(d.value).map(val => {
+                    // add total and target value to the entries array for comparison in tooltip
+                    val.push(d.value.Total);
+                    if (d.target) {
+                        val.push(d.target);
+                    }
+                    return val;
+                }))
+                .enter()
+                .append('rect')
                 .attr('class', 'bar')
-                .attr('width', function(d) {
-                    return x(d.value);
-                })
-                .attr('y', function(d) {
-                    return y(d.subresult);
-                })
+                .attr('width', (d) => x(d[1]))
                 .attr('height', y.bandwidth())
-                .attr('transform', 'translate(' + (this.margin.left + 3) + ',0)')
+                .attr('x', (d, i, n) => {
+                    if (i > 1) {
+                        return parseFloat(n[i - 1].getAttribute('width')) + parseFloat(n[i - 1].getAttribute('x'));
+                    }
+                    return 0;
+                })
+                .attr('fill', this.getBarColor)
                 .on('mouseover', function(d) {
                     tip.show(d, this);
                 })
@@ -166,25 +249,32 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                     .style('stroke-width', 1)
                     .style('stroke', 'red')
                     .attr('d', function(d) {
-                        //TODO: how to access the margins here ...
-                        const marginLeft = 80 + 3;
+                        const marginLeft = this.margin.left + offsetLeft + 3;
                         let rv = 'M' + (x(d.target) + marginLeft) + ',' + y(d.subresult);
                         rv += 'L' + (x(d.target) + marginLeft) + ',' + (y(d.subresult) + y.bandwidth());
                         return rv;
-                    });
+                    }.bind(this));
             }
+        }
+    }
 
-            // add the x Axis
-            this.svg.append('g')
-                .attr('class', 'axis axis-x')
-                .attr('transform', 'translate(' + this.margin.left + ',' + this.height + ')')
-                .call(d3.axisBottom(x));
+    // TO DO: unelegant - get colors from general cell type mapping
+    private getBarColor(d, i, n, startVal = 240) {
+        // color for 'total' value
+        if (i === 0) {
+            if (n.length > 1) {
+                // hide if chart is stacked
+                return 'rgba(0, 0, 0, 0)';
+            } else {
+                // color with value of step 0 if no other bars exist
+                return `rgba(${startVal}, ${startVal}, 255, 0.8)`;
+            }
+        } else {
+            // evenly split the spektrum
+            const stepLengthRed = (240 / n.length) * 0.6;
+            const stepLengthGreen = 240 / n.length;
 
-            // add the y Axis
-            this.svg.append('g')
-                .attr('class', 'axis axis-y')
-                .attr('transform', 'translate(' + this.margin.left + ',0)')
-                .call(d3.axisLeft(y));
+            return `rgba(${startVal + stepLengthRed - (stepLengthRed * i)}, ${startVal + stepLengthGreen - (stepLengthGreen * i)}, 255, 0.8)`;
         }
     }
 
@@ -192,13 +282,11 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         if (this.chartToShow === 'kpi_gfa') {
             this.data = this.gfaData;
             this.chartHasTargets = true;
-            this.margin.left = 80;
             return;
         }
         if (this.chartToShow === 'stormwater') {
             this.data = this.stormwaterData;
             this.chartHasTargets = false;
-            this.margin.left = 40;
             return;
         }
         console.log('unknown chart requested:', this.chartToShow);
