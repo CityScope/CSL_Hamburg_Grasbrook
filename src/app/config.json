@@ -10,6 +10,37 @@
   "mapStyle": "mapbox://styles/relnox/cjs9rb33k2pix1fo833uweyjd?fresh=true&optimize=true",
   "layers": [
     {
+      "id": "floorplan_manda",
+      "displayName": "Floor plan example",
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "raster",
+      "source": {
+        "type": "image",
+        "url": "assets/images/plan_manda.jpg",
+        "coordinates": [
+          [10.0143909533867, 53.53128461384861],
+          [10.1143909533867, 53.53128461384861],
+          [10.1143909533867, 53.52128461384861],
+          [10.0143909533867, 53.52128461384861]
+        ]
+      },
+      "legend": {
+        "type": "circle",
+        "styleField": "id",
+        "styleValues": [
+          {
+            "styleFieldValue": 1,
+            "color": "#008b8f",
+            "label": "Floor plan"
+          }
+          ],
+        "description": "Floor plan"
+      }
+    },
+    {
       "id": "3d Buildings",
       "displayName": "3d Buildings",
       "source": "composite",
