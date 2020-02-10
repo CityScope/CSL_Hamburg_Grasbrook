@@ -16,7 +16,7 @@
   </span>
     <ul *ngIf="!collapsed_main" class="layer-list">
         <li *ngFor="let layer of layers">
-            <label>
+            <label *ngIf="layer.showInLayerList">
                 <i *ngIf="layer.legend"
                         class="icon-info material-icons menu-icons white"
                         (click)="onShowInfo($event, layer)"

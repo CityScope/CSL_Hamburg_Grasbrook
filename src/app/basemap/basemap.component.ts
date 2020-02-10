@@ -217,6 +217,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (csLayer.showInLayerList) {
             this.zone.run(() => {
                 this.layers.push(csLayer);
+                // add also grouped layers
+                if (csLayer.groupedLayers) {
+                    console.log(csLayer.groupedLayers);
+                    csLayer.groupedLayers.map(gl => this.layers.push(gl));
+                }
             });
         }
     }
