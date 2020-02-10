@@ -14,6 +14,7 @@ declare interface CsLayer extends mapboxgl.Layer {
   isLoading: boolean;
   legend: Legend;
   groupedLayers: CsLayer[];
+  groupedLayersData: [];
 
   sourceType: string;
   hasReloadInterval: boolean;

@@ -6,6 +6,7 @@ import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
 import { AccessLayer } from "../layers/access.layer";
 import {GeoJSONSourceRaw} from "mapbox-gl/"
+import {FillExtrusionPaint} from "mapbox-gl/"
 
 @Injectable({
   providedIn: "root"
@@ -46,29 +47,52 @@ export class LayerLoaderService {
           layer.id,
           false
         );
-        // just testing
-      } else if (layer.id === "walkability_school") {
+        // create all layers of grouped layers
+      } else if (layer.groupedLayersData) {
         layer.groupedLayers = [];
-        layer.groupedLayers.push(layers[0], layers[1]);
-      } else {
-        let source = layer.source
-        console.log(source)
-        if((source as mapboxgl.Source).type === "geojson") {
-          let data = (source as GeoJSONSourceRaw).data
-          console.log(data)
-          if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
-            // if (!(layer.id in this.urls)) {
-              // this.urls[layer.id] = data;
-            // }
-            (source as mapboxgl.GeoJSONSourceRaw).data = (data as string).replace('grasbrook_test', JSON.parse(localStorage.getItem('currentUser'))['tables'][0]);
-          }
-          // else {
-          //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
-          // }
+
+        for (let dataset of layer.groupedLayersData) {
+          let subLayer: CsLayer = JSON.parse(JSON.stringify(layer));
+          subLayer.addOnMapInitialisation = false;
+          subLayer.showInLayerList = false;
+          subLayer.id = dataset['id'];
+          subLayer.reloadUrl = dataset['url'];
+          subLayer.legend.description = dataset['legendDescription'];
+          subLayer.legend.styleField = dataset['styleField'];
+          (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
+          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = dataset['propertyToDisplay'];
+
+          layer.groupedLayers.push(subLayer);
         }
       }
     }
+
+    for (let layer of layers) {
+      this.setUserUrlForLayer(layer);
+    }
+
+    console.log("layers returned by layer loader");
+    console.log(layers);
+
     return layers;
+  }
+
+  setUserUrlForLayer(layer) {
+    let source = layer.source
+    console.log(source)
+    if((source as mapboxgl.Source).type === "geojson") {
+      let data = (source as GeoJSONSourceRaw).data
+      console.log(data)
+      if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
+        // if (!(layer.id in this.urls)) {
+        // this.urls[layer.id] = data;
+        // }
+        (source as mapboxgl.GeoJSONSourceRaw).data = (data as string).replace('grasbrook_test', JSON.parse(localStorage.getItem('currentUser'))['tables'][0]);
+      }
+      // else {
+      //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
+      // }
+    }
   }
 
   castCSLayer(layer, displayName, showOnInit) {

@@ -175,8 +175,82 @@
       }
     },
     {
-      "id": "walkability_school",
-      "displayName": "Walkability to schools",
+      "id": "walkability",
+      "displayName": "Walkability Results",
+      "groupedLayersData": [
+        {
+          "displayName": "walkability_wheelchair_educuational",
+          "id": "walkability_wheelchair_educuational",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
+          "propertyToDisplay": "educational",
+          "legendStyleField": "educational",
+          "legendDescription": "A visualization of travel time (in minutes) needed to reach the closest school by wheelchair."
+        },
+        {
+          "displayName": "walkability_wheelchair_culture",
+          "id": "walkability_wheelchair_culture",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
+          "propertyToDisplay": "culture",
+          "legendStyleField":  "culture",
+          "legendDescription": "A visualization of of travel time (in minutes) needed to reach the closest cultural center by wheelchair."
+        },
+        {
+          "displayName": "walkability_wheelchair_grocery",
+          "id": "walkability_wheelchair_grocery",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
+          "propertyToDisplay": "grocery",
+          "legendStyleField":  "grocery",
+          "legendDescription": "A visualization of of travel time (in minutes) needed to reach the closest grocery store by wheelchair."
+        },
+        {
+          "displayName": "walkability_walking_educational",
+          "id": "walkability_walking_educational",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
+          "propertyToDisplay": "educational",
+          "legendStyleField":  "educational",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest school."
+        },
+        {
+          "displayName": "walkability_walking_culture",
+          "id": "walkability_walking_culture",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
+          "propertyToDisplay": "culture",
+          "legendStyleField":  "culture",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest cultural center."
+        },
+        {
+          "displayName": "walkability_walking_grocery",
+          "id": "walkability_walking_grocery",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
+          "propertyToDisplay": "grocery",
+          "legendStyleField":  "grocery",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest grocery store."
+        },
+        {
+          "displayName": "walkability_stroller_educational",
+          "id": "walkability_stroller_educational",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
+          "propertyToDisplay": "educational",
+          "legendStyleField":  "educational",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest school with stroller."
+        },
+        {
+          "displayName": "walkability_stroller_culture",
+          "id": "walkability_stroller_culture",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
+          "propertyToDisplay": "culture",
+          "legendStyleField":  "culture",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest cultural center with stroller."
+        },
+        {
+          "displayName": "walkability_stroller_grocery",
+          "id": "walkability_stroller_grocery",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
+          "propertyToDisplay": "grocery",
+          "legendStyleField":  "grocery",
+          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest grocery store with stroller."
+        }
+      ],
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,
@@ -185,27 +259,26 @@
       "source": {
         "type": "geojson",
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
-      },      
+      },
       "paint": {
         "fill-extrusion-height": 0.1,
         "fill-extrusion-base": 0.1,
         "fill-extrusion-opacity": 0.8,
-        
+
         "fill-extrusion-color": {
-          "property": "educational",
+          "property": "",
           "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
           "default": "red"
         }
       },
-      
       "legend": {
         "type": "circle",
-        "styleField": "educational",
+        "styleField": "",
         "styleValues": [{
-            "styleFieldValue": 0,
-            "color": "green",
-            "label": "< 5 minutes"
-          },
+          "styleFieldValue": 0,
+          "color": "green",
+          "label": "< 5 minutes"
+        },
           {
             "styleFieldValue": 5,
             "color": "rgb(245, 206, 15)",
@@ -217,99 +290,7 @@
             "label": ">= 6 minutes"
           }
         ],
-        "description": "A visualization of walking time (in minutes) needed to reach the closest school."
-      }
-    },
-    {
-      "id": "walkability_culture",
-      "displayName": "Walkability to cultural institutions",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false,
-      "metadata": "",
-      "type": "fill-extrusion",
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
-      },      
-      "paint": {
-        "fill-extrusion-height": 0.1,
-        "fill-extrusion-base": 0.1,
-        "fill-extrusion-opacity": 0.8,
-        
-        "fill-extrusion-color": {
-          "property": "culture",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
-          "default": "red"
-        }
-      },
-      
-      "legend": {
-        "type": "circle",
-        "styleField": "culture",
-        "styleValues": [{
-            "styleFieldValue": 0,
-            "color": "green",
-            "label": "< 5 minutes"
-          },
-          {
-            "styleFieldValue": 5,
-            "color": "rgb(245, 206, 15)",
-            "label": "5 minutes"
-          },
-          {
-            "styleFieldValue": 6,
-            "color": "red",
-            "label": ">= 6 minutes"
-          }
-        ],
-        "description": "A visualization of walking time (in minutes) needed to reach the closest school."
-      }
-    },
-    {
-      "id": "walkability_grocery",
-      "displayName": "Walkability to grocery stores",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false,
-      "metadata": "",
-      "type": "fill-extrusion",
-      "source": {
-        "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
-      },      
-      "paint": {
-        "fill-extrusion-height": 0.1,
-        "fill-extrusion-base": 0.1,
-        "fill-extrusion-opacity": 0.8,
-        
-        "fill-extrusion-color": {
-          "property": "grocery",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
-          "default": "red"
-        }
-      },
-      
-      "legend": {
-        "type": "circle",
-        "styleField": "grocery",
-        "styleValues": [{
-            "styleFieldValue": 0,
-            "color": "green",
-            "label": "< 5 minutes"
-          },
-          {
-            "styleFieldValue": 5,
-            "color": "rgb(245, 206, 15)",
-            "label": "5 minutes"
-          },
-          {
-            "styleFieldValue": 6,
-            "color": "red",
-            "label": ">= 6 minutes"
-          }
-        ],
-        "description": "A visualization of walking time (in minutes) needed to reach the closest grocery store."
+        "description": ""
       }
     },
     {
