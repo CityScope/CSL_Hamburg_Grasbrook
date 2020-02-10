@@ -45,6 +45,18 @@
             </label>
 
             <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
+                <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="walkabilitytype" (change)="onChangeWalkType(walkabilitytype)">
+                    <mat-button-toggle value="walking" aria-label="Walking">
+                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_walk.svg" alt="Walking" height="30px"/>
+                    </mat-button-toggle>
+                    <mat-button-toggle value="stroller" aria-label="Stroller">
+                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_child_friendly.svg" alt="Stroller" height="30px"/>
+                    </mat-button-toggle>
+                    <mat-button-toggle value="wheelchair" aria-label="Wheelchair">
+                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_accessible.svg" alt="Stroller" height="30px"/>
+                    </mat-button-toggle>
+                </mat-button-toggle-group>
+                Add list [schools, cultural, grocery] here - choose layer by layerID (walkability_walking_grocery)
                 <li *ngFor="let sublayer of layer.groupedLayers">
                     <label>
                         <input  type="checkbox"

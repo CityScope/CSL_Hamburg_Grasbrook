@@ -13,6 +13,9 @@ export class LayerControlComponent implements OnInit {
   collapsed_main: boolean;
   openedGroupedLayers: CsLayer[];
 
+  walkabilitytype = 'walking';
+
+
   constructor() { }
 
   ngOnInit() {
@@ -52,4 +55,8 @@ export class LayerControlComponent implements OnInit {
     return false;
   }
 
+  onChangeWalkType(walkabilitytype: string) {
+    console.log("walkability type change ", walkabilitytype);
+
+  }
 }
