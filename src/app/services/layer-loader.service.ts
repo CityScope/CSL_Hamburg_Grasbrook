@@ -46,6 +46,10 @@ export class LayerLoaderService {
           layer.id,
           false
         );
+        // just testing
+      } else if (layer.id === "walkability_school") {
+        layer.groupedLayers = [];
+        layer.groupedLayers.push(layers[0], layers[1]);
       } else {
         let source = layer.source
         console.log(source)

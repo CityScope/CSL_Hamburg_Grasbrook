@@ -198,6 +198,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     deployLayers(csLayer: CsLayer) {
+        if (csLayer.groupedLayers === undefined) {
+            csLayer.groupedLayers = [];
+        }
         if (csLayer.hasReloadInterval) {
             this.toggleIntervalLayer(csLayer, csLayer.addOnMapInitialisation);
         } else if (csLayer.addOnMapInitialisation) {

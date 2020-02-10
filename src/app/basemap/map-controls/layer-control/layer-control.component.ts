@@ -10,11 +10,13 @@ export class LayerControlComponent implements OnInit {
   @Input() layers: CsLayer[];
   @Output() toggleLayer: EventEmitter<{}> = new EventEmitter();
   @Output() showInfo: EventEmitter<CsLayer> = new EventEmitter();
-  collapsed: boolean;
+  collapsed_main: boolean;
+  openedGroupedLayers: CsLayer[];
 
   constructor() { }
 
   ngOnInit() {
+  this.openedGroupedLayers = [];
   }
 
   onToggleLayer(layer: CsLayer) {
@@ -31,6 +33,23 @@ export class LayerControlComponent implements OnInit {
       layer.visible = true;
       this.toggleLayer.emit();
     }
+  }
+
+  onCollapseGroupedLayer(evt: MouseEvent, layer: CsLayer) {
+    // add to opened layers, if not opened yet
+    if (!this.isLayerGroupOpened(layer)) {
+      this.openedGroupedLayers.push(layer);
+      return;
+    }
+    // remove from opened layers
+    this.openedGroupedLayers.splice(this.openedGroupedLayers.indexOf(layer), 1);
+  }
+
+  isLayerGroupOpened(layer: CsLayer) {
+    if (this.openedGroupedLayers.indexOf(layer) >= 0) {
+      return true;
+    }
+    return false;
   }
 
 }

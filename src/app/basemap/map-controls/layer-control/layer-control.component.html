@@ -3,18 +3,18 @@
     <span class="heading">Layers</span>&nbsp;
     <a
             class="collapse-button"
-            (click)="collapsed = !collapsed"
+            (click)="collapsed_main = !collapsed_main"
             href="javascript:void(0)"
     >
-      <i *ngIf="collapsed" class="icon-info material-icons menu-icons white"
+      <i *ngIf="collapsed_main" class="icon-info material-icons menu-icons white"
       >expand_less</i
       >
-      <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white"
+      <i *ngIf="!collapsed_main" class="icon-info material-icons menu-icons white"
       >expand_more</i
       >
     </a>
   </span>
-    <ul *ngIf="!collapsed" class="layer-list">
+    <ul *ngIf="!collapsed_main" class="layer-list">
         <li *ngFor="let layer of layers">
             <label>
                 <i *ngIf="layer.legend"
@@ -23,12 +23,37 @@
                         matTooltipPosition="right"
                         matTooltip="Legend could be displayed on click"
                 >info</i>
-                <input
+                <input  *ngIf="layer.groupedLayers.length === 0"
                         type="checkbox"
                         [checked]="layer.visible"
-                        (change)="onToggleLayer(layer)"/>
-                {{ layer.displayName }} </label>
+                        (change)="onToggleLayer(layer)"
+                />
+                {{ layer.displayName }}
+                <a *ngIf="layer.groupedLayers.length > 0"
+                        class="collapse-button"
+                        (click)="onCollapseGroupedLayer($event, layer)"
+                        href="javascript:void(0)"
+                >
+                    <i *ngIf="isLayerGroupOpened(layer)" class="icon-info material-icons menu-icons white"
+                    >expand_less</i
+                    >
+                    <i *ngIf="!isLayerGroupOpened(layer)" class="icon-info material-icons menu-icons white"
+                    >expand_more</i
+                    >
+                choose
+                </a>
+            </label>
 
+            <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
+                <li *ngFor="let sublayer of layer.groupedLayers">
+                    <label>
+                        <input  type="checkbox"
+                                [checked]="layer.visible"
+                                (change)="onToggleLayer(sublayer)"/>
+                        {{ sublayer.displayName }}
+                    </label>
+                </li>
+            </ul>
             <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
             </mat-spinner>
         </li>
