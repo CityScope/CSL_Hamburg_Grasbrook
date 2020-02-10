@@ -53,6 +53,12 @@ export class LayerLoaderService {
 
         for (let dataset of layer.groupedLayersData) {
           let subLayer: CsLayer = JSON.parse(JSON.stringify(layer));
+
+          // delete irrelevant information
+          subLayer.groupedLayers = [];
+          subLayer.groupedLayersData = [];
+
+          // add data for sublayer
           subLayer.addOnMapInitialisation = false;
           subLayer.showInLayerList = false;
           subLayer.id = dataset['id'];
@@ -61,6 +67,8 @@ export class LayerLoaderService {
           subLayer.legend.styleField = dataset['styleField'];
           (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
           (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = dataset['propertyToDisplay'];
+
+
 
           layer.groupedLayers.push(subLayer);
         }
