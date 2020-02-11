@@ -13,6 +13,7 @@ declare interface CsLayer extends mapboxgl.Layer {
   showInLayerList: boolean;
   isLoading: boolean;
   legend: Legend;
+  subResults: object[];
   groupedLayers: CsLayer[];
   groupedLayersData: [];
 

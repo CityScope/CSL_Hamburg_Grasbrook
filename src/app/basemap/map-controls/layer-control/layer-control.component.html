@@ -3,18 +3,18 @@
     <span class="heading">Layers</span>&nbsp;
     <a
             class="collapse-button"
-            (click)="collapsed_main = !collapsed_main"
+            (click)="collapsedMain = !collapsedMain"
             href="javascript:void(0)"
     >
-      <i *ngIf="collapsed_main" class="icon-info material-icons menu-icons white"
+      <i *ngIf="collapsedMain" class="icon-info material-icons menu-icons white"
       >expand_less</i
       >
-      <i *ngIf="!collapsed_main" class="icon-info material-icons menu-icons white"
+      <i *ngIf="!collapsedMain" class="icon-info material-icons menu-icons white"
       >expand_more</i
       >
     </a>
   </span>
-    <ul *ngIf="!collapsed_main" class="layer-list">
+    <ul *ngIf="!collapsedMain" class="layer-list">
         <li *ngFor="let layer of layers">
             <label *ngIf="layer.showInLayerList">
                 <i *ngIf="layer.legend"
@@ -45,29 +45,22 @@
             </label>
 
             <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
-                <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="walkabilitytype" (change)="onChangeWalkType(walkabilitytype)">
-                    <mat-button-toggle value="walking" aria-label="Walking">
-                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_walk.svg" alt="Walking" height="30px"/>
-                    </mat-button-toggle>
-                    <mat-button-toggle value="stroller" aria-label="Stroller">
-                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_child_friendly.svg" alt="Stroller" height="30px"/>
-                    </mat-button-toggle>
-                    <mat-button-toggle value="wheelchair" aria-label="Wheelchair">
-                        <img #strtypeicon src="assets\images\icons_grasbrook_walkability_accessible.svg" alt="Stroller" height="30px"/>
-                    </mat-button-toggle>
+                <mat-button-toggle-group #group="matButtonToggleGroup" *ngFor="let sublayer of layer.groupedLayers">
+                        <mat-button-toggle aria-label="Walking" (change)="setSelectedSublayer(sublayer.id, layer.id)">
+                            <img #strtypeicon src="{{ getIconForLayerId(sublayer.id) }}" alt="walkability_icon" height="30px"/>
+                            <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
+                            </mat-spinner>
+                        </mat-button-toggle>
                 </mat-button-toggle-group>
-                Add list [schools, cultural, grocery] here - choose layer by layerID (walkability_walking_grocery)
-                <li *ngFor="let sublayer of layer.groupedLayers">
-                    <label>
-                        <input  type="checkbox"
-                                [checked]="layer.visible"
-                                (change)="onToggleLayer(sublayer)"/>
-                        {{ sublayer.displayName }}
+                <span>
+                    <label *ngFor="let subResult of layer.subResults">
+                            <input  type="radio" class="layer-list"
+                                    [checked]="layer.visible"
+                                    (change)="onToggleLayer(selectedSublayers[layer.id], subResult['id'])"/>
+                            {{ subResult['label'] }}
                     </label>
-                </li>
+                </span>
             </ul>
-            <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
-            </mat-spinner>
         </li>
     </ul>
 </div>

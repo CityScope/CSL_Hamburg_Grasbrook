@@ -10,10 +10,18 @@ export class LayerControlComponent implements OnInit {
   @Input() layers: CsLayer[];
   @Output() toggleLayer: EventEmitter<{}> = new EventEmitter();
   @Output() showInfo: EventEmitter<CsLayer> = new EventEmitter();
-  collapsed_main: boolean;
+  collapsedMain: boolean;
   openedGroupedLayers: CsLayer[];
+  layerIcons = {
+    "walkability_walking": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
+    "walkability_stroller": 'assets\\images\\icons_grasbrook_walkability_child_friendly.svg',
+    "walkability_wheelchair": 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
+  };
 
-  walkabilitytype = 'walking';
+  selectedSublayers: object = {
+    walkability: '',
+    xyz: '',
+  };
 
 
   constructor() { }
@@ -22,7 +30,7 @@ export class LayerControlComponent implements OnInit {
   this.openedGroupedLayers = [];
   }
 
-  onToggleLayer(layer: CsLayer) {
+  onToggleLayer(layer: CsLayer, subResult: string = '') {
     layer.visible = !layer.visible;
     this.toggleLayer.emit();
     console.log(layer);
@@ -49,14 +57,21 @@ export class LayerControlComponent implements OnInit {
   }
 
   isLayerGroupOpened(layer: CsLayer) {
-    if (this.openedGroupedLayers.indexOf(layer) >= 0) {
-      return true;
-    }
-    return false;
+    return this.openedGroupedLayers.indexOf(layer) >= 0;
   }
 
   onChangeWalkType(walkabilitytype: string) {
     console.log("walkability type change ", walkabilitytype);
 
+  }
+
+  getIconForLayerId(id: string) {
+    console.log("icon for layer: ", id, this.layerIcons[id]);
+    return this.layerIcons[id];
+  }
+
+  setSelectedSublayer(id: string, type: string) {
+    console.log('setting sublayer to ', id);
+    this.selectedSublayers[type] = id;
   }
 }

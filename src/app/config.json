@@ -177,74 +177,35 @@
     {
       "id": "walkability",
       "displayName": "Walkability Results",
+      "subResults": [
+          {
+          "id": "education",
+          "label": "Schools"
+          }, {
+          "id": "groceries",
+          "label": "Groceries"
+          }, {
+          "id": "culture",
+          "label": "Cultural Institutions"
+          }
+        ],
       "groupedLayersData": [
         {
-          "displayName": "walkability_wheelchair_educuational",
-          "id": "walkability_wheelchair_educuational",
+          "id": "walkability_wheelchair",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
           "propertyToDisplay": "educational",
           "legendStyleField": "educational",
           "legendDescription": "A visualization of travel time (in minutes) needed to reach the closest school by wheelchair."
         },
         {
-          "displayName": "walkability_wheelchair_culture",
-          "id": "walkability_wheelchair_culture",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
-          "propertyToDisplay": "culture",
-          "legendStyleField":  "culture",
-          "legendDescription": "A visualization of of travel time (in minutes) needed to reach the closest cultural center by wheelchair."
-        },
-        {
-          "displayName": "walkability_wheelchair_grocery",
-          "id": "walkability_wheelchair_grocery",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
-          "propertyToDisplay": "grocery",
-          "legendStyleField":  "grocery",
-          "legendDescription": "A visualization of of travel time (in minutes) needed to reach the closest grocery store by wheelchair."
-        },
-        {
-          "displayName": "walkability_walking_educational",
-          "id": "walkability_walking_educational",
+          "id": "walkability_walking",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
           "propertyToDisplay": "educational",
           "legendStyleField":  "educational",
           "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest school."
         },
         {
-          "displayName": "walkability_walking_culture",
-          "id": "walkability_walking_culture",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
-          "propertyToDisplay": "culture",
-          "legendStyleField":  "culture",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest cultural center."
-        },
-        {
-          "displayName": "walkability_walking_grocery",
-          "id": "walkability_walking_grocery",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability",
-          "propertyToDisplay": "grocery",
-          "legendStyleField":  "grocery",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest grocery store."
-        },
-        {
-          "displayName": "walkability_stroller_educational",
-          "id": "walkability_stroller_educational",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
-          "propertyToDisplay": "educational",
-          "legendStyleField":  "educational",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest school with stroller."
-        },
-        {
-          "displayName": "walkability_stroller_culture",
-          "id": "walkability_stroller_culture",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
-          "propertyToDisplay": "culture",
-          "legendStyleField":  "culture",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest cultural center with stroller."
-        },
-        {
-          "displayName": "walkability_stroller_grocery",
-          "id": "walkability_stroller_grocery",
+          "id": "walkability_stroller",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
           "propertyToDisplay": "grocery",
           "legendStyleField":  "grocery",
