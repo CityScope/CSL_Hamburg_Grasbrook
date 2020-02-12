@@ -179,10 +179,10 @@
       "displayName": "Walkability Results",
       "subResults": [
           {
-          "id": "education",
+          "id": "educational",
           "label": "Schools"
           }, {
-          "id": "groceries",
+          "id": "grocery",
           "label": "Groceries"
           }, {
           "id": "culture",

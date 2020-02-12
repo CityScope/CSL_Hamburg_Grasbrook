@@ -57,7 +57,12 @@
                 <span>
                     <mat-radio-group>
                         <ng-container *ngFor="let subResult of layer.subResults">
-                             <mat-radio-button [value]="subResult['id']" (change)="onSwitchSubResult(layer, subResult.id)">{{ subResult['label'] }}</mat-radio-button>
+                             <mat-radio-button
+                                     [checked]="(subResult['id'] == selectedSubResults[layer.id]) && (layer.groupedLayers.indexOf(selectedSublayers[layer.id]) != -1)"
+                                     [value]="subResult['id']"
+                                     (change)="onSwitchSubResult(layer, subResult['id'])">
+                                 {{ subResult['label'] }}
+                             </mat-radio-button>
                         </ng-container>
                     </mat-radio-group>
                 </span>

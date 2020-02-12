@@ -25,7 +25,7 @@ export class LayerControlComponent implements OnInit {
   };
 
   selectedSubResults: object = {
-    walkability: '',
+    walkability: 'grocery',
     xyz: '',
   };
 
@@ -42,13 +42,14 @@ export class LayerControlComponent implements OnInit {
     this.onToggleLayer(this.selectedSublayers[layer.id]);
     // update property to render for all grouped layers
     for (const subLayer of layer.groupedLayers) {
-      this.setSubResultForLayer(subLayer, subResult);
+      this.setSubResultForMapLayer(subLayer, subResult);
+      this.selectedSubResults[layer.id] = subResult;
     }
     // Add to map again
     this.onToggleLayer(this.selectedSublayers[layer.id]);
   }
 
-  setSubResultForLayer(layer: CsLayer, subResult: string) {
+  setSubResultForMapLayer(layer: CsLayer, subResult: string) {
     (layer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = subResult;
   }
 
@@ -59,14 +60,11 @@ export class LayerControlComponent implements OnInit {
     // set new subLayer as selected sublayer
     this.setSelectedSublayer(layerId, subLayer);
     // add new subLayer to map, with propertyToRender = currentPropertyToRender
-
-
   }
 
   onToggleLayer(layer: CsLayer) {
       layer.visible = !layer.visible;
       this.toggleLayer.emit();
-      console.log(layer);
   }
 
   onShowInfo(evt: MouseEvent, layer: CsLayer) {
