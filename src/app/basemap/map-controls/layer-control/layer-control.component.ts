@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CsLayer} from '../../../../typings';
+import {FillExtrusionPaint} from 'mapbox-gl';
 
 @Component({
   selector: 'app-layer-control',
@@ -19,6 +20,11 @@ export class LayerControlComponent implements OnInit {
   };
 
   selectedSublayers: object = {
+    walkability: {},
+    xyz: {},
+  };
+
+  selectedSubResults: object = {
     walkability: '',
     xyz: '',
   };
@@ -30,10 +36,37 @@ export class LayerControlComponent implements OnInit {
   this.openedGroupedLayers = [];
   }
 
-  onToggleLayer(layer: CsLayer, subResult: string = '') {
-    layer.visible = !layer.visible;
-    this.toggleLayer.emit();
-    console.log(layer);
+  onSwitchSubResult(layer: CsLayer, subResult: string = '') {
+    console.log("switching subResult to ", subResult);
+    // Remove layer from map
+    this.onToggleLayer(this.selectedSublayers[layer.id]);
+    // update property to render for all grouped layers
+    for (const subLayer of layer.groupedLayers) {
+      this.setSubResultForLayer(subLayer, subResult);
+    }
+    // Add to map again
+    this.onToggleLayer(this.selectedSublayers[layer.id]);
+  }
+
+  setSubResultForLayer(layer: CsLayer, subResult: string) {
+    (layer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = subResult;
+  }
+
+  onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
+    console.log("switching sublayer");
+    // toggle old subLayer (remove from map)
+    this.onToggleLayer(subLayer);
+    // set new subLayer as selected sublayer
+    this.setSelectedSublayer(layerId, subLayer);
+    // add new subLayer to map, with propertyToRender = currentPropertyToRender
+
+
+  }
+
+  onToggleLayer(layer: CsLayer) {
+      layer.visible = !layer.visible;
+      this.toggleLayer.emit();
+      console.log(layer);
   }
 
   onShowInfo(evt: MouseEvent, layer: CsLayer) {
@@ -66,12 +99,13 @@ export class LayerControlComponent implements OnInit {
   }
 
   getIconForLayerId(id: string) {
-    console.log("icon for layer: ", id, this.layerIcons[id]);
+   // console.log("do this on init");
+   // console.log("icon for layer: ", id, this.layerIcons[id]);
     return this.layerIcons[id];
   }
 
-  setSelectedSublayer(id: string, type: string) {
-    console.log('setting sublayer to ', id);
-    this.selectedSublayers[type] = id;
+  setSelectedSublayer(layerId: string, subLayer: CsLayer) {
+    console.log('setting sublayer to ', subLayer);
+    this.selectedSublayers[layerId] = subLayer;
   }
 }

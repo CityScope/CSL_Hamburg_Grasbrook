@@ -46,7 +46,7 @@
 
             <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
                 <mat-button-toggle-group #group="matButtonToggleGroup" *ngFor="let sublayer of layer.groupedLayers">
-                        <mat-button-toggle aria-label="Walking" (change)="setSelectedSublayer(sublayer.id, layer.id)">
+                        <mat-button-toggle aria-label="Walking" (change)="onSwitchSubLayer(layer.id, sublayer)">
                             <img #strtypeicon src="{{ getIconForLayerId(sublayer.id) }}" alt="walkability_icon" height="30px"/>
                             <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
                             </mat-spinner>
@@ -56,7 +56,7 @@
                     <label *ngFor="let subResult of layer.subResults">
                             <input  type="radio" class="layer-list"
                                     [checked]="layer.visible"
-                                    (change)="onToggleLayer(selectedSublayers[layer.id], subResult['id'])"/>
+                                    (change)="onSwitchSubResult(layer, subResult['id'])"/>
                             {{ subResult['label'] }}
                     </label>
                 </span>
