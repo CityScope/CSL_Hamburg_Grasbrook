@@ -28,20 +28,19 @@
                         [checked]="layer.visible"
                         (change)="onToggleLayer(layer)"
                 />
+                <button mat-icon-button class="collapse-button" aria-label="close group"
+                    *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)"
+                    (click)="onCollapseGroupedLayer($event, layer)"
+                    href="javascript:void(0)">
+                    <mat-icon>expand_less</mat-icon>
+                </button>
+                <button mat-icon-button class="collapse-button" aria-label="expand group"
+                    *ngIf="layer.groupedLayers.length > 0 && !isLayerGroupOpened(layer)"
+                    (click)="onCollapseGroupedLayer($event, layer)"
+                    href="javascript:void(0)">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
                 {{ layer.displayName }}
-                <a *ngIf="layer.groupedLayers.length > 0"
-                        class="collapse-button"
-                        (click)="onCollapseGroupedLayer($event, layer)"
-                        href="javascript:void(0)"
-                >
-                    <i *ngIf="isLayerGroupOpened(layer)" class="icon-info material-icons menu-icons white"
-                    >expand_less</i
-                    >
-                    <i *ngIf="!isLayerGroupOpened(layer)" class="icon-info material-icons menu-icons white"
-                    >expand_more</i
-                    >
-                choose
-                </a>
             </label>
 
             <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
@@ -58,6 +57,7 @@
                     <mat-radio-group>
                         <ng-container *ngFor="let subResult of layer.subResults">
                              <mat-radio-button
+                                     class="subresult-menu"
                                      [checked]="(subResult['id'] == selectedSubResults[layer.id]) && (layer.groupedLayers.indexOf(selectedSublayers[layer.id]) != -1)"
                                      [value]="subResult['id']"
                                      (change)="onSwitchSubResult(layer, subResult['id'])">

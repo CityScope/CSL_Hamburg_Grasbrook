@@ -13,6 +13,7 @@ export class LayerControlComponent implements OnInit {
   @Output() showInfo: EventEmitter<CsLayer> = new EventEmitter();
   collapsedMain: boolean;
   openedGroupedLayers: CsLayer[];
+
   layerIcons = {
     "walkability_walking": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
     "walkability_stroller": 'assets\\images\\icons_grasbrook_walkability_child_friendly.svg',
@@ -24,11 +25,11 @@ export class LayerControlComponent implements OnInit {
     xyz: {},
   };
 
+  // see config.json for defaults
   selectedSubResults: object = {
-    walkability: 'grocery',
+    walkability: 'educational',
     xyz: '',
   };
-
 
   constructor() { }
 

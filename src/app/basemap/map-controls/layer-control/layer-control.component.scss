@@ -44,8 +44,21 @@
   margin: 0;
 }
 
+.mat-icon-button {
+  font-size: 20px;
+  height: 20px;
+  width: 20px;
+  line-height: 20px;
+  margin-left: -5px;
+}
+
 .collapse-button {
   color: black;
+  }
+
+.subresult-menu {
+  padding-top: 5px;
+  display: block;
 }
 
 mat-spinner {
