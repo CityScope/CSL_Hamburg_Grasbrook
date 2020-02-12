@@ -37,35 +37,9 @@ export class LayerControlComponent implements OnInit {
   this.openedGroupedLayers = [];
   }
 
-  onSwitchSubResult(layer: CsLayer, subResult: string = '') {
-    console.log("switching subResult to ", subResult);
-    // Remove layer from map
-    this.onToggleLayer(this.selectedSublayers[layer.id]);
-    // update property to render for all grouped layers
-    for (const subLayer of layer.groupedLayers) {
-      this.setSubResultForMapLayer(subLayer, subResult);
-      this.selectedSubResults[layer.id] = subResult;
-    }
-    // Add to map again
-    this.onToggleLayer(this.selectedSublayers[layer.id]);
-  }
-
-  setSubResultForMapLayer(layer: CsLayer, subResult: string) {
-    (layer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = subResult;
-  }
-
-  onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
-    console.log("switching sublayer");
-    // toggle old subLayer (remove from map)
-    this.onToggleLayer(subLayer);
-    // set new subLayer as selected sublayer
-    this.setSelectedSublayer(layerId, subLayer);
-    // add new subLayer to map, with propertyToRender = currentPropertyToRender
-  }
-
   onToggleLayer(layer: CsLayer) {
-      layer.visible = !layer.visible;
-      this.toggleLayer.emit();
+    layer.visible = !layer.visible;
+    this.toggleLayer.emit();
   }
 
   onShowInfo(evt: MouseEvent, layer: CsLayer) {
@@ -92,19 +66,37 @@ export class LayerControlComponent implements OnInit {
     return this.openedGroupedLayers.indexOf(layer) >= 0;
   }
 
-  onChangeWalkType(walkabilitytype: string) {
-    console.log("walkability type change ", walkabilitytype);
-
-  }
-
-  getIconForLayerId(id: string) {
-   // console.log("do this on init");
-   // console.log("icon for layer: ", id, this.layerIcons[id]);
-    return this.layerIcons[id];
+  onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
+    // toggle old subLayer (remove from map)
+    this.onToggleLayer(subLayer);
+    // set new subLayer as selected sublayer
+    this.setSelectedSublayer(layerId, subLayer);
+    // add new subLayer to map, with propertyToRender = currentPropertyToRender
   }
 
   setSelectedSublayer(layerId: string, subLayer: CsLayer) {
-    console.log('setting sublayer to ', subLayer);
     this.selectedSublayers[layerId] = subLayer;
+  }
+
+  onSwitchSubResult(layer: CsLayer, subResult: string = '') {
+    // Remove layer from map
+    this.onToggleLayer(this.selectedSublayers[layer.id]);
+
+    // update property to render for all grouped layers
+    for (const subLayer of layer.groupedLayers) {
+      this.setSubResultForMapLayer(subLayer, subResult);
+      this.selectedSubResults[layer.id] = subResult;
+    }
+
+    // Add to map again
+    this.onToggleLayer(this.selectedSublayers[layer.id]);
+  }
+
+  setSubResultForMapLayer(layer: CsLayer, subResult: string) {
+    (layer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = subResult;
+  }
+
+  getIconForLayerId(id: string) {
+    return this.layerIcons[id];
   }
 }

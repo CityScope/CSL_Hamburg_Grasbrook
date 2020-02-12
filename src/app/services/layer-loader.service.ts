@@ -47,7 +47,7 @@ export class LayerLoaderService {
           layer.id,
           false
         );
-        // create all layers of grouped layers
+        // create all CsLayer for grouped layers
       } else if (layer.groupedLayersData) {
         layer.groupedLayers = [];
 
@@ -74,12 +74,10 @@ export class LayerLoaderService {
       }
     }
 
+    // sets the user specific cityIO endpoint
     for (let layer of layers) {
       this.setUserUrlForLayer(layer);
     }
-
-    console.log("layers returned by layer loader");
-    console.log(layers);
 
     return layers;
   }
@@ -89,7 +87,6 @@ export class LayerLoaderService {
     console.log(source)
     if((source as mapboxgl.Source).type === "geojson") {
       let data = (source as GeoJSONSourceRaw).data
-      console.log(data)
       if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
         // if (!(layer.id in this.urls)) {
         // this.urls[layer.id] = data;
