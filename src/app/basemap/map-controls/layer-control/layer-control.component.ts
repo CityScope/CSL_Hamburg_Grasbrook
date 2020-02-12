@@ -50,7 +50,7 @@ export class LayerControlComponent implements OnInit {
   }
 
   setSubResultForMapLayer(layer: CsLayer, subResult: string) {
-    (layer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = subResult;
+    (layer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = subResult;
   }
 
   onSwitchSubLayer(layerId: string, subLayer: CsLayer) {

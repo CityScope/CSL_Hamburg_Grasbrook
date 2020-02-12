@@ -64,12 +64,11 @@ export class LayerLoaderService {
           subLayer.id = dataset['id'];
           subLayer.reloadUrl = dataset['url'];
           subLayer.legend.description = dataset['legendDescription'];
-          subLayer.legend.styleField = dataset['styleField'];
+          subLayer.legend.styleField = dataset['legendStyleField'];
           (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
-          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color'].property = dataset['propertyToDisplay'];
+          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
 
-
-
+          // add sublayer to groupedLayers of layer
           layer.groupedLayers.push(subLayer);
         }
       }
