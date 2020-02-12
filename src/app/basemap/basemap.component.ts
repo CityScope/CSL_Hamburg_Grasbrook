@@ -198,7 +198,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     deployLayers(csLayer: CsLayer) {
-        // TODO remove this
         if (csLayer.groupedLayers === undefined) {
             csLayer.groupedLayers = [];
         }
