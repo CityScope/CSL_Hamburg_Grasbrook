@@ -176,18 +176,18 @@
     },
     {
       "id": "walkability",
-      "displayName": "Walkability Results",
+      "displayName": "Walkability results",
       "subResults": [
-          {
+        {
           "id": "educational",
           "label": "Schools"
-          }, {
+        }, {
           "id": "grocery",
           "label": "Groceries"
-          }, {
+        }, {
           "id": "culture",
-          "label": "Cultural Institutions"
-          }
+          "label": "Cultural institutions"
+        }
         ],
       "groupedLayersData": [
         {
