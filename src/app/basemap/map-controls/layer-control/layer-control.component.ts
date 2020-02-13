@@ -16,7 +16,7 @@ export class LayerControlComponent implements OnInit {
 
   layerIcons = {
     "walkability_walking": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
-    "walkability_stroller": 'assets\\images\\icons_grasbrook_walkability_child_friendly.svg',
+    "walkability_stroller": 'assets\\images\\icons_grasbrook_walkability_child.svg',
     "walkability_wheelchair": 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
   };
 
