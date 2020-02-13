@@ -191,25 +191,25 @@
         ],
       "groupedLayersData": [
         {
-          "id": "walkability_walking",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_walking",
+          "id": "walkability_adult",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_adult",
           "propertyToDisplay": "educational",
           "legendStyleField":  "educational",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest school."
+          "legendDescription": "A visualization of walking time (in minutes) for adults."
         },
         {
-          "id": "walkability_stroller",
-          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_stroller",
+          "id": "walkability_child",
+          "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_child",
           "propertyToDisplay": "educational",
           "legendStyleField":  "educational",
-          "legendDescription": "A visualization of walking time (in minutes) needed to reach the closest grocery store with stroller."
+          "legendDescription": "A visualization of walking time (in minutes) as a child."
         },
         {
           "id": "walkability_wheelchair",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
           "propertyToDisplay": "educational",
           "legendStyleField": "educational",
-          "legendDescription": "A visualization of travel time (in minutes) needed to reach the closest school by wheelchair."
+          "legendDescription": "A visualization of travel time (in minutes) by wheelchair."
         }
       ],
       "showInLayerList": true,

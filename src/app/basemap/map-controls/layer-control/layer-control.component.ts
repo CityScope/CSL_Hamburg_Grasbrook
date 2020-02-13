@@ -15,8 +15,8 @@ export class LayerControlComponent implements OnInit {
   openedGroupedLayers: CsLayer[];
 
   layerIcons = {
-    "walkability_walking": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
-    "walkability_stroller": 'assets\\images\\icons_grasbrook_walkability_child.svg',
+    "walkability_adult": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
+    "walkability_child": 'assets\\images\\icons_grasbrook_walkability_child.svg',
     "walkability_wheelchair": 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
   };
 
