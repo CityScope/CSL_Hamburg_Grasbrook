@@ -314,7 +314,7 @@
     },
     {
       "id": "noise_result",
-      "displayName": "Traffic noise levels",
+      "displayName": "Noise results",
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,

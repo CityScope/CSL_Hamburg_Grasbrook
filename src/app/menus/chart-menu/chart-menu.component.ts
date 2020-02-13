@@ -98,7 +98,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
             // this.stormwaterData = [
             //     {'subresult': 'Street/Promenade', value: cityIoStormwater['street_total']},
             //     {'subresult': 'Buildings', value: cityIoStormwater['building_total']},
-            //     {'subresult': 'Open Space', value: cityIoStormwater['open_total']}
+            //     {'subresult': 'Open space', value: cityIoStormwater['open_total']}
             // ];
             this.stormwaterData = [
                 {subresult: 'Street/Promenade', value: {
@@ -109,7 +109,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 {subresult: 'Buildings', value: {
                     Total: cityIoStormwater['building_total']
                 }},
-                {subresult: 'Open Space', value: {
+                {subresult: 'Open space', value: {
                     Total: cityIoStormwater['open_total'],
                     Plaza: cityIoStormwater['open_space/promenade'],
                     'Green Space': cityIoStormwater['open_space/green_space'],

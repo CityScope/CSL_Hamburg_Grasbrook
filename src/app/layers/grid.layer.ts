@@ -50,47 +50,47 @@ export class GridLayer {
           {
             styleFieldValue: "green_space",
             color: "#69F0AE",
-            label: "Open Space: Green Space"
+            label: "Open space: Green Space"
           },
           {
             styleFieldValue: "promenade",
             color: "#48A377",
-            label: "Open Space: Promenade"
+            label: "Open space: Promenade"
           },
           {
             styleFieldValue: "athletic_field",
             color: "#AFF7D3",
-            label: "Open Space: Athletic Field"
+            label: "Open space: Athletic Field"
           },
           { 
             styleFieldValue: "playground",
             color: "#AFF7D3",
-            label: "Open Space: Playground"
+            label: "Open space: Playground"
           },
           { 
             styleFieldValue: "daycare-playground",
             color: "#AFF7D3",
-            label: "Open Space: Daycare Playground"
+            label: "Open space: Daycare Playground"
           },
           {
             styleFieldValue: "schoolyard",
             color: "#AFF7D3",
-            label: "Open Space: Schoolyard"
+            label: "Open space: Schoolyard"
           },
           {
             styleFieldValue: "exhibition_space",
             color: "#A3A5FF",
-            label: "Open Space: Exhibition Space"
+            label: "Open space: Exhibition Space"
           },
           {
             styleFieldValue: "recycling_center",
             color: "#4D4D4D",
-            label: "Open Space: Recycling Center"
+            label: "Open space: Recycling Center"
           },
           {
             styleFieldValue: "water",
             color: "#9FE1FF",
-            label: "Open Space: Water"
+            label: "Open space: Water"
           }
         ]
       }
