@@ -62,6 +62,7 @@ export class LayerLoaderService {
           subLayer.addOnMapInitialisation = false;
           subLayer.showInLayerList = false;
           subLayer.id = dataset['id'];
+          subLayer.displayName = dataset['displayName'];
           subLayer.reloadUrl = dataset['url'];
           subLayer.legend.description = dataset['legendDescription'];
           subLayer.legend.styleField = dataset['legendStyleField'];

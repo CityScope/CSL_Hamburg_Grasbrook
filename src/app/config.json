@@ -191,6 +191,7 @@
         ],
       "groupedLayersData": [
         {
+          "displayName": "Adult",
           "id": "walkability_adult",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_adult",
           "propertyToDisplay": "educational",
@@ -198,6 +199,7 @@
           "legendDescription": "A visualization of walking time (in minutes) for adults."
         },
         {
+          "displayName": "Child",
           "id": "walkability_child",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_child",
           "propertyToDisplay": "educational",
@@ -205,6 +207,7 @@
           "legendDescription": "A visualization of walking time (in minutes) as a child."
         },
         {
+          "displayName": "Wheelchair",
           "id": "walkability_wheelchair",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_wheelchair",
           "propertyToDisplay": "educational",
