@@ -35,12 +35,6 @@
   >
   </app-edit-menu>
 
-  <div *ngIf="isShowMenu" class="modal-container-left container-left-top">
-    <app-map-setting
-      (mapSettings)="mapSettingsListener($event)"
-    ></app-map-setting>
-  </div>
-
   <div #featureHoverTooltip
     class="feature-hover-tooltip"
     [hidden]="!isShowHoverInfo"

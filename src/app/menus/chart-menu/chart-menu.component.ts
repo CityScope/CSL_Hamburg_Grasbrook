@@ -259,7 +259,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     }
 
     // TO DO: unelegant - get colors from general cell type mapping
-    private getBarColor(d, i, n, startVal = 240) {
+    private getBarColor(d, i, n, startVal = 129) {
         // color for 'total' value
         if (i === 0) {
             if (n.length > 1) {
@@ -267,14 +267,14 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 return 'rgba(0, 0, 0, 0)';
             } else {
                 // color with value of step 0 if no other bars exist
-                return `rgba(${startVal}, ${startVal}, 255, 0.8)`;
+                return `rgba(255, ${startVal / 2}, ${startVal}, 0.8)`;
             }
         } else {
             // evenly split the spektrum
-            const stepLengthRed = (240 / n.length) * 0.6;
-            const stepLengthGreen = 240 / n.length;
+            const stepLengthGreen = (startVal / n.length)  * 0.8;
+            const stepLengthBlue = startVal / n.length;
 
-            return `rgba(${startVal + stepLengthRed - (stepLengthRed * i)}, ${startVal + stepLengthGreen - (stepLengthGreen * i)}, 255, 0.8)`;
+            return `rgba(255, ${(startVal + stepLengthGreen - (stepLengthGreen * i)) / 2}, ${startVal + stepLengthBlue - (stepLengthBlue * i)}, 0.8)`;
         }
     }
 
