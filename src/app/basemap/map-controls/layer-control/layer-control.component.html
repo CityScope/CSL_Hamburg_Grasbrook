@@ -58,8 +58,8 @@
                             <label class="subresult-menu">
                                 <input
                                         type="checkbox"
-                                        [checked]="(subResult['id'] == selectedSubResults[layer.id])"
-                                        (change)="onToggleSubResult(layer, subResult['id'])"
+                                        [checked]="(subResult.id == selectedSubResults[layer.id])"
+                                        (change)="onToggleSubResult(layer.id, subResult.id)"
                                 />
                                 {{ subResult['label'] }}
                             </label>

@@ -27,7 +27,7 @@ export class LayerControlComponent implements OnInit {
 
   // see config.json for defaults
   selectedSubResults: object = {
-    walkability: 'educational',
+    walkability: '',
     xyz: '',
   };
 
@@ -37,8 +37,13 @@ export class LayerControlComponent implements OnInit {
   this.openedGroupedLayers = [];
   }
 
-  onToggleLayer(layer: CsLayer) {
-    layer.visible = !layer.visible;
+  onToggleLayer(layer: CsLayer, state?: boolean) {
+    if (state) {
+      layer.visible = state;
+    } else {
+      layer.visible = !layer.visible;
+    }
+
     this.toggleLayer.emit();
   }
 
@@ -67,33 +72,43 @@ export class LayerControlComponent implements OnInit {
   }
 
   onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
-    // toggle old subLayer (remove from map)
-    this.onToggleLayer(subLayer);
-    // set new subLayer as selected sublayer
-    this.setSelectedSublayer(layerId, subLayer);
-    // add new subLayer to map, with propertyToRender = currentPropertyToRender
+    if (subLayer.visible) {
+      // do nothing
+      return;
+    }
+    if (this.selectedSubResults[layerId] === '') {
+      this.setSelectedSublayer(layerId, subLayer);
+    } else {
+      // remove current sublayer from map
+      this.onToggleLayer(this.selectedSublayers[layerId]);
+      this.setSelectedSublayer(layerId, subLayer);
+      this.updateSubResultForMapLayer(layerId);
+      // add sublayer to map
+      this.onToggleLayer(subLayer);
+    }
   }
 
   setSelectedSublayer(layerId: string, subLayer: CsLayer) {
     this.selectedSublayers[layerId] = subLayer;
   }
 
-  onSwitchSubResult(layer: CsLayer, subResult: string = '') {
-    // Remove layer from map
-    this.onToggleLayer(this.selectedSublayers[layer.id]);
+  onToggleSubResult(layerId: string, subResult: string) {
+    // remove layer from map
+    this.onToggleLayer(this.selectedSublayers[layerId], false);
 
-    // update property to render for all grouped layers
-    for (const subLayer of layer.groupedLayers) {
-      this.setSubResultForMapLayer(subLayer, subResult);
-      this.selectedSubResults[layer.id] = subResult;
-    }
-
-    // Add to map again
-    this.onToggleLayer(this.selectedSublayers[layer.id]);
+    if (subResult === this.selectedSubResults[layerId]) {
+     // checkbox unchecked - set selectedSubResult to empty
+     this.selectedSubResults[layerId] = '';
+   } else {
+      this.selectedSubResults[layerId] = subResult;
+      this.updateSubResultForMapLayer(layerId);
+      // add updated sublayer to map
+      this.onToggleLayer(this.selectedSublayers[layerId], true);
+   }
   }
 
-  setSubResultForMapLayer(layer: CsLayer, subResult: string) {
-    (layer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = subResult;
+  updateSubResultForMapLayer(mainLayerId: string) {
+    (this.selectedSublayers[mainLayerId].paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = this.selectedSubResults[mainLayerId];
   }
 
   getIconForLayerId(id: string) {
