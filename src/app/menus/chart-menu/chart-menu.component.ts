@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import d3Tip from 'd3-tip';
 import {CityIOService} from '../../services/cityio.service';
 import { MAT_RIPPLE_GLOBAL_OPTIONS } from '@angular/material';
+import { preserveWhitespacesDefault } from '@angular/compiler';
 
 
 @Component({
@@ -30,6 +31,15 @@ export class ChartMenuComponent implements OnInit, OnChanges {
     private svg: any;
     private isLoading = false;
     private chartHasTargets = false;
+    private colorArray = [
+        '#f5f5f5', // first color repeats since for stacked bars the first bar ("total") is underneath the others
+        '#f5f5f5',
+        '#f48fb1',
+        '#ec407a',
+        '#d81b60',
+        '#ad1457'
+    ];
+
 
     ngOnChanges() {
         this.updateChart();
@@ -217,6 +227,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
 
             eSel.append('g')
                 .attr('transform', (d) => `translate(${this.margin.left + offsetLeft + 3}, ${y(d.subresult)})`)
+                .attr('opacity', '0.8')
                 .selectAll('rect')
                 .data(d => Object.entries(d.value).map(val => {
                     // add total and target value to the entries array for comparison in tooltip
@@ -237,7 +248,9 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                     }
                     return 0;
                 })
-                .attr('fill', this.getBarColor)
+                .attr('fill', function(d, i) {
+                    return this.getBarColor(d, i);
+                }.bind(this))
                 .on('mouseover', function(d) {
                     tip.show(d, this);
                 })
@@ -247,7 +260,7 @@ export class ChartMenuComponent implements OnInit, OnChanges {
                 // add the target lines
                 eSel.append('path')
                     .style('stroke-width', 1)
-                    .style('stroke', 'red')
+                    .style('stroke', this.colorArray[3])
                     .attr('d', function(d) {
                         const marginLeft = this.margin.left + offsetLeft + 3;
                         let rv = 'M' + (x(d.target) + marginLeft) + ',' + y(d.subresult);
@@ -258,24 +271,8 @@ export class ChartMenuComponent implements OnInit, OnChanges {
         }
     }
 
-    // TO DO: unelegant - get colors from general cell type mapping
-    private getBarColor(d, i, n, startVal = 129) {
-        // color for 'total' value
-        if (i === 0) {
-            if (n.length > 1) {
-                // hide if chart is stacked
-                return 'rgba(0, 0, 0, 0)';
-            } else {
-                // color with value of step 0 if no other bars exist
-                return `rgba(255, ${startVal / 2}, ${startVal}, 0.8)`;
-            }
-        } else {
-            // evenly split the spektrum
-            const stepLengthGreen = (startVal / n.length)  * 0.8;
-            const stepLengthBlue = startVal / n.length;
-
-            return `rgba(255, ${(startVal + stepLengthGreen - (stepLengthGreen * i)) / 2}, ${startVal + stepLengthBlue - (stepLengthBlue * i)}, 0.8)`;
-        }
+    private getBarColor(d, i) {
+        return this.colorArray[i];
     }
 
     private setDetailsForChart() {
