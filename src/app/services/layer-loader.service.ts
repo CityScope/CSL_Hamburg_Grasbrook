@@ -67,14 +67,13 @@ export class LayerLoaderService {
           subLayer.legend.description = dataset['legendDescription'];
           subLayer.legend.styleField = dataset['legendStyleField'];
 
-          if (subLayer.type === "fill-extrusion" && subLayer.sourceType === 'geojson') {
+          if (subLayer.type === 'fill-extrusion') {
             (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
             (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
           }
           if (subLayer.type === 'raster') {
             (subLayer.source as RasterSource).url = dataset.url;
           }
-
           // add sublayer to groupedLayers of layer
           layer.groupedLayers.push(subLayer);
         }
@@ -93,7 +92,7 @@ export class LayerLoaderService {
     let source = layer.source
     console.log(source)
     if((source as mapboxgl.Source).type === "geojson") {
-      let data = (source as GeoJSONSourceRaw).data
+      let data = (source as GeoJSONSourceRaw).data;
       if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
         // if (!(layer.id in this.urls)) {
         // this.urls[layer.id] = data;

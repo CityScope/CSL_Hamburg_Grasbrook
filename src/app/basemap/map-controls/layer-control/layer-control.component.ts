@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CsLayer} from '../../../../typings';
 import {FillExtrusionPaint} from 'mapbox-gl';
+import {falseIfMissing} from 'protractor/built/util';
 
 @Component({
   selector: 'app-layer-control',
@@ -15,9 +16,9 @@ export class LayerControlComponent implements OnInit {
   openedGroupedLayers: CsLayer[];
 
   layerIcons = {
-    "walkability_adult": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
-    "walkability_child": 'assets\\images\\icons_grasbrook_walkability_child.svg',
-    "walkability_wheelchair": 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
+    walkability_adult: 'assets\\images\\icons_grasbrook_walkability_walk.svg',
+    walkability_child: 'assets\\images\\icons_grasbrook_walkability_child.svg',
+    walkability_wheelchair: 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
   };
 
   selectedSublayers: object = {
@@ -38,7 +39,7 @@ export class LayerControlComponent implements OnInit {
   }
 
   onToggleLayer(layer: CsLayer, state?: boolean) {
-    if (state) {
+    if (state !== undefined) {
       layer.visible = state;
     } else {
       layer.visible = !layer.visible;
@@ -71,74 +72,97 @@ export class LayerControlComponent implements OnInit {
     return this.openedGroupedLayers.indexOf(layer) >= 0;
   }
 
-
-  onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
-    // if the sublayer is already visible ignore the click
-    if (subLayer.visible) {
-      // do nothing
+  onToggleSubLayer(layerId: string, subLayer: CsLayer) {
+    if (subLayer.subResults.length > 0 && this.selectedSubResults[layerId] === '') {
+      // do not toggle layer if subresult not specified
+      this.setSelectedSublayer(layerId, subLayer);
       return;
     }
 
-    // set selected Sublayer but don't add to map as subresult is not specified
-    if (this.selectedSubResults[layerId] === '') {
-      this.setSelectedSublayer(layerId, subLayer);
-    } else {
-      // remove currently displayed sublayer from map
-      this.onToggleLayer(this.selectedSublayers[layerId]);
-      // set new sublayer with subresult and add it to the map
-      this.setSelectedSublayer(layerId, subLayer);
-      this.updateSubResultForMapLayer(layerId);
-      this.onToggleLayer(subLayer);
+    // just toggle off if already visible
+    if (subLayer.visible && (subLayer === this.selectedSublayers[layerId])) {
+      this.onToggleLayer(subLayer, false);
+      return;
     }
-  }
 
-  setSelectedSublayer(layerId: string, subLayer: CsLayer) {
-    this.selectedSublayers[layerId] = subLayer;
-  }
-
-  onToggleSubLayer(layerId: string, subLayer: CsLayer) {
-    this.onToggleLayer(subLayer);
-    this.setSelectedSublayer(layerId, subLayer);
+    // load new sublayer
+    this.loadNewSubLayer(layerId, subLayer);
 
     // toggle Grid layer twice to put it on top of the layer stack
     if (subLayer.type === 'raster') {
-      this.onToggleLayer(this.getGridLayer());
-      this.onToggleLayer(this.getGridLayer());
+      this.reloadLayer(this.getGridLayer());
     }
   }
-  /*
-    Updates subresult for sublayer and adds sublayer back to the map
-   */
+
   onToggleSubResult(layerId: string, subResult: string) {
-    // remove layer from map first
-    this.onToggleLayer(this.selectedSublayers[layerId], false);
+    const subLayer: CsLayer = this.selectedSublayers[layerId];
+    const checkBoxUnchecked = (subResult === this.selectedSubResults[layerId]);
+    const newSubResult  = !checkBoxUnchecked;
 
-    // checkbox unchecked - set selectedSubResult to empty
-    if (subResult === this.selectedSubResults[layerId]) {
-     this.selectedSubResults[layerId] = '';
-    // new subresult chosen
+    if (checkBoxUnchecked) {
+      this.updateSelectedSubResult(layerId, '');
     } else {
-      // set new sublayer with subresult and add it to the map
-      this.selectedSubResults[layerId] = subResult;
-      this.updateSubResultForMapLayer(layerId);
-      // add updated sublayer to map
-      this.onToggleLayer(this.selectedSublayers[layerId], true);
-   }
+      // update selectedSubResult
+      this.updateSelectedSubResult(layerId, subResult);
+    }
+
+    // layer is added to map first time
+    if (!subLayer.visible && newSubResult) {
+      this.updateSelectedSubResult(layerId, subResult);
+      this.onToggleLayer(subLayer, true);
+    }
+
+    // remove layer from map
+    if (subLayer.visible && checkBoxUnchecked) {
+      this.onToggleLayer(subLayer, false);
+    }
+
+    // reload layer with new subResult
+    if (subLayer.visible && newSubResult) {
+      this.updateSelectedSubResult(layerId, subResult);
+      this.reloadLayer(this.selectedSublayers[layerId]);
+    }
   }
 
-  updateSubResultForMapLayer(mainLayerId: string) {
-    (this.selectedSublayers[mainLayerId].paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = this.selectedSubResults[mainLayerId];
-  }
-
+  /**
+   * @param id
+   * @return string?
+   */
   findIconForLayerId(id: string) {
     return this.layerIcons[id];
   }
 
-  getGridLayer(): CsLayer {
+  private setSelectedSublayer(layerId: string, subLayer: CsLayer) {
+    this.selectedSublayers[layerId] = subLayer;
+  }
+
+  private updateSelectedSubResult(mainLayerId: string, subResult: string) {
+    this.selectedSubResults[mainLayerId] = subResult;
+    if (this.selectedSublayers[mainLayerId].paint) {
+      (this.selectedSublayers[mainLayerId].paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = this.selectedSubResults[mainLayerId];
+    }
+  }
+
+  private loadNewSubLayer(layerId: string, newSubLayer: CsLayer) {
+    // turn off currently displayed sublayer
+    this.onToggleLayer(this.selectedSublayers[layerId], false);
+    // update subresult and turn on
+    this.setSelectedSublayer(layerId, newSubLayer);
+    this.updateSelectedSubResult(layerId, this.selectedSubResults[layerId]);
+    this.onToggleLayer(newSubLayer, true);
+  }
+
+  private getGridLayer(): CsLayer {
     for (const layer of this.layers) {
       if (layer.id === 'grid') {
         return layer;
       }
     }
   }
+
+  private reloadLayer(layer: CsLayer) {
+    this.onToggleLayer(layer, false);
+    this.onToggleLayer(layer, true);
+  }
+
 }

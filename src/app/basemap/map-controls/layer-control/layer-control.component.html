@@ -48,11 +48,11 @@
                 <mat-button-toggle-group #group="matButtonToggleGroup">
                     <ng-container *ngFor="let sublayer of layer.groupedLayers">
                         <ng-container *ngIf="findIconForLayerId(sublayer.id)">
-                        <mat-button-toggle aria-label="Walking" (change)="onSwitchSubLayer(layer.id, sublayer)" [matTooltip]="sublayer.displayName">
-                            <img #strtypeicon src="{{ findIconForLayerId(sublayer.id) }}" alt="walkability_icon" height="30px"/>
-                            <mat-spinner *ngIf="sublayer.isLoading" [diameter]="15">
-                            </mat-spinner>
-                        </mat-button-toggle>
+                            <mat-button-toggle aria-label="Walking" (change)="onToggleSubLayer(layer.id, sublayer)" [matTooltip]="sublayer.displayName">
+                                <img #strtypeicon src="{{ findIconForLayerId(sublayer.id) }}" alt="walkability_icon" height="30px"/>
+                                <mat-spinner *ngIf="sublayer.isLoading" [diameter]="15">
+                                </mat-spinner>
+                            </mat-button-toggle>
                         </ng-container>
                         <ng-container *ngIf="!findIconForLayerId(sublayer.id)">
                             <label class="subresult-menu">
