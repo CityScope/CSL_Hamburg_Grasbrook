@@ -22,11 +22,13 @@ export class LayerControlComponent implements OnInit {
 
   selectedSublayers: object = {
     walkability: {},
+    competition_designs: {}
   };
 
   // see config.json for defaults
   selectedSubResults: object = {
     walkability: '',
+    competition_designs: '',
   };
 
   constructor() { }
@@ -94,6 +96,16 @@ export class LayerControlComponent implements OnInit {
     this.selectedSublayers[layerId] = subLayer;
   }
 
+  onToggleSubLayer(layerId: string, subLayer: CsLayer) {
+    this.onToggleLayer(subLayer);
+    this.setSelectedSublayer(layerId, subLayer);
+
+    // toggle Grid layer twice to put it on top of the layer stack
+    if (subLayer.type === 'raster') {
+      this.onToggleLayer(this.getGridLayer());
+      this.onToggleLayer(this.getGridLayer());
+    }
+  }
   /*
     Updates subresult for sublayer and adds sublayer back to the map
    */
@@ -118,7 +130,15 @@ export class LayerControlComponent implements OnInit {
     (this.selectedSublayers[mainLayerId].paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = this.selectedSubResults[mainLayerId];
   }
 
-  getIconForLayerId(id: string) {
+  findIconForLayerId(id: string) {
     return this.layerIcons[id];
+  }
+
+  getGridLayer(): CsLayer {
+    for (const layer of this.layers) {
+      if (layer.id === 'grid') {
+        return layer;
+      }
+    }
   }
 }

@@ -260,7 +260,21 @@
     {
       "id": "competition_designs",
       "displayName": "Competition designs",
-      "subResults": [],
+      "showInLayerList": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "raster",
+      "source": {
+        "type": "image",
+        "url": "assets/images/competition_designs/adept.jpg",
+        "coordinates": [
+            [9.995038, 53.538371],
+            [10.025104, 53.538371],
+            [10.025104, 53.521603],
+            [9.995038, 53.521603]
+          ]
+      },
       "groupedLayersData": [
         {
           "displayName": "Adept",
@@ -279,91 +293,18 @@
           "legendDescription": "Competition design: HdM"
         }
       ],
-      "type": "raster",
-      "source": {
-        "type": "image",
-        "url": "assets/images/competition_designs/hdm.jpg",
-        "coordinates": [
-          [9.995038, 53.538371],
-          [10.027999, 53.538371],
-          [10.027999, 53.521603],
-          [9.995038, 53.521603]
-        ]
-      },
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false,
-      "metadata": "",
-      "paint": {
-        "text-color": "#969696",
-        "text-halo-width": 2,
-        "text-halo-color": "rgba(0, 0, 0, 0.85)"
-      },
+      "subResults": [],
       "legend": {
         "type": "circle",
-        "styleField": "",
-        "styleValues": [{
-          "styleFieldValue": 0,
-          "color": "green",
-          "label": "< 5 minutes"
-        },
+        "styleField": "id",
+        "styleValues": [
           {
-            "styleFieldValue": 5,
-            "color": "rgb(245, 206, 15)",
-            "label": "5 minutes"
-          },
-          {
-            "styleFieldValue": 6,
-            "color": "red",
-            "label": ">= 6 minutes"
+            "styleFieldValue": 1,
+            "color": "#008b8f",
+            "label": "Floor plan"
           }
         ],
-        "description": ""
-      }
-    },
-    {
-      "id": "competition_design",
-      "displayName": "Competition designs",
-      "showInLayerList": true,
-      "isLoading": false,
-      "addOnMapInitialisation": false,
-      "metadata": "",
-      "type": "raster",
-      "source": {
-        "type": "image",
-        "url": "assets/images/competition_designs/hdm.jpg",
-        "coordinates": [
-          [9.995038, 53.538371],
-          [10.027999, 53.538371],
-          [10.027999, 53.521603],
-          [9.995038, 53.521603]
-        ]
-      },
-      "paint": {
-        "text-color": "#969696",
-        "text-halo-width": 2,
-        "text-halo-color": "rgba(0, 0, 0, 0.85)"
-      },
-      "legend": {
-        "type": "circle",
-        "styleField": "",
-        "styleValues": [{
-          "styleFieldValue": 0,
-          "color": "green",
-          "label": "< 5 minutes"
-        },
-          {
-            "styleFieldValue": 5,
-            "color": "rgb(245, 206, 15)",
-            "label": "5 minutes"
-          },
-          {
-            "styleFieldValue": 6,
-            "color": "red",
-            "label": ">= 6 minutes"
-          }
-        ],
-        "description": ""
+        "description": "Floor plan"
       }
     },
     {
