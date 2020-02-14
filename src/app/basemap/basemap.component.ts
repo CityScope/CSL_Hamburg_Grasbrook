@@ -198,6 +198,11 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     deployLayers(csLayer: CsLayer) {
+        if (csLayer.groupedLayers === undefined) {
+            csLayer.groupedLayers = [];
+        }
+
+
         if (csLayer.hasReloadInterval) {
             this.toggleIntervalLayer(csLayer, csLayer.addOnMapInitialisation);
         } else if (csLayer.addOnMapInitialisation) {
@@ -211,6 +216,10 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         if (csLayer.showInLayerList) {
             this.zone.run(() => {
                 this.layers.push(csLayer);
+                // add also grouped layers
+                if (csLayer.groupedLayers) {
+                    csLayer.groupedLayers.map(groupedLayer => this.layers.push(groupedLayer));
+                }
             });
         }
     }

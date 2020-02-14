@@ -3,34 +3,75 @@
     <span class="heading">Layers</span>&nbsp;
     <a
             class="collapse-button"
-            (click)="collapsed = !collapsed"
+            (click)="collapsedMain = !collapsedMain"
             href="javascript:void(0)"
     >
-      <i *ngIf="collapsed" class="icon-info material-icons menu-icons white"
+      <i *ngIf="collapsedMain" class="icon-info material-icons menu-icons white"
       >expand_less</i
       >
-      <i *ngIf="!collapsed" class="icon-info material-icons menu-icons white"
+      <i *ngIf="!collapsedMain" class="icon-info material-icons menu-icons white"
       >expand_more</i
       >
     </a>
   </span>
-    <ul *ngIf="!collapsed" class="layer-list">
+    <ul *ngIf="!collapsedMain" class="layer-list">
         <li *ngFor="let layer of layers">
-            <label>
+            <label *ngIf="layer.showInLayerList">
                 <i *ngIf="layer.legend"
                         class="icon-info material-icons menu-icons white"
                         (click)="onShowInfo($event, layer)"
                         matTooltipPosition="right"
                         matTooltip="Legend could be displayed on click"
                 >info</i>
-                <input
+                <input  *ngIf="layer.groupedLayers.length === 0"
                         type="checkbox"
                         [checked]="layer.visible"
-                        (change)="onToggleLayer(layer)"/>
-                {{ layer.displayName }} </label>
-
-            <mat-spinner *ngIf="layer.isLoading" [diameter]="15">
+                        (change)="onToggleLayer(layer)"
+                />
+                <button mat-icon-button class="collapse-button" aria-label="close group"
+                    *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)"
+                    (click)="onCollapseGroupedLayer(layer)"
+                    href="javascript:void(0)">
+                    <mat-icon>expand_less</mat-icon>
+                </button>
+                <button mat-icon-button class="collapse-button" aria-label="expand group"
+                    *ngIf="layer.groupedLayers.length > 0 && !isLayerGroupOpened(layer)"
+                    (click)="onCollapseGroupedLayer(layer)"
+                    href="javascript:void(0)">
+                    <mat-icon>expand_more</mat-icon>
+                </button>
+                {{ layer.displayName }}
+            </label>
+            <mat-spinner *ngIf="layer.isLoading && layer.showInLayerList && layer.groupedLayers.length === 0" [diameter]="15">
             </mat-spinner>
+            <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
+                <mat-button-toggle-group #group="matButtonToggleGroup">
+                    <ng-container *ngFor="let sublayer of layer.groupedLayers">
+                        <mat-button-toggle aria-label="Walking" (change)="onSwitchSubLayer(layer.id, sublayer)" [matTooltip]="sublayer.displayName">
+                            <img #strtypeicon src="{{ getIconForLayerId(sublayer.id) }}" alt="walkability_icon" height="30px"/>
+                            <mat-spinner *ngIf="sublayer.isLoading" [diameter]="15">
+                            </mat-spinner>
+                        </mat-button-toggle>
+                    </ng-container>
+                </mat-button-toggle-group>
+                        <ng-container *ngFor="let subResult of layer.subResults">
+                            <label class="subresult-menu">
+                                <input
+                                        type="checkbox"
+                                        [checked]="(subResult.id == selectedSubResults[layer.id])"
+                                        (change)="onToggleSubResult(layer.id, subResult.id)"
+                                />
+                                {{ subResult['label'] }}
+                            </label>
+<!--                             <mat-radio-button
+                                     class="subresult-menu"
+                                     [checked]="(subResult['id'] == selectedSubResults[layer.id]) && (layer.groupedLayers.indexOf(selectedSublayers[layer.id]) != -1)"
+                                     [value]="subResult['id']"
+                                     (change)="onSwitchSubResult(layer, subResult['id'])">
+                                 {{ subResult['label'] }}
+                             </mat-radio-button>-->
+                        </ng-container>
+            </ul>
         </li>
     </ul>
 </div>

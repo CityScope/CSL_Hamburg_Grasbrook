@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import {CsLayer} from '../../../../typings';
+import {FillExtrusionPaint} from 'mapbox-gl';
 
 @Component({
   selector: 'app-layer-control',
@@ -10,17 +11,38 @@ export class LayerControlComponent implements OnInit {
   @Input() layers: CsLayer[];
   @Output() toggleLayer: EventEmitter<{}> = new EventEmitter();
   @Output() showInfo: EventEmitter<CsLayer> = new EventEmitter();
-  collapsed: boolean;
+  collapsedMain: boolean;
+  openedGroupedLayers: CsLayer[];
+
+  layerIcons = {
+    "walkability_adult": 'assets\\images\\icons_grasbrook_walkability_walk.svg',
+    "walkability_child": 'assets\\images\\icons_grasbrook_walkability_child.svg',
+    "walkability_wheelchair": 'assets\\images\\icons_grasbrook_walkability_accessible.svg',
+  };
+
+  selectedSublayers: object = {
+    walkability: {},
+  };
+
+  // see config.json for defaults
+  selectedSubResults: object = {
+    walkability: '',
+  };
 
   constructor() { }
 
   ngOnInit() {
+  this.openedGroupedLayers = [];
   }
 
-  onToggleLayer(layer: CsLayer) {
-    layer.visible = !layer.visible;
+  onToggleLayer(layer: CsLayer, state?: boolean) {
+    if (state) {
+      layer.visible = state;
+    } else {
+      layer.visible = !layer.visible;
+    }
+
     this.toggleLayer.emit();
-    console.log(layer);
   }
 
   onShowInfo(evt: MouseEvent, layer: CsLayer) {
@@ -33,4 +55,70 @@ export class LayerControlComponent implements OnInit {
     }
   }
 
+  onCollapseGroupedLayer(layer: CsLayer) {
+    // add to opened layers, if not opened yet
+    if (!this.isLayerGroupOpened(layer)) {
+      this.openedGroupedLayers.push(layer);
+      return;
+    }
+    // remove from opened layers
+    this.openedGroupedLayers.splice(this.openedGroupedLayers.indexOf(layer), 1);
+  }
+
+  isLayerGroupOpened(layer: CsLayer) {
+    return this.openedGroupedLayers.indexOf(layer) >= 0;
+  }
+
+
+  onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
+    // if the sublayer is already visible ignore the click
+    if (subLayer.visible) {
+      // do nothing
+      return;
+    }
+
+    // set selected Sublayer but don't add to map as subresult is not specified
+    if (this.selectedSubResults[layerId] === '') {
+      this.setSelectedSublayer(layerId, subLayer);
+    } else {
+      // remove currently displayed sublayer from map
+      this.onToggleLayer(this.selectedSublayers[layerId]);
+      // set new sublayer with subresult and add it to the map
+      this.setSelectedSublayer(layerId, subLayer);
+      this.updateSubResultForMapLayer(layerId);
+      this.onToggleLayer(subLayer);
+    }
+  }
+
+  setSelectedSublayer(layerId: string, subLayer: CsLayer) {
+    this.selectedSublayers[layerId] = subLayer;
+  }
+
+  /*
+    Updates subresult for sublayer and adds sublayer back to the map
+   */
+  onToggleSubResult(layerId: string, subResult: string) {
+    // remove layer from map first
+    this.onToggleLayer(this.selectedSublayers[layerId], false);
+
+    // checkbox unchecked - set selectedSubResult to empty
+    if (subResult === this.selectedSubResults[layerId]) {
+     this.selectedSubResults[layerId] = '';
+    // new subresult chosen
+    } else {
+      // set new sublayer with subresult and add it to the map
+      this.selectedSubResults[layerId] = subResult;
+      this.updateSubResultForMapLayer(layerId);
+      // add updated sublayer to map
+      this.onToggleLayer(this.selectedSublayers[layerId], true);
+   }
+  }
+
+  updateSubResultForMapLayer(mainLayerId: string) {
+    (this.selectedSublayers[mainLayerId].paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = this.selectedSubResults[mainLayerId];
+  }
+
+  getIconForLayerId(id: string) {
+    return this.layerIcons[id];
+  }
 }

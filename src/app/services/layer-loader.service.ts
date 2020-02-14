@@ -6,6 +6,7 @@ import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
 import { AccessLayer } from "../layers/access.layer";
 import {GeoJSONSourceRaw} from "mapbox-gl/"
+import {FillExtrusionPaint} from "mapbox-gl/"
 
 @Injectable({
   providedIn: "root"
@@ -46,25 +47,57 @@ export class LayerLoaderService {
           layer.id,
           false
         );
-      } else {
-        let source = layer.source
-        console.log(source)
-        if((source as mapboxgl.Source).type === "geojson") {
-          let data = (source as GeoJSONSourceRaw).data
-          console.log(data)
-          if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
-            // if (!(layer.id in this.urls)) {
-              // this.urls[layer.id] = data;
-            // }
-            (source as mapboxgl.GeoJSONSourceRaw).data = (data as string).replace('grasbrook_test', JSON.parse(localStorage.getItem('currentUser'))['tables'][0]);
-          }
-          // else {
-          //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
-          // }
+        // create all CsLayer for grouped layers
+      } else if (layer.groupedLayersData) {
+        layer.groupedLayers = [];
+
+        for (let dataset of layer.groupedLayersData) {
+          let subLayer: CsLayer = JSON.parse(JSON.stringify(layer));
+
+          // delete irrelevant information
+          subLayer.groupedLayers = [];
+          subLayer.groupedLayersData = [];
+
+          // add data for sublayer
+          subLayer.addOnMapInitialisation = false;
+          subLayer.showInLayerList = false;
+          subLayer.id = dataset['id'];
+          subLayer.displayName = dataset['displayName'];
+          subLayer.reloadUrl = dataset['url'];
+          subLayer.legend.description = dataset['legendDescription'];
+          subLayer.legend.styleField = dataset['legendStyleField'];
+          (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
+          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
+
+          // add sublayer to groupedLayers of layer
+          layer.groupedLayers.push(subLayer);
         }
       }
     }
+
+    // sets the user specific cityIO endpoint
+    for (let layer of layers) {
+      this.setUserUrlForLayer(layer);
+    }
+
     return layers;
+  }
+
+  setUserUrlForLayer(layer) {
+    let source = layer.source
+    console.log(source)
+    if((source as mapboxgl.Source).type === "geojson") {
+      let data = (source as GeoJSONSourceRaw).data
+      if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
+        // if (!(layer.id in this.urls)) {
+        // this.urls[layer.id] = data;
+        // }
+        (source as mapboxgl.GeoJSONSourceRaw).data = (data as string).replace('grasbrook_test', JSON.parse(localStorage.getItem('currentUser'))['tables'][0]);
+      }
+      // else {
+      //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
+      // }
+    }
   }
 
   castCSLayer(layer, displayName, showOnInit) {
