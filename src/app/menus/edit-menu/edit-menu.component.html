@@ -79,16 +79,16 @@
             </section> -->
 
             <mat-button-toggle-group #group="matButtonToggleGroup" [(ngModel)]="streettype" (change)="onChangeStrType(streettype)">
-                <mat-button-toggle value="promenade" aria-label="Promenade">
+                <mat-button-toggle value="promenade" aria-label="Promenade" matTooltip="Promenade">
                     <img #strtypeicon src="assets\images\icons_grasbrook_streets_promenade.svg" alt="Promenade" height="30px"/>
                 </mat-button-toggle>
-                <mat-button-toggle value="pedestrian" aria-label="Spielstraße">
+                <mat-button-toggle value="pedestrian" aria-label="Spielstraße" matTooltip="Living street">
                     <img #strtypeicon src="assets\images\icons_grasbrook_streets_pedestrian.svg" alt="Spielstraße" height="30px"/>
                 </mat-button-toggle>
-                <mat-button-toggle value="bike" aria-label="Fahrradstraße">
+                <mat-button-toggle value="bike" aria-label="Fahrradstraße" matTooltip="Bike street">
                     <img #strtypeicon src="assets\images\icons_grasbrook_streets_bike.svg" alt="Fahrradstraße" height="30px"/>
                 </mat-button-toggle>
-                <mat-button-toggle value="car" aria-label="Straße">
+                <mat-button-toggle value="car" aria-label="Straße" matTooltip="Street">
                     <img #strtypeicon src="assets\images\icons_grasbrook_streets_car.svg" alt="Straße" height="30px"/>
                 </mat-button-toggle>
             </mat-button-toggle-group>
@@ -104,7 +104,7 @@
                 </mat-radio-group>
             </section>
 
-            <section class="radio-holder">
+            <section class="radio-holder" style="display: none;">
                 <label>Bicycles allowed</label>
                 <mat-radio-group [(ngModel)]="cell.str_bike"
                                     [disabled]="true">
@@ -142,10 +142,10 @@
 
 
         </mat-tab>
-        <mat-tab label="Tab Open Space">
-            <div class="category_header">Open Space</div>
+        <mat-tab label="Tab Open space">
+            <div class="category_header">Open space</div>
             <ng-template mat-tab-label>
-                <mat-icon matTooltip="Open Space">local_florist</mat-icon>
+                <mat-icon matTooltip="Open space">local_florist</mat-icon>
             </ng-template>
             <mat-form-field [hideRequiredMarker]="true">
                 <mat-label>Open space type</mat-label>
