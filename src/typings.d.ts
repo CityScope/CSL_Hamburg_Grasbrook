@@ -4,7 +4,7 @@ interface NodeModule {
   id: string;
 }
 
-import * as mapboxgl from "mapbox-gl";
+import * as mapboxgl from 'mapbox-gl';
 
 declare interface CsLayer extends mapboxgl.Layer {
   visible: boolean;
@@ -15,7 +15,7 @@ declare interface CsLayer extends mapboxgl.Layer {
   legend: Legend;
   subResults: object[];
   groupedLayers: CsLayer[];
-  groupedLayersData: [];
+  groupedLayersData: LayerData[];
 
   sourceType: string;
   hasReloadInterval: boolean;
@@ -32,9 +32,9 @@ declare interface Legend {
 }
 
 declare interface LegendValue {
-  styleFieldValue: string | number | [number, number], // string Value, numerical Value or interval
-  color: string,
-  label: string
+  styleFieldValue: string | number | [number, number]; // string Value, numerical Value or interval
+  color: string;
+  label: string;
 }
 
 declare interface Config {
@@ -50,9 +50,18 @@ declare interface Config {
   isShowPopUp: boolean;
 }
 
+declare interface LayerData {
+  'displayName': string;
+  'id': string;
+  'url': string;
+  'propertyToDisplay': string;
+  'legendStyleField': string;
+  'legendDescription': string;
+}
+
 declare module '*.json' {
   const value: Config;
   export default value;
 }
 
-declare var mQuery:any;
+declare var mQuery: any;

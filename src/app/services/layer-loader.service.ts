@@ -5,7 +5,7 @@ import { TripsDeckGlLayer } from "../layers/trips.deck-gl.layer";
 import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
 import { AccessLayer } from "../layers/access.layer";
-import {GeoJSONSourceRaw} from "mapbox-gl/"
+import {GeoJSONSourceRaw, ImageSource, RasterSource} from 'mapbox-gl/';
 import {FillExtrusionPaint} from "mapbox-gl/"
 
 @Injectable({
@@ -51,8 +51,8 @@ export class LayerLoaderService {
       } else if (layer.groupedLayersData) {
         layer.groupedLayers = [];
 
-        for (let dataset of layer.groupedLayersData) {
-          let subLayer: CsLayer = JSON.parse(JSON.stringify(layer));
+        for (const dataset of layer.groupedLayersData) {
+          const subLayer: CsLayer = JSON.parse(JSON.stringify(layer));
 
           // delete irrelevant information
           subLayer.groupedLayers = [];
@@ -66,9 +66,14 @@ export class LayerLoaderService {
           subLayer.reloadUrl = dataset['url'];
           subLayer.legend.description = dataset['legendDescription'];
           subLayer.legend.styleField = dataset['legendStyleField'];
-          (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
-          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
 
+          if (subLayer.type === 'fill-extrusion') {
+            (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
+            (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
+          }
+          if (subLayer.type === 'raster') {
+            (subLayer.source as RasterSource).url = dataset.url;
+          }
           // add sublayer to groupedLayers of layer
           layer.groupedLayers.push(subLayer);
         }
@@ -76,7 +81,7 @@ export class LayerLoaderService {
     }
 
     // sets the user specific cityIO endpoint
-    for (let layer of layers) {
+    for (const layer of layers) {
       this.setUserUrlForLayer(layer);
     }
 
@@ -87,7 +92,7 @@ export class LayerLoaderService {
     let source = layer.source
     console.log(source)
     if((source as mapboxgl.Source).type === "geojson") {
-      let data = (source as GeoJSONSourceRaw).data
+      let data = (source as GeoJSONSourceRaw).data;
       if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
         // if (!(layer.id in this.urls)) {
         // this.urls[layer.id] = data;
