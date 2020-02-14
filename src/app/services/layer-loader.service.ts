@@ -5,7 +5,7 @@ import { TripsDeckGlLayer } from "../layers/trips.deck-gl.layer";
 import { GamaDeckGlLayer } from "../layers/gama.deck-gl.layer";
 import { GridLayer } from "../layers/grid.layer";
 import { AccessLayer } from "../layers/access.layer";
-import {GeoJSONSourceRaw} from "mapbox-gl/"
+import {GeoJSONSourceRaw, ImageSource} from 'mapbox-gl/';
 import {FillExtrusionPaint} from "mapbox-gl/"
 
 @Injectable({
@@ -66,8 +66,18 @@ export class LayerLoaderService {
           subLayer.reloadUrl = dataset['url'];
           subLayer.legend.description = dataset['legendDescription'];
           subLayer.legend.styleField = dataset['legendStyleField'];
-          (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
-          (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
+
+          if (subLayer.type === "fill-extrusion" && subLayer.sourceType === 'geojson') {
+            (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];
+            (subLayer.paint as FillExtrusionPaint)['fill-extrusion-color']['property'] = dataset['propertyToDisplay'];
+          }
+          if (subLayer.sourceType === 'raster') {
+            const options = {
+                url: dataset['url'],
+                coordinates: subLayer.source['coordinates']
+              };
+            (subLayer.source as ImageSource).updateImage(options as mapboxgl.ImageSourceOptions);
+          }
 
           // add sublayer to groupedLayers of layer
           layer.groupedLayers.push(subLayer);
