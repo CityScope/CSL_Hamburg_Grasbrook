@@ -58,7 +58,7 @@
                             <label class="subresult-menu">
                                 <input
                                         type="checkbox"
-                                        [checked]="(sublayer.id == selectedSublayers[layer.id])"
+                                        [checked]="(sublayer.id == selectedSublayers[layer.id].id)"
                                         (change)="onToggleSubLayer(layer.id, sublayer)"
                                 />
                                 {{ sublayer.displayName }}
