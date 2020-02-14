@@ -291,6 +291,36 @@
           "propertyToDisplay": "HdM",
           "legendStyleField":  "HdM",
           "legendDescription": "Competition design: HdM"
+        },        {
+          "displayName": "Karres+Brands",
+          "id": "design_karres_brands",
+          "url": "assets/images/competition_designs/karres_brands.jpg",
+          "propertyToDisplay": "karres_brands",
+          "legendStyleField":  "karres_brands",
+          "legendDescription": "Competition design: Karres+Brands"
+        },        {
+          "displayName": "Mandaworks",
+          "id": "design_mandaworks",
+          "url": "assets/images/competition_designs/mandaworks.jpg",
+          "propertyToDisplay": "mandaworks",
+          "legendStyleField":  "mandaworks",
+          "legendDescription": "Competition design: Mandaworks"
+        },
+        {
+          "displayName": "Studio Vulkan",
+          "id": "design_studio_vulkan",
+          "url": "assets/images/competition_designs/studio_vulkan.jpg",
+          "propertyToDisplay": "studio_vulkan",
+          "legendStyleField":  "studio_vulkan",
+          "legendDescription": "Competition design: Studio Vulkan"
+        },
+        {
+          "displayName": "Vogt",
+          "id": "design_vogt",
+          "url": "assets/images/competition_designs/vogt.jpg",
+          "propertyToDisplay": "vogt",
+          "legendStyleField":  "vogt",
+          "legendDescription": "Competition design: Vogt"
         }
       ],
       "subResults": [],
