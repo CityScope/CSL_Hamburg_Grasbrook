@@ -22,13 +22,11 @@ export class LayerControlComponent implements OnInit {
 
   selectedSublayers: object = {
     walkability: {},
-    xyz: {},
   };
 
   // see config.json for defaults
   selectedSubResults: object = {
     walkability: '',
-    xyz: '',
   };
 
   constructor() { }
@@ -57,7 +55,7 @@ export class LayerControlComponent implements OnInit {
     }
   }
 
-  onCollapseGroupedLayer(evt: MouseEvent, layer: CsLayer) {
+  onCollapseGroupedLayer(layer: CsLayer) {
     // add to opened layers, if not opened yet
     if (!this.isLayerGroupOpened(layer)) {
       this.openedGroupedLayers.push(layer);
@@ -71,19 +69,23 @@ export class LayerControlComponent implements OnInit {
     return this.openedGroupedLayers.indexOf(layer) >= 0;
   }
 
+
   onSwitchSubLayer(layerId: string, subLayer: CsLayer) {
+    // if the sublayer is already visible ignore the click
     if (subLayer.visible) {
       // do nothing
       return;
     }
+
+    // set selected Sublayer but don't add to map as subresult is not specified
     if (this.selectedSubResults[layerId] === '') {
       this.setSelectedSublayer(layerId, subLayer);
     } else {
-      // remove current sublayer from map
+      // remove currently displayed sublayer from map
       this.onToggleLayer(this.selectedSublayers[layerId]);
+      // set new sublayer with subresult and add it to the map
       this.setSelectedSublayer(layerId, subLayer);
       this.updateSubResultForMapLayer(layerId);
-      // add sublayer to map
       this.onToggleLayer(subLayer);
     }
   }
@@ -92,14 +94,19 @@ export class LayerControlComponent implements OnInit {
     this.selectedSublayers[layerId] = subLayer;
   }
 
+  /*
+    Updates subresult for sublayer and adds sublayer back to the map
+   */
   onToggleSubResult(layerId: string, subResult: string) {
-    // remove layer from map
+    // remove layer from map first
     this.onToggleLayer(this.selectedSublayers[layerId], false);
 
+    // checkbox unchecked - set selectedSubResult to empty
     if (subResult === this.selectedSubResults[layerId]) {
-     // checkbox unchecked - set selectedSubResult to empty
      this.selectedSubResults[layerId] = '';
-   } else {
+    // new subresult chosen
+    } else {
+      // set new sublayer with subresult and add it to the map
       this.selectedSubResults[layerId] = subResult;
       this.updateSubResultForMapLayer(layerId);
       // add updated sublayer to map

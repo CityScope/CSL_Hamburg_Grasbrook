@@ -30,13 +30,13 @@
                 />
                 <button mat-icon-button class="collapse-button" aria-label="close group"
                     *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)"
-                    (click)="onCollapseGroupedLayer($event, layer)"
+                    (click)="onCollapseGroupedLayer(layer)"
                     href="javascript:void(0)">
                     <mat-icon>expand_less</mat-icon>
                 </button>
                 <button mat-icon-button class="collapse-button" aria-label="expand group"
                     *ngIf="layer.groupedLayers.length > 0 && !isLayerGroupOpened(layer)"
-                    (click)="onCollapseGroupedLayer($event, layer)"
+                    (click)="onCollapseGroupedLayer(layer)"
                     href="javascript:void(0)">
                     <mat-icon>expand_more</mat-icon>
                 </button>

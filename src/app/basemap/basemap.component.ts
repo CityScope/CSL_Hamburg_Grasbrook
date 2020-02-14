@@ -222,8 +222,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
                 }
             });
         }
-
-        console.log("hans");
     }
 
     toggleLayer() {
