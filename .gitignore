@@ -1,5 +1,8 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+#slack webhook url
+slack_webhook.json
+
 # compiled output
 /dist
 /tmp
