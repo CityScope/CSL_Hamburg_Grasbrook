@@ -64,8 +64,11 @@ export class LayerLoaderService {
           subLayer.id = dataset['id'];
           subLayer.displayName = dataset['displayName'];
           subLayer.reloadUrl = dataset['url'];
-          subLayer.legend.description = dataset['legendDescription'];
-          subLayer.legend.styleField = dataset['legendStyleField'];
+
+          if (subLayer.legend) {
+            subLayer.legend.description = dataset['legendDescription'];
+            subLayer.legend.styleField = dataset['legendStyleField'];
+          }
 
           if (subLayer.type === 'fill-extrusion') {
             (subLayer.source as GeoJSONSourceRaw).data = dataset['url'];

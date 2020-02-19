@@ -328,19 +328,7 @@
           "legendDescription": "Competition design: Vogt"
         }
       ],
-      "subResults": [],
-      "legend": {
-        "type": "circle",
-        "styleField": "id",
-        "styleValues": [
-          {
-            "styleFieldValue": 1,
-            "color": "#008b8f",
-            "label": "Floor plan"
-          }
-        ],
-        "description": "Floor plan"
-      }
+      "subResults": []
     },
     {
       "id": "noise_result",
