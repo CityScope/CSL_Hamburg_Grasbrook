@@ -11,6 +11,7 @@ declare interface CsLayer extends mapboxgl.Layer {
   displayName: string;
   addOnMapInitialisation: boolean;
   showInLayerList: boolean;
+  loadFromCityIo: boolean;
   isLoading: boolean;
   legend: Legend;
   subResults: object[];

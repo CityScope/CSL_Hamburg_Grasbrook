@@ -11,7 +11,8 @@ export class TripsDeckGlLayer {
   public static createTripsLayer(layerId): MapboxLayer {
     const DATA_URL = {
       TRIPS:
-        // "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
+      // TODO - if this layer is to be activated as CSLayer - set "loadFromCityIo" : true;
+      // "https://raw.githubusercontent.com/uber-common/deck.gl-data/master/examples/trips/trips.json" // eslint-disable-line
         "https://cityio.media.mit.edu/api/table/grasbrook/trips"
       // "https://cityio.media.mit.edu/api/table/grasbrook/cityIO_Gama_Hamburg"
     };

@@ -8,6 +8,7 @@ export class AccessLayer {
       source: {
         type: "geojson",
         data: accessJSON
+        // TODO - if this layer is to be activated as CSLayer - set "loadFromCityIo" : true;
         // data: "https://cityio.media.mit.edu/api/table/grasbrook/access"
       },
       paint: {

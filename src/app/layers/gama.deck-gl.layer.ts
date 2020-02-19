@@ -5,6 +5,7 @@ export class GamaDeckGlLayer {
   public static createTripsLayer(layerId): MapboxLayer {
     const DATA_URL = {
       TRIPS:
+      // TODO - if this layer is to be activated as CSLayer - set "loadFromCityIo" : true;
         "https://cityio.media.mit.edu/api/table/grasbrook/cityIO_Gama_Hamburg"
     };
 

@@ -12,6 +12,7 @@
     {
       "id": "3d Buildings",
       "displayName": "3d Buildings",
+      "loadFromCityIo": false,
       "source": "composite",
       "source-layer": "building",
       "filter": ["==", "extrude", "true"],
@@ -47,12 +48,14 @@
       "id": "grid",
       "showInLayerList": true,
       "isLoading": false,
-      "addOnMapInitialisation": true
+      "addOnMapInitialisation": true,
+      "loadFromCityIo": false
     },
     {
       "id": "restrictions",
       "displayName": "Restrictions",
       "showInLayerList": true,
+      "loadFromCityIo": false,
       "isLoading": false,
       "addOnMapInitialisation": false,
       "metadata": "",
@@ -177,6 +180,7 @@
     {
       "id": "walkability",
       "displayName": "Walkability results",
+      "loadFromCityIo": true,
       "subResults": [
         {
           "id": "educational",
@@ -261,6 +265,7 @@
       "id": "competition_designs",
       "displayName": "Competition designs",
       "showInLayerList": true,
+      "loadFromCityIo": false,
       "isLoading": false,
       "addOnMapInitialisation": false,
       "metadata": "",
@@ -340,6 +345,7 @@
     {
       "id": "noise_result",
       "displayName": "Noise results",
+      "loadFromCityIo": true,
       "showInLayerList": true,
       "isLoading": false,
       "addOnMapInitialisation": false,

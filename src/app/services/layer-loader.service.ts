@@ -91,7 +91,7 @@ export class LayerLoaderService {
   setUserUrlForLayer(layer) {
     let source = layer.source
     console.log(source)
-    if((source as mapboxgl.Source).type === "geojson") {
+    if((source as mapboxgl.Source).type === "geojson" && layer.loadFromCityIo) {
       let data = (source as GeoJSONSourceRaw).data;
       if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
         // if (!(layer.id in this.urls)) {
