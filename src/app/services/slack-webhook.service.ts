@@ -5,7 +5,9 @@ import data from '../../assets/slack_webhook.json';
 
 import * as proxy from 'http-proxy-middleware';
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class SlackWebhookService {
     constructor(private http: HttpClient) {
     }
@@ -29,7 +31,19 @@ export class SlackWebhookService {
         };
 
         const url = (<any>data).url;
-        //const url = 'localhost:4200/api';
+
+        const options = {
+            headers: new HttpHeaders(
+                { 'Content-Type': 'application/x-www-form-urlencoded' }
+            )
+        };
+
+        this.http.post(url, JSON.stringify(postData), options).subscribe();
+
+
+
+
+        //const url = '/api';
 /*        const httpOptions = {
             headers: new HttpHeaders({
                 "User-Agent": 'test',
@@ -56,10 +70,10 @@ Host: hooks.slack.com
 
          */
 
-        this.http.post(url, JSON.stringify(postData)).subscribe(
+/*        this.http.post(url, JSON.stringify(postData)).subscribe(
             (response) => console.log(response),
             (error) => console.error(error)
-        );
+        );*/
 
     }
 
