@@ -6,7 +6,7 @@ export class GridLayer {
       id: layerId,
       displayName: "grid",
       showInLayerList: true,
-      loadFromCityIo: false,
+      loadFromCityIo: true,
       addOnMapInitialisation: true,
       type: "fill-extrusion",
       paint: {

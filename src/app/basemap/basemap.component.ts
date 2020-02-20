@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit, NgZone } from "@angular/core";
+import {AfterViewInit, Component, OnInit, NgZone, ErrorHandler} from '@angular/core';
 import { environment } from "../../environments/environment";
 import { interval } from "rxjs";
 import * as mapboxgl from "mapbox-gl";
@@ -22,6 +22,9 @@ import { LocalStorageService } from "../services/local-storage.service";
 import { RestoreMessage } from "../menus/restore-message/restore-message";
 import { GridCell, BuildingType } from "../entities/cell";
 import { ResetGridDialog } from "../menus/reset-grid/reset-grid-dialog";
+import {GlobalErrorHandler} from '../error-handler';
+import {ErrorInterceptor} from '../interceptors/error.interceptor';
+
 
 @NgModule({
     imports: [BrowserModule, FormsModule],
@@ -34,7 +37,7 @@ export class AppModule {}
     selector: "app-basemap",
     templateUrl: "./basemap.component.html",
     styleUrls: ["./basemap.component.scss"],
-    providers: [CityIOService, LocalStorageService]
+    providers: [CityIOService, LocalStorageService, GlobalErrorHandler]
 })
 export class BasemapComponent implements OnInit, AfterViewInit {
     map: mapboxgl.Map;
@@ -89,7 +92,9 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         private localStorageService: LocalStorageService,
         public dialog: MatDialog,
         private router: Router,
-        private zone: NgZone
+        private zone: NgZone,
+        private angErrHandler: ErrorHandler,
+        private errHandler: GlobalErrorHandler,
     ) {
         // get the acess token
         // mapboxgl.accessToken = environment.mapbox.accessToken;

@@ -1,0 +1,6 @@
+{
+  "/api": {
+    "target": "https://hooks.slack.com/services/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",
+    "secure": false
+  }
+}

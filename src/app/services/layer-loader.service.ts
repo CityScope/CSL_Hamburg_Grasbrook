@@ -94,7 +94,7 @@ export class LayerLoaderService {
   setUserUrlForLayer(layer) {
     let source = layer.source
     console.log(source)
-    if((source as mapboxgl.Source).type === "geojson" && layer.loadFromCityIo) {
+    // if((source as mapboxgl.Source).type === "geojson" && layer.loadFromCityIo) {
       let data = (source as GeoJSONSourceRaw).data;
       if (JSON.parse(localStorage.getItem("currentUser"))['tables'].length > 0) {
         // if (!(layer.id in this.urls)) {
@@ -105,7 +105,7 @@ export class LayerLoaderService {
       // else {
       //   (source as mapboxgl.GeoJSONSourceRaw).data = this.urls[layer.id];
       // }
-    }
+    // }
   }
 
   castCSLayer(layer, displayName, showOnInit) {
