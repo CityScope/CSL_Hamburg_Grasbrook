@@ -33,20 +33,30 @@ export class GridLayer {
             color: "#FF5252",
             label: "Building: Commercial"
           },
-            {
+          {
             styleFieldValue: "office",
             color: "#FF4081",
-            label: "Building: Offices"
+            label: "Building: Grocery Store"
           },
           {
             styleFieldValue: "educational",
             color: "#40C4FF",
-            label: "Building: Education"
+            label: "Building: Primary School"
           },
           {
             styleFieldValue: "culture",
             color: "#7C4DFF",
-            label: "Building: Culture"
+            label: "Building: Community Center"
+          },
+          {
+            styleFieldValue: "water",
+            color: "#9FE1FF",
+            label: "Open space: Water"
+          },
+          {
+            styleFieldValue: "athletic_field",
+            color: "#a5d6a7",
+            label: "Open space: Athletic Field"
           },
           {
             styleFieldValue: "green_space",
@@ -55,43 +65,18 @@ export class GridLayer {
           },
           {
             styleFieldValue: "promenade",
+            color: "#AFF7D3",
+            label: "Open space: Plaza"
+          },
+          {
+            styleFieldValue: "street",
             color: "#48A377",
-            label: "Open space: Promenade"
+            label: "Promenade"
           },
           {
-            styleFieldValue: "athletic_field",
-            color: "#AFF7D3",
-            label: "Open space: Athletic Field"
-          },
-          { 
-            styleFieldValue: "playground",
-            color: "#AFF7D3",
-            label: "Open space: Playground"
-          },
-          { 
-            styleFieldValue: "daycare-playground",
-            color: "#AFF7D3",
-            label: "Open space: Daycare Playground"
-          },
-          {
-            styleFieldValue: "schoolyard",
-            color: "#AFF7D3",
-            label: "Open space: Schoolyard"
-          },
-          {
-            styleFieldValue: "exhibition_space",
-            color: "#A3A5FF",
-            label: "Open space: Exhibition Space"
-          },
-          {
-            styleFieldValue: "recycling_center",
-            color: "#4D4D4D",
-            label: "Open space: Recycling Center"
-          },
-          {
-            styleFieldValue: "water",
-            color: "#9FE1FF",
-            label: "Open space: Water"
+            styleFieldValue: "street",
+            color: "#333333",
+            label: "Street"
           }
         ]
       }
