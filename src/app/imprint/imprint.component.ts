@@ -8,7 +8,6 @@ import {Component, OnInit} from '@angular/core';
 export class ImprintComponent implements OnInit {
 
     ngOnInit() {
-        console.log('init imprint');
     }
 
     onClose() {

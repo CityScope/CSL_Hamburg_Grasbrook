@@ -286,6 +286,6 @@ export class ChartMenuComponent implements OnInit, OnChanges {
             this.chartHasTargets = false;
             return;
         }
-        console.log('unknown chart requested:', this.chartToShow);
+        console.warn('unknown chart requested:', this.chartToShow);
     }
 }

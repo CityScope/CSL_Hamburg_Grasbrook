@@ -38,7 +38,6 @@ export class CityIOService implements OnDestroy {
         this.timer = this.update = interval(10000);
         this.subscription.push(
             this.update.subscribe(() => {
-                console.log("sub")
                 this.fetchCityIOdata().subscribe();
             }));
     }
@@ -122,7 +121,6 @@ export class CityIOService implements OnDestroy {
         if (Object.keys(this.pending_changes).length == 0) return;
 
         for (var key in this.pending_changes) {
-            console.log(key, this.pending_changes[key]);
             this.table_data["grid"][key] = this.pending_changes[key];
         }
 
@@ -141,7 +139,7 @@ export class CityIOService implements OnDestroy {
         console.log("pushing to ", url);
         this.http.post(url, postData).subscribe(
             (response) => console.log(response),
-            (error) => console.log(error)
+            (error) => console.error(error)
         );
     }
 

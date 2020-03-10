@@ -98,7 +98,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-        console.log("init map");
         this.initializeMap([10.0143909533867, 53.53128461384861]);
         this.cityIOService.gridChangeListener.push(
             this.updateFromCityIO.bind(this)
@@ -184,7 +183,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         }
 
         this.map.on("error", event => {
-            console.log(event);
+            console.warn(event);
         });
     }
 
@@ -632,7 +631,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     async updateFromCityIO(field) {
-        console.log("update field", field);
         this.toggleLayerLoading(field);
 
         if (field === "grid" || !this.gridInitialised) {
@@ -642,7 +640,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
 
     toggleLayerLoading(changedField) {
         const toggle = changedField === 'grid';
-        console.log(this.cityIOService.checkHashes(!toggle))
         for (const field of this.cityIOService.checkHashes(!toggle)) {
             for (const layer of this.layers.filter(x => x.id.indexOf(field) !== -1)) {
                 if (layer.isLoading) {
@@ -752,7 +749,6 @@ export class BasemapComponent implements OnInit, AfterViewInit {
         }
 
         let id = feature["id"];
-        console.log("write cell", id, "value", typeint);
         this.cityIOService.pending_changes[id] = [typeint, 0]; // remember change
     }
 

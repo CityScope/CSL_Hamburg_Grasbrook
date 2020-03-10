@@ -79,7 +79,6 @@ export class EditMenuComponent implements OnInit {
     }
 
     onChangeStrType(value: number) {
-        console.log('str type', value);
         switch (String(value)) {
             case 'promenade':
                 this.speedLimitDisabled = true;
@@ -119,7 +118,6 @@ export class EditMenuComponent implements OnInit {
                 this.cell.str_elevator = false;
                 break;
         }
-        console.log(this.cell)
     }
 
     // Button actions
