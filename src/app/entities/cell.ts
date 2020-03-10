@@ -20,10 +20,9 @@ export class GridCell {
         for (let property of Object.keys(featureProps)) {
             if (property !== 'id') {
                 if (property == 'height') {
-                    if(featureProps['height']==0){
+                    if (featureProps['height']==0){
                         gridCell.bld_numLevels = 1;
-                    }
-                    else {
+                    } else {
                         gridCell.bld_numLevels = GridCell.bld_height_to_lvls(featureProps['height']);
                     }
                 } else {
@@ -55,22 +54,19 @@ export class GridCell {
         return null;
     }
 
-    static bld_lvl_to_height(levels)
-    {
+    static bld_lvl_to_height(levels) {
         return 4 + (levels - 1) * 2.6;
     }
-    static bld_height_to_lvls(height)
-    {
+
+    static bld_height_to_lvls(height) {
         return Math.floor((height - 4) / 2.6) + 1;
     }
 
-    public static featureToTypemap(feature)
-    {
+    public static featureToTypemap(feature) {
         let typeDefinition = {}
 
         const properties = feature['properties'];
-        switch(properties["type"])
-        {
+        switch (properties["type"]) {
             case BuildingType.building:
                 typeDefinition["type"] = this.string_of_enum(BuildingType,properties["type"])
                 typeDefinition["bld_numLevels"] = GridCell.bld_height_to_lvls(properties['height']);
@@ -102,17 +98,19 @@ export class GridCell {
                 feature.properties['height'] = GridCell.bld_lvl_to_height(gridCell[gridCellKey]);
             } else if (gridCellKey === 'type') {
                 feature.properties[gridCellKey] = gridCell[gridCellKey];
-                let color = "";
+                let color = '';
                 if (gridCell[gridCellKey] === 0) {
                     // building
-                    if (gridCell.bld_useUpper == null) {
+                    const specialUses = [3, 4, 5]; // types: educational, culture, grocery
+                    if (gridCell.bld_useUpper == null ||
+                        (specialUses.includes(gridCell.bld_useGround) && specialUses.includes(gridCell.bld_useUpper))) {
+                        // single storey building or special use in ground floor
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useGround]];
-                    }
-                    else {
+                    } else {
                         color = BuildingUse[Object.keys(BuildingUse)[gridCell.bld_useUpper]];
                     }
                 } else if (gridCell[gridCellKey] === 1) {
-                    if (gridCell["str_numLanes"] === 0) {
+                    if (gridCell['str_numLanes'] === 0) {
                         // promenade
                         color = '#48A377';
                     } else {
@@ -125,7 +123,7 @@ export class GridCell {
                     color = OpenSpaceType[Object.keys(OpenSpaceType)[gridCell.os_type]];
                     delete feature.properties["height"];
                 }   else {
-                    //type == 3 -> empty
+                    // type == 3 -> empty
                     color = '#aaaaaa';
                     delete feature.properties["height"];
                 }
@@ -136,18 +134,16 @@ export class GridCell {
         }
     }
 
-    static int_of_enum(objn, value)
-    {
-        let it = 0
-        for (var k in objn)
-        {
+    static int_of_enum(objn, value) {
+        let it = 0;
+        for (var k in objn) {
             if(k == value) {
                 return it
             }
             it+=1
         }
         return null;
-    } 
+    }
 
     public static fillFeatureByCityIOType(feature, typeDict) {
         for (let gridCellKey of Object.keys(typeDict)) {
@@ -155,9 +151,9 @@ export class GridCell {
                 feature.properties['height'] = GridCell.bld_lvl_to_height(typeDict[gridCellKey]);
             } else if (gridCellKey === 'type') {
                 feature.properties[gridCellKey] = BuildingType[typeDict[gridCellKey]];
-                if(typeDict[gridCellKey]=="empty"){
+                if (typeDict[gridCellKey] == "empty"){
                     feature.properties['changedTypeColor'] = "#aaaaaa"
-                } else if(typeDict[gridCellKey]=="street") {
+                } else if (typeDict[gridCellKey]=="street") {
                     feature.properties['changedTypeColor'] = "#333333"
                     if (typeDict["str_numLanes"] === 0) {
                         // promenade
@@ -166,20 +162,32 @@ export class GridCell {
                         // street
                         feature.properties['changedTypeColor'] = "#333333"
                     }
-                } 
+                }
             } else if (gridCellKey === "bld_useUpper") {
-                if (typeDict[gridCellKey] != null) {
-                    feature.properties['bld_useUpper'] = GridCell.int_of_enum(BuildingUse, typeDict[gridCellKey]);
+                // upper storey colouring
+
+                if (typeDict['bld_useGround'] == null) {
+                    // error case
+                    console.warn("no bld_useGround, this should not happen! in cell", feature["id"])
+                    feature.properties['changedTypeColor'] = "#aaaaaa"
+                    continue;
+                }
+
+                feature.properties['bld_useUpper'] = GridCell.int_of_enum(BuildingUse, typeDict[gridCellKey]);
+
+                const specialUses = ['culture', 'educational', 'grocery'];
+                if ((specialUses.includes(typeDict.bld_useGround) && !specialUses.includes(typeDict.bld_useUpper))
+                    || typeDict[gridCellKey] === null) {
+                    // special use present or is a 1-storey building -> use this colour instead
+                    feature.properties['changedTypeColor'] = BuildingUse[typeDict['bld_useGround']];
+                } else {
+                    // normal behaviour
                     let color = BuildingUse[typeDict[gridCellKey]];
                     feature.properties['changedTypeColor'] = color;
-                } else if(typeDict['bld_useGround'] == null) { 
-                    console.warn("no bld_useGround and no bld_useUpper -> this should not happen! in cell", feature["id"])
-                    feature.properties['changedTypeColor'] = "#aaaaaa"
-                } else {
-                    // might be a 1-storey building
-                    feature.properties['changedTypeColor'] = BuildingUse[typeDict['bld_useGround']];
                 }
             } else if (gridCellKey === "bld_useGround") {
+                // ground floor colouring
+
                 if (typeDict[gridCellKey] != null) {
                     feature.properties['bld_useGround'] = GridCell.int_of_enum(BuildingUse, typeDict[gridCellKey]);
                 } else {
@@ -187,6 +195,7 @@ export class GridCell {
                     feature.properties['changedTypeColor'] = "#aaaaaa"
                 }
             } else if (gridCellKey === "os_type") {
+                // open space
                 feature.properties['os_type'] = GridCell.int_of_enum(OpenSpaceType, typeDict[gridCellKey])
                 let color = OpenSpaceType[typeDict[gridCellKey]];
                 feature.properties['changedTypeColor'] = color;
