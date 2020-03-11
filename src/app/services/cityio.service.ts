@@ -20,6 +20,7 @@ export class CityIOService implements OnDestroy {
     pending_changes = {};
     public gridChangeListener = [];
     lastHashes = {};
+    public isTestUser = false;
 
     constructor(private http: HttpClient) {
         //this.init()
@@ -40,6 +41,8 @@ export class CityIOService implements OnDestroy {
             this.update.subscribe(() => {
                 this.fetchCityIOdata().subscribe();
             }));
+
+        this.isTestUser = (this.getTableName() === 'grasbrook_test');
     }
 
     getTableName() {

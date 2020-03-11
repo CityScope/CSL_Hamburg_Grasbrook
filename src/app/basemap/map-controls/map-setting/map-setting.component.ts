@@ -1,4 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {CityIOService} from '../../../services/cityio.service';
 
 @Component({
   selector: 'app-map-setting',
@@ -10,8 +11,10 @@ export class MapSettingComponent implements OnInit {
   @Output() mapSettings: EventEmitter<{}> = new EventEmitter();
 
   isTopDownMode = false;
+  isTestUser = this.cityIoService.isTestUser;
 
-  constructor() { }
+  constructor(private cityIoService: CityIOService) {
+  }
 
   ngOnInit() {
   }

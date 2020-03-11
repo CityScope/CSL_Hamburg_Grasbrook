@@ -604,7 +604,7 @@ export class BasemapComponent implements OnInit, AfterViewInit {
     }
 
     toggleMaptasticMode() {
-        Maptastic("basemap");
+        new Maptastic("basemap");
     }
 
     private toggleMenu() {
