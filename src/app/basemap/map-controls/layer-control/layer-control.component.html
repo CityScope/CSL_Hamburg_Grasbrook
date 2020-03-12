@@ -45,7 +45,7 @@
             <mat-spinner *ngIf="layer.isLoading && layer.showInLayerList && layer.groupedLayers.length === 0" [diameter]="15">
             </mat-spinner>
             <ul *ngIf="layer.groupedLayers.length > 0 && isLayerGroupOpened(layer)">
-                <mat-button-toggle-group #group="matButtonToggleGroup">
+                <mat-button-toggle-group #group="matButtonToggleGroup" [ngClass]="(findIconForLayerId(layer.groupedLayers[0].id)) ? 'hor-group' : 'ver-group'">
                     <ng-container *ngFor="let sublayer of layer.groupedLayers">
                         <ng-container *ngIf="findIconForLayerId(sublayer.id)">
                             <mat-button-toggle aria-label="Walking" (change)="onToggleSubLayer(layer.id, sublayer)" [matTooltip]="sublayer.displayName">

@@ -65,3 +65,15 @@ mat-spinner {
   float: right;
   margin-top: 2px;
 }
+
+.mat-button-toggle-group {
+  border: hidden;
+}
+
+.ver-group {
+  flex-direction: column;
+}
+
+.hor-group {
+  flex-direction: row;
+}
