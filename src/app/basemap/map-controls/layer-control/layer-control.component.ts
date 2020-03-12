@@ -51,11 +51,6 @@ export class LayerControlComponent implements OnInit {
   onShowInfo(evt: MouseEvent, layer: CsLayer) {
     evt.preventDefault();
     this.showInfo.emit(layer);
-
-    if (!layer.visible) {
-      layer.visible = true;
-      this.toggleLayer.emit();
-    }
   }
 
   onCollapseGroupedLayer(layer: CsLayer) {
