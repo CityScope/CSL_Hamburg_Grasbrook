@@ -83,8 +83,8 @@ export class LayerControlComponent implements OnInit {
     // load new sublayer
     this.loadNewSubLayer(layerId, subLayer);
 
-    // toggle Grid layer twice to put it on top of the layer stack
-    if (subLayer.type === 'raster') {
+    // if grid layer was active, toggle Grid layer twice to put it on top of the layer stack
+    if (subLayer.type === 'raster' && this.getGridLayer().visible) {
       this.reloadLayer(this.getGridLayer());
     }
   }
