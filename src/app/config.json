@@ -187,21 +187,37 @@
       "type": "fill",
       "source": {
         "type": "geojson",
-        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability"
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/kpi_gfa/geojson"
       },
       "paint": {
-        "fill-opacity": 0.8,
-        "fill-color": {
-          "property": "educational",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
-          "default": "red"
-        },
-        "fill-outline-color": {
-          "property": "educational",
-          "stops": [[0, "red"], [5,"rgb(245, 206, 15)"], [6, "green"]],
-          "default": "red"
-        }
-        },
+        "fill-color": [
+          "match",
+          ["get", "bld_useUpper"],
+          "residential", "#FF6E40",
+           "commercial", "#FF5252",
+           "office", "#FF4081",
+           "educational", "#40C4FF",
+           "culture", "#7C4DFF",
+          "transparent"
+          ],
+        "fill-outline-color": [
+          "match",
+          ["get", "bld_useGround"],
+          "residential", "#FF6E40",
+          "commercial", "#FF5252",
+          "office", "#FF4081",
+          "educational", "#40C4FF",
+          "culture", "#7C4DFF",
+          "transparent"
+        ],
+        "fill-opacity": [
+          "interpolate",
+          ["linear"],
+          ["get", "bld_numLevels"],
+          0, 0.2,
+          20, 1
+        ]
+      },
       "legend": {
     }},
     {
