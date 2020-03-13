@@ -200,16 +200,6 @@
            "culture", "#7C4DFF",
           "transparent"
           ],
-        "fill-outline-color": [
-          "match",
-          ["get", "bld_useGround"],
-          "residential", "#FF6E40",
-          "commercial", "#FF5252",
-          "office", "#FF4081",
-          "educational", "#40C4FF",
-          "culture", "#7C4DFF",
-          "transparent"
-        ],
         "fill-opacity": [
           "interpolate",
           ["linear"],
