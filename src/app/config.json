@@ -209,7 +209,35 @@
         ]
       },
       "legend": {
-    }},
+          "type": "rect",
+          "styleField": ["building_uses"],
+          "styleValues": [{
+            "styleFieldValue": "residential",
+            "color": "#FF6E40",
+            "label": "Building: Residential"
+          },
+            {
+              "styleFieldValue": "commercial",
+              "color": "#FF5252",
+              "label": "Building: Commercial"
+            },
+            {
+              "styleFieldValue": "office",
+              "color": "#FF4081",
+              "label": "Building: Grocery Store"
+            },
+            {
+              "styleFieldValue": "educational",
+              "color": "#40C4FF",
+              "label": "Building: Primary School"
+            },
+            {
+              "styleFieldValue": "culture",
+              "color": "#7C4DFF",
+              "label": "Building: Community Center"
+            }]
+      }
+    },
     {
       "id": "walkability",
       "displayName": "Walkability results",
