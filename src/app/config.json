@@ -262,38 +262,30 @@
           "interpolate",
           ["linear"],
           ["get", "amount"],
-          0, 0.2,
+          19, 0.2,
           173, 1
         ]
       },
       "legend": {
           "type": "rect",
-          "styleField": ["building_uses"],
+          "styleField": ["amount"],
           "styleValues": [{
-            "styleFieldValue": "residential",
-            "color": "#FF6E40",
-            "label": "Building: Residential"
+            "styleFieldValue": 0,
+            "color": "rgba(30,61,78,0.2)",
+            "label": "expected 19 m³ of rain per year"
           },
             {
-              "styleFieldValue": "commercial",
-              "color": "#FF5252",
-              "label": "Building: Commercial"
+              "styleFieldValue": 5,
+              "color": "rgba(30,61,78,0.6)",
+              "label": "expected 96 m³ of rain per year"
             },
             {
-              "styleFieldValue": "office",
-              "color": "#FF4081",
-              "label": "Building: Grocery Store"
-            },
-            {
-              "styleFieldValue": "educational",
-              "color": "#40C4FF",
-              "label": "Building: Primary School"
-            },
-            {
-              "styleFieldValue": "culture",
-              "color": "#7C4DFF",
-              "label": "Building: Community Center"
-            }]
+              "styleFieldValue": 6,
+              "color": "#1E3D4E",
+              "label": "expected 173 m³ of rain per year"
+            }
+          ],
+          "description": ""
       }
     },
     {
