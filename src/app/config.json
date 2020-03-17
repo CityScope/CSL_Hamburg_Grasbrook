@@ -237,6 +237,64 @@
               "label": "Building: Community Center"
             }]
       }
+    }, {
+      "id": "stormwater_vis",
+      "displayName": "Rainwater",
+      "showInLayerList": true,
+      "loadFromCityIo": true,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill",
+      "source": {
+        "type": "geojson",
+        "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/stormwater/geojson"
+      },
+      "paint": {
+        "fill-color": [
+          "match",
+          ["get", "type"],
+          "street", "#1E3D4E",
+           "promenade", "#1E3D4E",
+          "#1E3D4E"
+          ],
+        "fill-opacity": [
+          "interpolate",
+          ["linear"],
+          ["get", "amount"],
+          0, 0.2,
+          173, 1
+        ]
+      },
+      "legend": {
+          "type": "rect",
+          "styleField": ["building_uses"],
+          "styleValues": [{
+            "styleFieldValue": "residential",
+            "color": "#FF6E40",
+            "label": "Building: Residential"
+          },
+            {
+              "styleFieldValue": "commercial",
+              "color": "#FF5252",
+              "label": "Building: Commercial"
+            },
+            {
+              "styleFieldValue": "office",
+              "color": "#FF4081",
+              "label": "Building: Grocery Store"
+            },
+            {
+              "styleFieldValue": "educational",
+              "color": "#40C4FF",
+              "label": "Building: Primary School"
+            },
+            {
+              "styleFieldValue": "culture",
+              "color": "#7C4DFF",
+              "label": "Building: Community Center"
+            }]
+      }
     },
     {
       "id": "walkability",
