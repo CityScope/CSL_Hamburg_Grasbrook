@@ -205,7 +205,7 @@
           ["linear"],
           ["get", "bld_numLevels"],
           0, 2,
-          20, 20
+          8, 20
         ]
       },
       "legend": {
