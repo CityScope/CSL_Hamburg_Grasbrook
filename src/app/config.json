@@ -184,15 +184,15 @@
       "isLoading": false,
       "addOnMapInitialisation": false,
       "metadata": "",
-      "type": "fill",
+      "type": "circle",
       "source": {
         "type": "geojson",
         "data": "https://cityio.media.mit.edu/api/table/grasbrook_test/kpi_gfa/geojson"
       },
       "paint": {
-        "fill-color": [
+        "circle-color": [
           "match",
-          ["get", "bld_useUpper"],
+          ["get", "bld_use"],
           "residential", "#FF6E40",
            "commercial", "#FF5252",
            "office", "#FF4081",
@@ -200,12 +200,12 @@
            "culture", "#7C4DFF",
           "transparent"
           ],
-        "fill-opacity": [
+        "circle-radius": [
           "interpolate",
           ["linear"],
           ["get", "bld_numLevels"],
-          0, 0.2,
-          20, 1
+          0, 2,
+          20, 20
         ]
       },
       "legend": {
