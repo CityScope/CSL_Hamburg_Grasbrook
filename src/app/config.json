@@ -201,13 +201,21 @@
           "transparent"
           ],
         "circle-radius": [
-          "interpolate",
-          ["linear"],
-          ["get", "bld_numLevels"],
-          0, 2,
-          8, 20
+          "interpolate", ["linear"], ["zoom"],
+          12, [
+            "/",
+            ["+", 10, ["number", ["get", "bld_numLevels"], 0]],
+            75
+          ],
+          22, [
+            "*",
+            ["+", 7.5, ["number", ["get", "bld_numLevels"], 0]],
+           1.5
+          ]
         ]
-      },
+
+
+    },
       "legend": {
           "type": "rect",
           "styleField": ["building_uses"],
