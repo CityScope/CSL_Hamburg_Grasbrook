@@ -86,6 +86,12 @@ export class LayerLoaderService {
     // sets the user specific cityIO endpoint
     for (const layer of layers) {
       this.setUserUrlForLayer(layer);
+      // also add for sublayers
+      if (layer.groupedLayers) {
+        for (const sub of layer.groupedLayers) {
+          this.setUserUrlForLayer(sub);
+        }
+      }
     }
 
     return layers;
