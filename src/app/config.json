@@ -29,35 +29,21 @@
         "fill-extrusion-color": "#fff",
         "fill-extrusion-height": [
           "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
+          ["linear"],
+          ["zoom"],
           10,
           0,
           15.05,
-          [
-            "get",
-            "height"
-          ]
+          ["get", "height"]
         ],
         "fill-extrusion-base": [
           "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
+          ["linear"],
+          ["zoom"],
           15,
           0,
           15.05,
-          [
-            "get",
-            "min_height"
-          ]
+          ["get", "min_height"]
         ],
         "fill-extrusion-opacity": 0.8
       },
@@ -125,57 +111,30 @@
         "fill-opacity": 0.8,
         "fill-color": [
           "match",
-          [
-            "get",
-            "id"
-          ],
-          1,
-          "#008b8f",
-          2,
-          "#724FB4",
-          3,
-          "#E87E4D",
-          4,
-          "#F3C683",
-          5,
-          "#F3C683",
-          6,
-          "#724F64",
-          7,
-          "#7fc5c7",
-          8,
-          "#7fc5c7",
-          9,
-          "#7fc5c7",
-          10,
-          "#7fc5c7",
-          11,
-          "#372E33",
-          12,
-          "#372E33",
-          13,
-          "#595741",
-          14,
-          "#2F4136",
-          15,
-          "#2F4136",
-          16,
-          "#3E5245",
-          17,
-          "#496955",
-          18,
-          "#2B322E",
-          19,
-          "#2B322E",
-          20,
-          "#45453B",
-          21,
-          "#A11A4D",
-          22,
-          "#A11A4D",
-          23,
-          "#CD463E",
-          "white"
+          ["get", "id"],
+          1, "#008b8f",
+          2, "#724FB4",
+          3, "#E87E4D",
+          4, "#F3C683",
+          5, "#F3C683",
+          6, "#724F64",
+          7, "#7fc5c7",
+          8, "#7fc5c7",
+          9, "#7fc5c7",
+          10, "#7fc5c7",
+          11, "#372E33",
+          12, "#372E33",
+          13, "#595741",
+          14, "#2F4136",
+          15, "#2F4136",
+          16, "#3E5245",
+          17, "#496955",
+          18, "#2B322E",
+          19, "#2B322E",
+          20, "#45453B",
+          21, "#A11A4D",
+          22, "#A11A4D",
+          23, "#CD463E", "white"
         ]
       },
       "legend": {
@@ -277,138 +236,38 @@
       "paint": {
         "circle-color": [
           "case",
-          [
-            "==",
-            [
-              "get",
-              "bld_useGround"
-            ],
-            "residential"
-          ],
+          ["==", ["get", "bld_useGround"], "residential"],
           "#b32a00",
-          [
-            "==",
-            [
-              "get",
-              "bld_useGround"
-            ],
-            "commercial"
-          ],
+          ["==", ["get", "bld_useGround"], "commercial"],
           "#ff3333",
-          [
-            "==",
-            [
-              "get",
-              "bld_useGround"
-            ],
-            "office"
-          ],
+          ["==", ["get", "bld_useGround"], "office"],
           "#cc0044",
-          [
-            "==",
-            [
-              "get",
-              "bld_useGround"
-            ],
-            "educational"
-          ],
+          ["==", ["get", "bld_useGround"], "educational"],
           "#007ab3",
-          [
-            "==",
-            [
-              "get",
-              "bld_useGround"
-            ],
-            "culture"
-          ],
+          ["==", ["get", "bld_useGround"], "culture"],
           "#3600cc",
-          [
-            "==",
-            [
-              "get",
-              "bld_use"
-            ],
-            "residential"
-          ],
+          ["==", ["get", "bld_use"], "residential"],
           "#FF7B53",
-          [
-            "==",
-            [
-              "get",
-              "bld_use"
-            ],
-            "commercial"
-          ],
+          ["==", ["get", "bld_use"], "commercial"],
           "#FF6363",
-          [
-            "==",
-            [
-              "get",
-              "bld_use"
-            ],
-            "office"
-          ],
+          ["==", ["get", "bld_use"], "office"],
           "#FF538C",
-          [
-            "==",
-            [
-              "get",
-              "bld_use"
-            ],
-            "educational"
-          ],
+          ["==", ["get", "bld_use"], "educational"],
           "#66CFFF",
-          [
-            "==",
-            [
-              "get",
-              "bld_use"
-            ],
-            "culture"
-          ],
+          ["==", ["get", "bld_use"], "culture"],
           "#9670FF",
           "transparent"
         ],
         "circle-radius": [
-          "interpolate",
-          [
-            "linear"
-          ],
-          [
-            "zoom"
-          ],
-          12,
-          [
+          "interpolate", ["linear"], ["zoom"],
+          12, [
             "/",
-            [
-              "+",
-              10,
-              [
-                "number",
-                [
-                  "get",
-                  "bld_numLevels"
-                ],
-                0
-              ]
-            ],
+            ["+", 10, ["number", ["get", "bld_numLevels"], 0]],
             75
           ],
-          22,
-          [
+          22, [
             "*",
-            [
-              "+",
-              7.5,
-              [
-                "number",
-                [
-                  "get",
-                  "bld_numLevels"
-                ],
-                0
-              ]
-            ],
+            ["+", 7.5, ["number", ["get", "bld_numLevels"], 0]],
             1.5
           ]
         ]
@@ -464,26 +323,11 @@
         "fill-color": {
           "property": "amount",
           "stops": [
-            [
-              19,
-              "#0868ac"
-            ],
-            [
-              96,
-              "#43a2ca"
-            ],
-            [
-              134,
-              "#7bccc4"
-            ],
-            [
-              153,
-              "#bae4bc"
-            ],
-            [
-              172,
-              "#f0f9e8"
-            ]
+            [19, "#0868ac"],
+            [96, "#43a2ca"],
+            [134,"#7bccc4"],
+            [153,"#bae4bc"],
+            [172,"#f0f9e8"]
           ],
           "default": "red"
         },
@@ -491,9 +335,7 @@
       },
       "legend": {
         "type": "rect",
-        "styleField": [
-          "amount"
-        ],
+        "styleField": ["amount"],
         "styleValues": [
           {
             "styleFieldValue": 0,
@@ -573,20 +415,7 @@
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": {
           "property": "",
-          "stops": [
-            [
-              0,
-              "green"
-            ],
-            [
-              5,
-              "rgb(245, 206, 15)"
-            ],
-            [
-              6,
-              "red"
-            ]
-          ],
+          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
           "default": "red"
         }
       },
@@ -696,27 +525,15 @@
         "fill-extrusion-base": 0.25,
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": [
-          "match",
-          [
-            "get",
-            "idiso"
-          ],
-          0,
-          "#B8D6D1",
-          1,
-          "#CEE4CC",
-          2,
-          "#E2F2BF",
-          3,
-          "#F3C683",
-          4,
-          "#E87E4D",
-          5,
-          "#CD463E",
-          6,
-          "#A11A4D",
-          7,
-          "#75085C",
+          "match", ["get", "idiso"],
+          0, "#B8D6D1",
+          1, "#CEE4CC",
+          2, "#E2F2BF",
+          3, "#F3C683",
+          4, "#E87E4D",
+          5, "#CD463E",
+          6, "#A11A4D",
+          7, "#75085C",
           "white"
         ]
       },
