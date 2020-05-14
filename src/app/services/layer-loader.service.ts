@@ -76,6 +76,13 @@ export class LayerLoaderService {
           }
           if (subLayer.type === 'raster') {
             (subLayer.source as RasterSource).url = dataset.url;
+
+            // update coordinates of raster layer, if specified
+            if (dataset['coordinates']) {
+              subLayer.source['coordinates'] = dataset['coordinates'];
+              console.log("subLayer source");
+              console.log(subLayer.source);
+            }
           }
           // add sublayer to groupedLayers of layer
           layer.groupedLayers.push(subLayer);

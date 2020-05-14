@@ -1,5 +1,8 @@
 {
-  "mapCenter": [10.0143909533867, 53.53128461384861],
+  "mapCenter": [
+    10.0143909533867,
+    53.53128461384861
+  ],
   "isShowPopUp": false,
   "mapZoom": 15,
   "bearing": 34.8,
@@ -15,28 +18,46 @@
       "loadFromCityIo": false,
       "source": "composite",
       "source-layer": "building",
-      "filter": ["==", "extrude", "true"],
+      "filter": [
+        "==",
+        "extrude",
+        "true"
+      ],
       "type": "fill-extrusion",
       "minzoom": 15,
       "paint": {
         "fill-extrusion-color": "#fff",
         "fill-extrusion-height": [
           "interpolate",
-          ["linear"],
-          ["zoom"],
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
           10,
           0,
           15.05,
-          ["get", "height"]
+          [
+            "get",
+            "height"
+          ]
         ],
         "fill-extrusion-base": [
           "interpolate",
-          ["linear"],
-          ["zoom"],
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
           15,
           0,
           15.05,
-          ["get", "min_height"]
+          [
+            "get",
+            "min_height"
+          ]
         ],
         "fill-extrusion-opacity": 0.8
       },
@@ -50,6 +71,42 @@
       "isLoading": false,
       "addOnMapInitialisation": true,
       "loadFromCityIo": false
+    },
+    {
+      "id": "grasbrook_land",
+      "displayName": "Grasbrook_Land",
+      "showInLayerList": true,
+      "loadFromCityIo": false,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill",
+      "source": {
+        "type": "geojson",
+        "data": "assets/layers_json/grasbrook_land.geojson"
+      },
+      "paint": {
+        "fill-color": "#088",
+        "fill-opacity": 0.8
+      }
+    },
+    {
+      "id": "gb_building_existing",
+      "displayName": "Grasbrook Existing Buildings",
+      "showInLayerList": true,
+      "loadFromCityIo": false,
+      "isLoading": false,
+      "addOnMapInitialisation": false,
+      "metadata": "",
+      "type": "fill",
+      "source": {
+        "type": "geojson",
+        "data": "assets/layers_json/gb_buildings_existing.geojson"
+      },
+      "paint": {
+        "fill-color": "#ff0066",
+        "fill-opacity": 0.8
+      }
     },
     {
       "id": "restrictions",
@@ -67,30 +124,57 @@
       "paint": {
         "fill-opacity": 0.8,
         "fill-color": [
-          "match", ["get", "id"],
-          1, "#008b8f",
-          2, "#724FB4",
-          3, "#E87E4D",
-          4, "#F3C683",
-          5, "#F3C683",
-          6, "#724F64",
-          7, "#7fc5c7",
-          8, "#7fc5c7",
-          9, "#7fc5c7",
-          10, "#7fc5c7",
-          11, "#372E33",
-          12, "#372E33",
-          13, "#595741",
-          14, "#2F4136",
-          15, "#2F4136",
-          16, "#3E5245",
-          17, "#496955",
-          18, "#2B322E",
-          19, "#2B322E",
-          20, "#45453B",
-          21, "#A11A4D",
-          22, "#A11A4D",
-          23, "#CD463E",
+          "match",
+          [
+            "get",
+            "id"
+          ],
+          1,
+          "#008b8f",
+          2,
+          "#724FB4",
+          3,
+          "#E87E4D",
+          4,
+          "#F3C683",
+          5,
+          "#F3C683",
+          6,
+          "#724F64",
+          7,
+          "#7fc5c7",
+          8,
+          "#7fc5c7",
+          9,
+          "#7fc5c7",
+          10,
+          "#7fc5c7",
+          11,
+          "#372E33",
+          12,
+          "#372E33",
+          13,
+          "#595741",
+          14,
+          "#2F4136",
+          15,
+          "#2F4136",
+          16,
+          "#3E5245",
+          17,
+          "#496955",
+          18,
+          "#2B322E",
+          19,
+          "#2B322E",
+          20,
+          "#45453B",
+          21,
+          "#A11A4D",
+          22,
+          "#A11A4D",
+          23,
+          "#CD463E",
           "white"
         ]
       },
@@ -176,7 +260,8 @@
         ],
         "description": "Restriktionshinweise"
       }
-    }, {
+    },
+    {
       "id": "gfa_vis",
       "displayName": "GFA",
       "showInLayerList": true,
@@ -192,74 +277,177 @@
       "paint": {
         "circle-color": [
           "case",
-          ["==", ["get", "bld_useGround"], "residential"],
+          [
+            "==",
+            [
+              "get",
+              "bld_useGround"
+            ],
+            "residential"
+          ],
           "#b32a00",
-          ["==", ["get", "bld_useGround"], "commercial"],
+          [
+            "==",
+            [
+              "get",
+              "bld_useGround"
+            ],
+            "commercial"
+          ],
           "#ff3333",
-          ["==", ["get", "bld_useGround"], "office"],
+          [
+            "==",
+            [
+              "get",
+              "bld_useGround"
+            ],
+            "office"
+          ],
           "#cc0044",
-          ["==", ["get", "bld_useGround"], "educational"],
+          [
+            "==",
+            [
+              "get",
+              "bld_useGround"
+            ],
+            "educational"
+          ],
           "#007ab3",
-          ["==", ["get", "bld_useGround"], "culture"],
+          [
+            "==",
+            [
+              "get",
+              "bld_useGround"
+            ],
+            "culture"
+          ],
           "#3600cc",
-          ["==", ["get", "bld_use"], "residential"],
+          [
+            "==",
+            [
+              "get",
+              "bld_use"
+            ],
+            "residential"
+          ],
           "#FF7B53",
-          ["==", ["get", "bld_use"], "commercial"],
+          [
+            "==",
+            [
+              "get",
+              "bld_use"
+            ],
+            "commercial"
+          ],
           "#FF6363",
-          ["==", ["get", "bld_use"], "office"],
+          [
+            "==",
+            [
+              "get",
+              "bld_use"
+            ],
+            "office"
+          ],
           "#FF538C",
-          ["==", ["get", "bld_use"], "educational"],
+          [
+            "==",
+            [
+              "get",
+              "bld_use"
+            ],
+            "educational"
+          ],
           "#66CFFF",
-          ["==", ["get", "bld_use"], "culture"],
+          [
+            "==",
+            [
+              "get",
+              "bld_use"
+            ],
+            "culture"
+          ],
           "#9670FF",
           "transparent"
-          ],
+        ],
         "circle-radius": [
-          "interpolate", ["linear"], ["zoom"],
-          12, [
+          "interpolate",
+          [
+            "linear"
+          ],
+          [
+            "zoom"
+          ],
+          12,
+          [
             "/",
-            ["+", 10, ["number", ["get", "bld_numLevels"], 0]],
+            [
+              "+",
+              10,
+              [
+                "number",
+                [
+                  "get",
+                  "bld_numLevels"
+                ],
+                0
+              ]
+            ],
             75
           ],
-          22, [
+          22,
+          [
             "*",
-            ["+", 7.5, ["number", ["get", "bld_numLevels"], 0]],
-           1.5
+            [
+              "+",
+              7.5,
+              [
+                "number",
+                [
+                  "get",
+                  "bld_numLevels"
+                ],
+                0
+              ]
+            ],
+            1.5
           ]
         ]
-
-
-    },
+      },
       "legend": {
-          "type": "rect",
-          "styleField": ["building_uses"],
-          "styleValues": [{
+        "type": "rect",
+        "styleField": [
+          "building_uses"
+        ],
+        "styleValues": [
+          {
             "styleFieldValue": "residential",
             "color": "#FF6E40",
             "label": "Building: Residential"
           },
-            {
-              "styleFieldValue": "commercial",
-              "color": "#FF5252",
-              "label": "Building: Commercial"
-            },
-            {
-              "styleFieldValue": "office",
-              "color": "#FF4081",
-              "label": "Building: Grocery Store"
-            },
-            {
-              "styleFieldValue": "educational",
-              "color": "#40C4FF",
-              "label": "Building: Primary School"
-            },
-            {
-              "styleFieldValue": "culture",
-              "color": "#7C4DFF",
-              "label": "Building: Community Center"
-            }]
+          {
+            "styleFieldValue": "commercial",
+            "color": "#FF5252",
+            "label": "Building: Commercial"
+          },
+          {
+            "styleFieldValue": "office",
+            "color": "#FF4081",
+            "label": "Building: Grocery Store"
+          },
+          {
+            "styleFieldValue": "educational",
+            "color": "#40C4FF",
+            "label": "Building: Primary School"
+          },
+          {
+            "styleFieldValue": "culture",
+            "color": "#7C4DFF",
+            "label": "Building: Community Center"
+          }
+        ]
       }
-    }, {
+    },
+    {
       "id": "stormwater_vis",
       "displayName": "Rainwater",
       "showInLayerList": true,
@@ -276,35 +464,54 @@
         "fill-color": {
           "property": "amount",
           "stops": [
-            [19, "#0868ac"], 
-            [96, "#43a2ca"], 
-            [134,"#7bccc4"], 
-            [153,"#bae4bc"], 
-            [172,"#f0f9e8"]],
+            [
+              19,
+              "#0868ac"
+            ],
+            [
+              96,
+              "#43a2ca"
+            ],
+            [
+              134,
+              "#7bccc4"
+            ],
+            [
+              153,
+              "#bae4bc"
+            ],
+            [
+              172,
+              "#f0f9e8"
+            ]
+          ],
           "default": "red"
         },
-        "fill-opacity" : 0.8
+        "fill-opacity": 0.8
       },
       "legend": {
-          "type": "rect",
-          "styleField": ["amount"],
-          "styleValues": [{
+        "type": "rect",
+        "styleField": [
+          "amount"
+        ],
+        "styleValues": [
+          {
             "styleFieldValue": 0,
             "color": "rgba(30,61,78,0.2)",
             "label": "expected 19 m³ of rain per year"
           },
-            {
-              "styleFieldValue": 5,
-              "color": "rgba(30,61,78,0.6)",
-              "label": "expected 96 m³ of rain per year"
-            },
-            {
-              "styleFieldValue": 6,
-              "color": "#1E3D4E",
-              "label": "expected 173 m³ of rain per year"
-            }
-          ],
-          "description": ""
+          {
+            "styleFieldValue": 5,
+            "color": "rgba(30,61,78,0.6)",
+            "label": "expected 96 m³ of rain per year"
+          },
+          {
+            "styleFieldValue": 6,
+            "color": "#1E3D4E",
+            "label": "expected 173 m³ of rain per year"
+          }
+        ],
+        "description": ""
       }
     },
     {
@@ -315,21 +522,23 @@
         {
           "id": "educational",
           "label": "Schools"
-        }, {
+        },
+        {
           "id": "grocery",
           "label": "Groceries"
-        }, {
+        },
+        {
           "id": "culture",
           "label": "Cultural institutions"
         }
-        ],
+      ],
       "groupedLayersData": [
         {
           "displayName": "Adult",
           "id": "walkability_adult",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_adult",
           "propertyToDisplay": "educational",
-          "legendStyleField":  "educational",
+          "legendStyleField": "educational",
           "legendDescription": "A visualization of walking time (in minutes) for adults."
         },
         {
@@ -337,7 +546,7 @@
           "id": "walkability_child",
           "url": "https://cityio.media.mit.edu/api/table/grasbrook_test/walkability_child",
           "propertyToDisplay": "educational",
-          "legendStyleField":  "educational",
+          "legendStyleField": "educational",
           "legendDescription": "A visualization of walking time (in minutes) as a child."
         },
         {
@@ -362,21 +571,34 @@
         "fill-extrusion-height": 0.1,
         "fill-extrusion-base": 0.1,
         "fill-extrusion-opacity": 0.8,
-
         "fill-extrusion-color": {
           "property": "",
-          "stops": [[0, "green"], [5,"rgb(245, 206, 15)"], [6, "red"]],
+          "stops": [
+            [
+              0,
+              "green"
+            ],
+            [
+              5,
+              "rgb(245, 206, 15)"
+            ],
+            [
+              6,
+              "red"
+            ]
+          ],
           "default": "red"
         }
       },
       "legend": {
         "type": "circle",
         "styleField": "",
-        "styleValues": [{
-          "styleFieldValue": 0,
-          "color": "green",
-          "label": "< 5 minutes"
-        },
+        "styleValues": [
+          {
+            "styleFieldValue": 0,
+            "color": "green",
+            "label": "< 5 minutes"
+          },
           {
             "styleFieldValue": 5,
             "color": "rgb(245, 206, 15)",
@@ -402,60 +624,56 @@
       "type": "raster",
       "source": {
         "type": "image",
-        "url": "assets/images/competition_designs/adept.jpg",
+        "url": "assets/images/competition_designs/adept.png",
         "coordinates": [
-          [9.998043, 53.538371],
-          [10.025104, 53.538371],
-          [10.025104, 53.521603],
-          [9.998043, 53.521603]
-          ]
+          [9.99582351173155, 53.5360927716862],
+          [10.022987574123427, 53.53586346610543],
+          [10.022667827191563, 53.52259384050903],
+          [9.995512251785405, 53.522823035696945]
+        ]
       },
       "groupedLayersData": [
         {
           "displayName": "Adept",
           "id": "design_adept",
-          "url": "assets/images/competition_designs/adept.jpg",
+          "url": "assets/images/competition_designs/adept.png",
           "propertyToDisplay": "Adept",
-          "legendStyleField":  "Adept",
-          "legendDescription": "Competition design: Adept"
+          "legendStyleField": "Adept",
+          "legendDescription": "Competition design: Adept",
+          "coordinates": [
+            [9.99582351173155, 53.5360927716862],
+            [10.022987574123427, 53.53586346610543],
+            [10.022667827191563, 53.52259384050903],
+            [9.995512251785405, 53.522823035696945]
+          ]
         },
         {
           "displayName": "HdM",
           "id": "design_hdm",
-          "url": "assets/images/competition_designs/hdm.jpg",
+          "url": "assets/images/competition_designs/hdm.png",
           "propertyToDisplay": "HdM",
-          "legendStyleField":  "HdM",
-          "legendDescription": "Competition design: HdM"
-        },        {
-          "displayName": "Karres+Brands",
-          "id": "design_karres_brands",
-          "url": "assets/images/competition_designs/karres_brands.jpg",
-          "propertyToDisplay": "karres_brands",
-          "legendStyleField":  "karres_brands",
-          "legendDescription": "Competition design: Karres+Brands"
-        },        {
+          "legendStyleField": "HdM",
+          "legendDescription": "Competition design: HdM",
+          "coordinates": [
+            [10.004518425712158, 53.53802852262997],
+            [10.026515051049005, 53.53784171754211],
+            [10.026104201382344, 53.52084922349357],
+            [10.004116376270826, 53.52103591342606]
+          ]
+        },
+        {
           "displayName": "Mandaworks",
           "id": "design_mandaworks",
           "url": "assets/images/competition_designs/mandaworks.jpg",
           "propertyToDisplay": "mandaworks",
-          "legendStyleField":  "mandaworks",
-          "legendDescription": "Competition design: Mandaworks"
-        },
-        {
-          "displayName": "Studio Vulkan",
-          "id": "design_studio_vulkan",
-          "url": "assets/images/competition_designs/studio_vulkan.jpg",
-          "propertyToDisplay": "studio_vulkan",
-          "legendStyleField":  "studio_vulkan",
-          "legendDescription": "Competition design: Studio Vulkan"
-        },
-        {
-          "displayName": "Vogt",
-          "id": "design_vogt",
-          "url": "assets/images/competition_designs/vogt.jpg",
-          "propertyToDisplay": "vogt",
-          "legendStyleField":  "vogt",
-          "legendDescription": "Competition design: Vogt"
+          "legendStyleField": "mandaworks",
+          "legendDescription": "Competition design: Mandaworks",
+          "coordinates": [
+            [9.997584752578675, 53.53933740297608],
+            [10.026946869628409, 53.53908884872806],
+            [10.026525622390873, 53.5216742190656],
+            [9.997175544562221, 53.521922616286005]
+          ]
         }
       ],
       "subResults": []
@@ -478,22 +696,35 @@
         "fill-extrusion-base": 0.25,
         "fill-extrusion-opacity": 0.8,
         "fill-extrusion-color": [
-          "match", ["get", "idiso"],
-          0, "#B8D6D1",
-          1, "#CEE4CC",
-          2, "#E2F2BF",
-          3, "#F3C683",
-          4, "#E87E4D",
-          5, "#CD463E",
-          6, "#A11A4D",
-          7, "#75085C",
+          "match",
+          [
+            "get",
+            "idiso"
+          ],
+          0,
+          "#B8D6D1",
+          1,
+          "#CEE4CC",
+          2,
+          "#E2F2BF",
+          3,
+          "#F3C683",
+          4,
+          "#E87E4D",
+          5,
+          "#CD463E",
+          6,
+          "#A11A4D",
+          7,
+          "#75085C",
           "white"
         ]
       },
       "legend": {
         "type": "circle",
         "styleField": "idiso",
-        "styleValues": [{
+        "styleValues": [
+          {
             "styleFieldValue": 0,
             "color": "#B8D6D1",
             "label": "< 45 dB"
