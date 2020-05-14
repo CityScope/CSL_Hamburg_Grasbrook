@@ -80,8 +80,6 @@ export class LayerLoaderService {
             // update coordinates of raster layer, if specified
             if (dataset['coordinates']) {
               subLayer.source['coordinates'] = dataset['coordinates'];
-              console.log("subLayer source");
-              console.log(subLayer.source);
             }
           }
           // add sublayer to groupedLayers of layer
